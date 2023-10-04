@@ -23,27 +23,27 @@ cryptsetup close root >&/dev/null || :
 
 lsblk -o PATH,MODEL,PARTLABEL,FSTYPE,FSVER,SIZE,FSUSE%,FSAVAIL,MOUNTPOINTS
 
-_select_disk() {
+SelectDiskPrompt() {
     read -rep $'\nDisk examples: /dev/sda or /dev/nvme0n1; don\'t use partition numbers like: /dev/sda1 or /dev/nvme0n1p1.\nInput your desired disk, then press ENTER: ' -i "/dev/" DISK
-    _disk_selected() {
+    WhichDiskSelected() {
         echo -e "\n\e[1;35mSelected disk: ${DISK}\e[0m\n"
         read -p "Is this correct? [Y/N]: " choice
     }
-    _disk_selected
+    WhichDiskSelected
     case ${choice} in
     [Y]*)
         return 0
         ;;
     [N]*)
-        _select_disk
+        SelectDiskPrompt
         ;;
     *)
         echo -e "\nInvalid option!\nValid options: Y, N"
-        _disk_selected
+        WhichDiskSelected
         ;;
     esac
 }
-_select_disk
+SelectDiskPrompt
 
 if [[ ${DISK} =~ "nvme" ]] || [[ ${DISK} =~ "mmc" ]]; then
     PARTITION1="${DISK}p1"
@@ -90,16 +90,16 @@ sgdisk -n 2::+"${TOTAL_RAM}"M --typecode=2:8200 "${DISK}"
 # Partition 3 ("/" or "root" directory)
 sgdisk -n 3::-0 --typecode=3:8300 --change-name=3:'ROOT' "${DISK}"
 
-partprobe "${DISK}" # Make Linux kernel use the latest partition tables without rebooting
+partprobe "${DISK}" # Make the Linux kernel use the latest partition tables without rebooting
 
 mkfs.fat -F 32 "${PARTITION1}"
 mkswap "${PARTITION2}"
 
-_password_prompt() {
+SetLUKSPasswordPrompt() {
     read -rp $'\nEnter a new password for the LUKS2 container: ' DESIREDPW
     if [[ -z ${DESIREDPW} ]]; then
         echo -e "\nNo password was entered, please try again.\n"
-        _password_prompt
+        SetLUKSPasswordPrompt
     fi
 
     read -rp $'\n\e[1;35mPlease repeat your LUKS2 password:\e[0m ' LUKS_PWCODE
@@ -108,10 +108,10 @@ _password_prompt() {
         echo -n "${LUKS_PWCODE}" | cryptsetup open "${PARTITION3}" root
     else
         echo -e "\nPasswords do not match, please try again.\n"
-        _password_prompt
+        SetLUKSPasswordPrompt
     fi
 }
 
-[[ ${use_luks2} -eq 1 ]] && _password_prompt
+[[ ${use_luks2} -eq 1 ]] && SetLUKSPasswordPrompt
 echo -e "\n\e[1;32mDisk formatting successful!\e[0m\n"
 exit 0

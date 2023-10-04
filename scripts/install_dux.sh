@@ -32,11 +32,11 @@ chmod +x -R "${GIT_DIR}"
 
 clear
 
-_password_prompt() {
+SetPasswordPrompt() {
 	read -rp "Enter a new password for the username \"${INITIAL_USER}\": " DESIREDPW
 	if [[ -z ${DESIREDPW} ]]; then
 		echo -e "\nNo password was entered, please try again.\n"
-		_password_prompt
+		SetPasswordPrompt
 	fi
 
 	read -rp $'\nPlease repeat your password: ' PWCODE
@@ -44,10 +44,10 @@ _password_prompt() {
 		export PWCODE
 	else
 		echo -e "\nPasswords do not match, please try again.\n"
-		_password_prompt
+		SetPasswordPrompt
 	fi
 }
-_password_prompt
+SetPasswordPrompt
 
 _01() {
 	("${GIT_DIR}/scripts/01-pre_chroot.sh") |& tee "${GIT_DIR}/logs/01-pre_chroot.log" || return

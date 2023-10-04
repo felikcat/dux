@@ -2,8 +2,8 @@
 # shellcheck disable=SC2034,SC2249
 set -a
 
-# 1: Enables disk encryption.
-use_luks2="0"
+# Disk encryption.
+use_luks2="1"
 
 # Do not use any of the following: symbols, spaces, upper-case letters.
 INITIAL_USER="admin"

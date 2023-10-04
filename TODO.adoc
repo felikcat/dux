@@ -1,2 +1,6 @@
 == README.adoc
 . Redo verifying ISO instructions to use SHA styled checksums instead of GPG.
+
+== format_disk.sh
+. Deny wiping and formatting the disk if there is not enough space, and say how much more space is required.
+

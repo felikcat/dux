@@ -22,17 +22,17 @@ if lspci | grep -P "VGA|3D|Display" | grep -q "NVIDIA"; then
 	(bash "${GIT_DIR}/scripts/_NVIDIA.sh") |& tee "${GIT_DIR}/logs/_NVIDIA.log" || return
 fi
 
-_snapper() {
+SetupSnapper() {
 	(bash "${GIT_DIR}/scripts/snapper.sh") |& tee "${GIT_DIR}/logs/snapper.log"
 }
-_snapper
+SetupSnapper
 
-# Without this, Dux breaks if ran by a different user than the home directories' assigned user.
+# Without this, Dux breaks if ran by a different user (such as root) in the home directory.
 git config --global --add safe.directory /home/"${WHICH_USER}"/dux
 git config --global --add safe.directory /root/dux
 
-_cleanup() {
+Cleanup() {
 	# Permit users in group 'wheel' to request privilege escalation through sudo.
     echo "%wheel ALL=(ALL) ALL" >/etc/sudoers.d/custom_settings
 }
-trap _cleanup EXIT
+trap Cleanup EXIT

@@ -44,7 +44,7 @@ Actions taken by Dux:
 - This makes it easy for someone to fork Dux and turn it into what they desire out of Arch Linux.
 
 * Single-user only
-- Linux is not meant as a multi-seat system. Projects such as systemd-homed are disabled or excluded from Dux, they "fix" security issues with multi-seat that doesn't solve the core security problems with multi-seat in the first place.
+- Linux is not meant as a multi-seat system. Projects such as systemd-homed are disabled or excluded from Dux to avoid their inherent security risks and additional complexity.
 
 * Virtual machine guest support
 ** QEMU (multiple GPU drivers, such as QXL and Virtio), VMWare, Hyper-V, and VirtualBox.
@@ -139,29 +139,14 @@ Every program installed is another developer or set of developers to trust; keep
 == Requirements
 . An Intel or AMD CPU newer than 2005.
 . *1.5GB* of RAM; 4GB recommended.
-. *16GB* of disk space; *128GB* recommended, unless using *128GB* of RAM -- then *512GB* is recommended.
-. UEFI must be enabled.
+. *16GB* of disk space; *128GB* recommended.
+- If you have *16GB* of RAM, add on *16GB* more to this requirement, same applies to *32GB* of RAM for *32GB* of disk space.
+. *UEFI* must be enabled.
 ** If booting into the Arch Linux ISO fails on UEFI, a very rare IA32 UEFI BIOS is used. Follow link:https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface#Booting_64-bit_kernel_on_32-bit_UEFI[these instructions] to successfully boot the Arch Linux ISO.
 * link:https://archive.is/QwLMB[Disable UEFI Secure Boot]
 ** If convincing is needed, link:https://github.com/pbatard/rufus/wiki/FAQ#Why_do_I_need_to_disable_Secure_Boot_to_use_UEFINTFS[read this].
 * The latest link:https://archlinux.org/download/[Arch Linux ISO]; if you have no torrent client, use link:https://www.qbittorrent.org/download.php[qBittorrent].
-
-.Dual-booting with Windows is supported by Dux, but potentially dangerous. Why?
-[%collapsible]
-====
-Windows 10 LTSC 2019 erased the partitions on my _previously_ ext4 formatted 4TB disk, and damaged that ext4 filesystem beyond repair.
-The disk was never mounted in Windows, and was not the primary disk; the primary disk (an SSD) had both Linux and Windows installed.
-
-image:windows1.png[]
-image:windows2.png[]
-
-4TB disk still fully functional as of 19th Feb 2023:
-image:hdd1.png[]
-image:hdd2.png[]
-image:hdd3.png[]
-
-====
-
+. Dual-booting (or more OSes) are supported.
 
 == Preparation
 
@@ -215,6 +200,7 @@ NOTE: A "Real name" of at least 5 characters long is required; "Email address" a
 ___
 
 ====
+
 WARNING: This will destroy all previous data on the targeted device!
 
 === Windows

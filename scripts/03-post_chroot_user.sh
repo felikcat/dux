@@ -20,7 +20,7 @@ if ! hash paru >&/dev/null; then
 	makepkg -si --noconfirm
 fi
 
-_other_user_files() {
+SetupOtherUserFiles() {
 	if ! grep -q 'add-zsh-hook' "/home/${WHICH_USER}/.zshrc" >&/dev/null; then
 		cat "${GIT_DIR}/files/home/.zshrc" >>"/home/${WHICH_USER}/.zshrc"
 	fi
@@ -28,4 +28,4 @@ _other_user_files() {
 
 PKGS_AUR+="btrfs-assistant "
 _pkgs_aur_add
-_other_user_files
+SetupOtherUserFiles

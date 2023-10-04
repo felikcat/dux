@@ -52,12 +52,12 @@ NvidiaGPUSetup() {
 	}
 	NvidiaForceMaxSpeed
 
-	_nvidia_after_install() {
+	NvidiaAfterInstall() {
 		# Allow adjusting: clock speed, power, and fan control.
 		nvidia-xconfig --cool-bits=28
 		REGENERATE_INITRAMFS=1
 	}
-	trap _nvidia_after_install EXIT
+	trap NvidiaAfterInstall EXIT
 }
 
 NvidiaGPUSetup

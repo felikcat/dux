@@ -101,12 +101,12 @@ Hardware() {
 		# Also requires nss-mdns; installed by default.
 		PKGS+="cups cups-filters ghostscript gsfonts cups-pk-helper sane system-config-printer simple-scan "
 		# Also requires avahi-daemon.service; enabled by default.
-		SERVICES+="cups.socket cups-browsed.service "
-		_printer_config() {
+		SERVICES+="cups.socket "
+		ConfigCUPS() {
 			chattr -f -i /etc/nsswitch.conf # Ensure file is writable.
 			sed -i "s/hosts:.*/hosts: files mymachines myhostname mdns_minimal [NOTFOUND=return] resolve/" /etc/nsswitch.conf
 		}
-		trap _printer_config EXIT
+		trap ConfigCUPS EXIT
 	fi
 }
 Hardware
@@ -234,8 +234,8 @@ RefindBootloaderCFG
 \cp "${cp_flags}" "${GIT_DIR}"/files/etc/xdg/reflector/reflector.conf "/etc/xdg/reflector/" &&
     sed -i "s/~02-post_chroot_root~/${reflector_countrylist}/" /etc/xdg/reflector/reflector.conf
 
-_prepare_03() {
+Prepare03() {
 	chmod +x -R {/home/"${WHICH_USER}"/dux,/home/"${WHICH_USER}"/dux_backup_"${DATE}"} >&/dev/null || :
 	chown -R "${WHICH_USER}:${WHICH_USER}" "/home/${WHICH_USER}"
 }
-trap _prepare_03 EXIT
+trap Prepare03 EXIT
