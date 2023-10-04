@@ -1,0 +1,3 @@
+SUBSYSTEM=="vfio", GROUP:="qemu"
+SUBSYSTEM=="usb", MODE:="0666", GROUP:="qemu"
+SUBSYSTEM=="usb_device", MODE:="0666", GROUP:="qemu"

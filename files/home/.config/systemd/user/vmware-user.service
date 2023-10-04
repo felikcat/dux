@@ -1,0 +1,9 @@
+[Unit]
+Description=Enables shared clipboard and drag & drop file sharing functionality
+After=display-manager.service
+
+[Service]
+ExecStart=/usr/bin/vmware-user-suid-wrapper
+
+[Install]
+WantedBy=autostart.target

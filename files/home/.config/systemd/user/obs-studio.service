@@ -1,0 +1,9 @@
+[Unit]
+Description=Free and open source software for live streaming and screen recording
+After=display-manager.service
+
+[Service]
+ExecStart=/usr/bin/obs --minimize-to-tray
+
+[Install]
+WantedBy=autostart.target

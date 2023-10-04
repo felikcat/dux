@@ -1,0 +1,9 @@
+[Unit]
+Description=Sets NVIDIA PowerMizer "Prefer Maximum Performance" profile to fix severe lags on some GPUs
+After=display-manager.service
+
+[Service]
+ExecStart=nvidia-settings -a "[gpu:0]/GpuPowerMizerMode=1"
+
+[Install]
+After=graphical.target

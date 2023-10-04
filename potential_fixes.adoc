@@ -1,0 +1,53 @@
+:experimental:
+ifdef::env-github[]
+:icons:
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+:imagesdir: imgs/
+
+== Mounting Dux installation from an Arch Linux ISO
+. `# pacman -Sy git`
+. `# git clone https://github.com/felikcat/dux`
+. If `use_luks2="1"` was used -> `# cryptsetup open /dev/EXAMPLE3 root`
+. `# MOUNT_ONLY=1 bash ~/dux/scripts/01-pre_chroot.sh`
+
+== Pinpointing system problems
+* `# dmesg -H`
+** Outputs the kernel ring buffer, useful for seeing what occurred at ring0 for the current boot.
+
+* `$ ldd executable_name` 
+** Prints required shared libraries for the specified executable, useful for tracking down required dependencies.
+
+* Takes a long time to boot up:
+. `$ systemd-analyze`
+. `$ systemd-analyze blame`
+
+* `# systool -vm kernel_module`
+** Shows detailed information of a loaded kernel module.
+
+== Potential solutions
+* Simply rebooting.
+** This can be required when say, you updated your current kernel, then suddenly your virtual machine can't start up and complains about a missing kernel module (such as "tun").
+
+* Wi-Fi not functional while booted into the Dux installation.
+** `# rm /etc/NetworkManager/conf.d/wifi_backend.conf` then `# systemctl restart NetworkManager.service`
+
+* Syntax errors in `/etc/nsswitch.conf` will break `/etc/passwd`, `/etc/group`, and `/etc/hosts`. This breaks the whole OS until repaired.
+
+* System lockups
+** Check files in `/boot/loader/entries/` for "pcie_aspm=force" and "pcie_port_pm=force", if present remove both of these kernel parameters, then reboot.
+* Stuck on black screen after boot
+. Press kbd:[e] on systemd-boot screen then add `systemd.unit=multi-user.target`; this will prevent entering a graphical environment
+. Once booted..
+** AMD: Edit **`/etc/modprobe.d/amdgpu.conf`** +
+Remove `options amdgpu exp_hw_support=1 si_support=1 cik_support=1` line
+** NVIDIA: check files in **`/boot/loader/entries/`** for `nvidia-drm.modeset=1`, remove it if present
+* USB audio issues: crackling, popping, drop-outs
+** `# dmesg | less`, if something like "usb 1-6.1: reset full-speed USB device number 4 using xhci_hcd" is shown, means that USB audio device likely needs a replacement cable. Before then, plug that USB audio device into different USB ports.
+
+* Good resources:
+** https://fedoraproject.org/wiki/Common_kernel_problems (mainly old hardware)

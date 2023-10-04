@@ -1,0 +1,294 @@
+:experimental:
+ifdef::env-github[]
+:icons:
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+:imagesdir: imgs/
+
+*Turbo* is a highly refined and simplistic Arch Linux installer programmed in Bash.
+
+- It's intended as a base to layer on your own additions to Dux, or to fork Dux into a custom spin.
+- Through lots of trial and error, Dux uses Bash in a way that's more reliable than alternatives written in Bash.
+
+.*In-depth overview of what Dux does and its intentions.* It's a lot of information and currently not up to date.
+[%collapsible]
+====
+
+[.lead]
+Goals:
+
+* Backups are made for every file/folder modified by Dux.
+* The built-in ricing is ensured to not cause breakages in future updates for KDE.
+* No third-party Pacman (package) repositories are ever used.
+* The official Arch Linux ISO is used, as it's a solid foundation that also has an entire team to maintain it.
+* Dux doesn't provide its own repositories, so running Dux again is itself the updater. If your Arch Linux installed by Dux is not broken, do not run Dux again.
+* A unique take on "ricing" (customization) by avoiding the following:
+** Stringing together a bunch of different software by different developers, likely also dealing with conflicting opinions.
+
+
+[.lead]
+Actions taken by Dux:
+
+* Useful functionality and customization are present in GUIs.
+- Prevents resorting to manpages/manuals and configuration files, instead of trying out changes in a concise environment; example: KDE's System Settings.
+
+* Wary of scope creep, the complexity of Dux's code, and the complexity of what Dux has installed.
+- This makes it easy for someone to fork Dux and turn it into what they desire out of Arch Linux.
+
+* Single-user only
+- Linux is not meant as a multi-seat system. Projects such as systemd-homed are disabled or excluded from Dux, they "fix" security issues with multi-seat that doesn't solve the core security problems with multi-seat in the first place.
+
+* Virtual machine guest support
+** QEMU (multiple GPU drivers, such as QXL and Virtio), VMWare, Hyper-V, and VirtualBox.
+
+* Support for old to new NVIDIA and Intel GPUs.
+** Offloading tasks to a different GPU is also supported.
+
+* Inter fonts by default
+** Similar to macOS SF Pro fonts, but optimized for Linux. Great font rendering for low-DPI to high-DPI displays; increased readability and beautiful instead of (poorly) utilitarian.
+
+* `LUKS2`
+** Disk encryption to act as an anti-theft measure with minimal performance reduction.
+
+* `Pipewire` customizations:
+- `resample.quality = 10`; audio quality fall-off at ~21kHz instead of ~18kHz.
+- `mem.mlock-all = true`; avoids paging the memory regions of Pipewire whenever possible to prevent audio glitches.
+
+* Swap partition that's the same size as total RAM
+** Under high memory pressure situations this keeps Linux afloat in terms of performance; video games run smoother while this is happening.
+** Adds support for hibernation to disk, everything is kept as it were before hitting the hibernate button, allowing you to resume your work at a later date with 0 power usage until removed from hibernation.
+
+* `Gamemode`
+** Allows for a process to temporarily disable power-saving features for extra performance, mainly used by Lutris for video games.
+
+* `BBRv2`: A TCP congestion control for lower bufferbloat; read about its positive effects on download/upload speeds and latency link:https://archive.ph/l0zc8[here].
+** NOTE: qdisc is left at default, rather than the CAKE qdisc being used: +
+https://github.com/systemd/systemd/issues/9725#issuecomment-564872011
+
+* `Btrfs` is used to:
+** Compress data in real-time without noticeable performance impacts, reducing write amplification (increases longevity of disks by lowering disk usage), and increasing read speeds on slow disks.
+** Have high-performance and deduplicated "snapshots" (backups) of key areas, which turns Arch Linux updates breaking software into a small nuisance, as it's very quick and easy to restore to a previous snapshot.
+** Allow for an easier data recovery if a disk gets damaged and/or starts to have bad sectors.
+** To once a month automatically check (Scrub) over all filesystem data and metadata and verifying the checksums, repairing damage if present and possible.
+
+* `Snapper` instead of `Timeshift`
+** `Timeshift` is limited to taking snapshots of @ (root) and @home only.
+*** Taking snapshots encompassing all of @ (root) is wasteful; Dux specifically makes Btrfs subvolumes for these directories to exclude them from snapshots: `/srv, /var/cache/pacman/pkg, /var/log, /home`
+** `Snapper` makes read-only and replicable snapshots.
+
+* `GPT`
+** Compared to MBR, GPT supports disks above 2TB capacity, 128 primary partitions instead of 4, and protects against boot record corruption.
+
+* `I/O scheduling changes`
+** `mq-deadline` for SSDs and eMMCs (flash/USB disks/SD cards), `bfq` for spinning disks (HDDs). +
+This makes these types of disks highly responsive to your inputs.
+
+* `irqbalance`
+** Manages IRQ interrupts more efficiently by being more aware of the current environment. One example is offloading IRQ interrupts to CPU affinities which have the lowest load on them. Another example is respecting VMs having their CPU affinities isolated, meaning irqbalance will offload the IRQ interrupts to CPU affinities that aren't isolated.
+
+* `Flatpak`
+** Visual inconsistencies with Flatpaks are mostly fixed.
+
+* `thermald`
+** Provides a large performance boost for some Intel laptops, with no observable downsides for other hardware combinations.
+** https://www.phoronix.com/scan.php?page=article&item=intel-thermald-tgl&num=2
+
+* Disabled `Baloo` "full-text" indexer
+** It's preferred to load files on demand then cache their thumbnails; a simpler approach that works reliably and without performance issues.
+** `Baloo` has a link:https://bugs.kde.org/show_bug.cgi?id=402154[long-standing bug] related to usage of Btrfs subvolumes (which we use), that greatly impacts disk usage and overall system performance.
+*** Even without this bug, file indexers daemons like `Baloo` won't be used as their design is conceptually over-complicated, and will always be problematic.
+
+* No `systemd-oomd` and no `earlyoom`
+** Let the Linux kernel handle OOM (out of memory) situations, it's responsive enough since Linux kernel v6.1 added MGLRU.
+
+* `dnsmasq` and `openresolv`, instead of `systemd-resolved` and `systemd-resolvconf`
+** To support "network locking" on some VPN clients, and for more reliable DNS resolution.
+
+* `nftables`
+** https://firewalld.org/2018/07/nftables-backend
+
+* `NetworkManager` set to the `iwd` Wi-Fi backend for more network stability and performance.
+
+* `dbus-broker`
+** Replaces `dbus-daemon` for the system bus, as it's faster and more stable by being fully adapted for Linux only instead of trying to stay cross-platform.
+
+* `chrony`
+** High accuracy time sync that happens to be power efficient. Benchmarks and feature comparisons: https://chrony.tuxfamily.org/comparison.html
+** Also accounts for https://en.wikipedia.org/wiki/Leap_second[leap seconds] for additional system clock (time) accuracy. Its "leap smear" mode is used to avoid negative effects from jumping the system clock a sudden and large amount.
+
+* No graphical front-end for the "pacman" package manager
+** Do you on Windows, go onto the Microsoft Store to look through and pick out programs you never tried thinking you want to use that program? Likely not, you instead use a search engine to find the program you already knew you wanted, read through its homepage, then install it. +
+Search engines are better for finding the programs you need, instead of browsing through a shopping gallery (Windows Store) hoping to find another cool program to install that might be useful. +
+Every program installed is another developer or set of developers to trust; keep your program list minimal to keep your PC happy and to waste less of your personal time.
+
+* *Learning sources used:*
+. https://www.kernel.org/doc/Documentation/x86/x86_64/boot-options.txt
+. https://www.intel.com/content/www/us/en/developer/articles/technical/optimizing-computer-applications-for-latency-part-1-configuring-the-hardware.html
+. http://developer.amd.com/wp-content/resources/56263-Performance-Tuning-Guidelines-PUB.pdf
+
+====
+
+== Requirements
+* An Intel or AMD CPU newer than 2005, though the focus is for 2019 and newer.
+* 4GB of total RAM available is recommended; 1.5GB is required.
+* 16GB of disk space is used if there's 16GB of RAM. After that 16GB swap partition, have at least another 8GB of disk space to install Arch Linux on.
+* A UEFI BIOS must be used.
+** If booting into the Arch Linux ISO fails on UEFI, a very rare IA32 UEFI BIOS is used. Follow link:https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface#Booting_64-bit_kernel_on_32-bit_UEFI[these instructions] to successfully boot the Arch Linux ISO.
+* link:https://archive.is/QwLMB[Disable UEFI Secure Boot]
+** If convincing is needed, link:https://github.com/pbatard/rufus/wiki/FAQ#Why_do_I_need_to_disable_Secure_Boot_to_use_UEFINTFS[read this].
+* The latest link:https://archlinux.org/download/[Arch Linux ISO]; if you have no torrent client, use link:https://www.qbittorrent.org/download.php[qBittorrent].
+
+.Dual-booting with Windows is supported by Dux, but potentially dangerous. Why?
+[%collapsible]
+====
+Windows 10 LTSC 2019 erased the partitions on my _previously_ ext4 formatted 4TB disk, and damaged that ext4 filesystem beyond repair.
+The disk was never mounted in Windows, and was not the primary disk; the primary disk (an SSD) had both Linux and Windows installed.
+
+image:windows1.png[]
+image:windows2.png[]
+
+4TB disk still fully functional as of 19th Feb 2023:
+image:hdd1.png[]
+image:hdd2.png[]
+image:hdd3.png[]
+
+====
+
+
+== Preparation
+
+.[Optional] Verify ISO authenticity
+[%collapsible]
+====
+
+*macOS*
+
+. Install Homebrew from https://brew.sh/  +
+`brew install gnupg`
+
+. Follow the Linux instructions below.
+
+*Linux*
+
+. The full key (not short or long) is used to fully protect against collision attacks. +
+`gpg --auto-key-locate clear,wkd -v --locate-external-key pierre@archlinux.de`
+
+. Check what the PGP fingerprint is, then download "PGP signature".
+image:arch_checksums.png[]
+
+. `gpg --full-gen-key`
+```
+Please select what kind of key you want:
+   (1) RSA and RSA (default)
+   (2) DSA and Elgamal
+   (3) DSA (sign only)
+   (4) RSA (sign only)
+  (14) Existing key from card
+Your selection? ↵
+
+What keysize do you want? 4096 ↵
+Key is valid for? ↵
+```
+NOTE: A "Real name" of at least 5 characters long is required; "Email address" and "Comment" are not.
+
+. After your new GPG key has been generated, show its full key; [ultimate] indicates that you trust this key ultimately (you created the key), which is the desired behavior. +
+`gpg --list-secret-keys --keyid-format none`
+
+. Sign Arch's GPG key with yours. +
+`gpg --sign-key 4AA4767BBC9C4B1D18AE28B77F2D434B9741E8AC`
+
+. Verify if the ISO is authentic, and its file integrity doesn't fail (indicates a broken download). +
+`gpg --verify /path/to/archkbd:[TAB].sig`
+
+*Windows*
+
+. I have no clue.
+
+___
+
+====
+WARNING: This will destroy all previous data on the targeted device!
+
+=== Windows
+. Download and install rufus-$version.exe +
+https://github.com/pbatard/rufus/releases
+. Add the Arch ISO through Select, click Start, then write in DD Image mode.
+
+=== macOS
+* Use https://github.com/balena-io/etcher/releases[balenaEtcher].
+
+=== Linux
+* Use https://github.com/balena-io/etcher/releases[balenaEtcher].
+
+.dd method (a not recommended alternative)
+[%collapsible]
+====
+. Thoroughly list disks and partitions; to see what disk/drive you are going to format. +
+`$ lsblk -o PATH,MODEL,PARTLABEL,FSTYPE,FSVER,SIZE,FSUSE%,FSAVAIL,MOUNTPOINTS`
+
+. Do not append numbers to the end of /dev/EXAMPLE +
+`# dd if=/path/to/archkbd:[TAB] of=/dev/EXAMPLE bs=8M oflag=direct status=progress`
+====
+
+=== OpenBSD
+. List all available disks: +
+`$ dmesg|egrep '^([cswf]d). '` or `$ df -h`
+
+. List the partitions of a disk, and show sizes in gigabytes (-p g): +
+`# disklabel -p g EXAMPLE`
+
+. Do not append numbers to the end of /dev/EXAMPLE: +
+`# dd bs=4M if=/path/to/archkbd:[TAB] of=/dev/EXAMPLE conv=sync`
+
+
+== Starting the Dux installer
+
+Once booted into the Arch Linux ISO, ensure an internet connection is established. +
+`$ ping archlinux.org`
+
+.No connection?
+[%collapsible]
+====
+
+*For Wi-Fi:*
+
+. Run `# rfkill unblock all`
+. `# iwctl` -> `station wlan0 connect your_wifi_SSID` -> `exit`
+. `# systemctl restart systemd-networkd`
+
+TIP: If "wlan0" is not the correct interface, use iwctl's `station list` to see your wireless interface(s).
+
+*https://wiki.archlinux.org/title/Mmcli[For mobile modems]*.
+
+====
+
+
+. `# pacman -Syy git`
+
+. `# git clone --depth=1 -b r1 https://github.com/felikcat/dux`
+
+. Open `~/dux/configs/settings.sh` in your editor of choice, likely `vim` or `nano`
+** Do not remove options in Dux's configs! Disable them.
+
+. `# bash ~/dux/scripts/format_disk.sh`
+** kbd:[Ctrl] + kbd:[C] to exit the disk formatter if you're not comfortable proceeding.
+
+. `# bash ~/dux/scripts/install_dux.sh`
+** If there's issues: run with `DEBUG=1` (put before `bash`) for more verbose logs.
+
+___
+
+.After the reboot:
+* Open "Konsole".
+. `# sudo bash ~/dux/scripts/05-booted.sh`
+
+. Configure `~/dux/configs/software_catalog.sh` with a text editor of your choice.
+** After done configuring, run: +
+`# sudo bash ~/dux/scripts/software_catalog.sh`
+
+___
+*If you have issues, please read => link:potential_fixes.adoc[potential_fixes.adoc]*

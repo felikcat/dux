@@ -1,0 +1,2 @@
+# Using CRLF will break shellcheck's ability to read .sh files
+*.sh    eol=lf
