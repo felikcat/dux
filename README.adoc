@@ -9,23 +9,27 @@ ifdef::env-github[]
 endif::[]
 :imagesdir: imgs/
 
-*Turbo* is a highly refined and simplistic Arch Linux installer programmed in Bash.
+*Dux*, also known as "Turbo Arch Linux", is a highly refined and simplistic Arch Linux installer programmed in Bash.
 
-- It's intended as a base to layer on your own additions to Dux, or to fork Dux into a custom spin.
-- Through lots of trial and error, Dux uses Bash in a way that's more reliable than alternatives written in Bash.
-
-.*In-depth overview of what Dux does and its intentions.* It's a lot of information and currently not up to date.
+.*In-depth overview of what Dux does and its intentions.*
 [%collapsible]
 ====
 
 [.lead]
 Goals:
 
+* Being easy to layer on your own additions to Dux to suit your specific needs, or to fork Dux into a custom spin.
+
 * Backups are made for every file/folder modified by Dux.
+
 * The built-in ricing is ensured to not cause breakages in future updates for KDE.
+
 * No third-party Pacman (package) repositories are ever used.
+
 * The official Arch Linux ISO is used, as it's a solid foundation that also has an entire team to maintain it.
+
 * Dux doesn't provide its own repositories, so running Dux again is itself the updater. If your Arch Linux installed by Dux is not broken, do not run Dux again.
+
 * A unique take on "ricing" (customization) by avoiding the following:
 ** Stringing together a bunch of different software by different developers, likely also dealing with conflicting opinions.
 
@@ -133,10 +137,10 @@ Every program installed is another developer or set of developers to trust; keep
 ====
 
 == Requirements
-* An Intel or AMD CPU newer than 2005, though the focus is for 2019 and newer.
-* 4GB of total RAM available is recommended; 1.5GB is required.
-* 16GB of disk space is used if there's 16GB of RAM. After that 16GB swap partition, have at least another 8GB of disk space to install Arch Linux on.
-* A UEFI BIOS must be used.
+. An Intel or AMD CPU newer than 2005.
+. *1.5GB* of RAM; 4GB recommended.
+. *16GB* of disk space; *128GB* recommended, unless using *128GB* of RAM -- then *512GB* is recommended.
+. UEFI must be enabled.
 ** If booting into the Arch Linux ISO fails on UEFI, a very rare IA32 UEFI BIOS is used. Follow link:https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface#Booting_64-bit_kernel_on_32-bit_UEFI[these instructions] to successfully boot the Arch Linux ISO.
 * link:https://archive.is/QwLMB[Disable UEFI Secure Boot]
 ** If convincing is needed, link:https://github.com/pbatard/rufus/wiki/FAQ#Why_do_I_need_to_disable_Secure_Boot_to_use_UEFINTFS[read this].

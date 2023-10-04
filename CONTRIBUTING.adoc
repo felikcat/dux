@@ -13,7 +13,7 @@ endif::[]
 Pull requests are only for fixes. +
 Dux is intended to be forked; maintain your own fork of Dux if you want to do beyond bug fixes.
 
-=== Recommended tools
+== Recommended tools
 . https://github.com/koalaman/shellcheck | link:https://github.com/vscode-shellcheck/vscode-shellcheck[VS Code addon]
 . https://github.com/mvdan/sh#shfmt | link:https://github.com/foxundermoon/vs-shell-format[VS Code addon]
 . https://github.com/hangxingliu/vscode-systemd
