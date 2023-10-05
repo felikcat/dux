@@ -74,11 +74,18 @@ _gpu() {
 }
 [[ ${disable_gpu} -ne 1 ]] && _gpu
 
-_desktop_environment() {
-    (arch-chroot /mnt "${GIT_DIR}/scripts/Pipewire.sh") |& tee "${GIT_DIR}/logs/Pipewire.log" || return
-    (arch-chroot /mnt "${GIT_DIR}/scripts/GNOME.sh") |& tee "${GIT_DIR}/logs/GNOME.log" || return
+SetupAudio() {
+	(arch-chroot /mnt "${GIT_DIR}/scripts/Pipewire.sh") |& tee "${GIT_DIR}/logs/Pipewire.log" || return
 }
-[[ ${desktop_environment} -eq 1 ]] && _desktop_environment
+SetupAudio
+
+SetupDesktopEnvironment() {
+    [[ ${desktop_environment} -eq 1 ]] &&
+		(arch-chroot /mnt "${GIT_DIR}/scripts/DE/GNOME.sh") |& tee "${GIT_DIR}/logs/GNOME.log" || return
+	[[ ${desktop_environment} -eq 2 ]] &&
+		(arch-chroot /mnt "${GIT_DIR}/scripts/DE/IceWM.sh") |& tee "${GIT_DIR}/logs/IceWM.log" || return
+}
+SetupDesktopEnvironment
 
 _04() {
 	(arch-chroot /mnt "${GIT_DIR}/scripts/04-finalize.sh") |& tee "${GIT_DIR}/logs/04-finalize.log" || return

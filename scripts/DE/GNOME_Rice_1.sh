@@ -33,4 +33,4 @@ papirus-folders -C brown --theme Papirus-Dark
 
 _gnome_flatpak
 
-(sudo -H -u "${WHICH_USER}" DENY_SUPERUSER=1 ${SYSTEMD_USER_ENV} bash "/home/${WHICH_USER}/dux/scripts/non-SU/GNOME_Rice_2.sh") |& tee "${GIT_DIR}/logs/GNOME_Rice_2.log"
+(sudo -H -u "${WHICH_USER}" DENY_SUPERUSER=1 ${SYSTEMD_USER_ENV} bash "/home/${WHICH_USER}/dux/scripts/DE/GNOME_Rice_2.sh") |& tee "${GIT_DIR}/logs/GNOME_Rice_2.log"

@@ -98,9 +98,3 @@ genfstab -U /mnt >>/mnt/etc/fstab
 
 sed -i -e 's/^#Color/Color/' \
 	-e '/^#ParallelDownloads/s/^#//' /mnt/etc/pacman.conf
-
-# If the Dux installation fails, this keeps the internet working. Mainly used for debugging Dux.
-cat <<'EOF' >/mnt/etc/resolv.conf
-nameserver 9.9.9.9
-nameserver 149.112.112.112
-EOF

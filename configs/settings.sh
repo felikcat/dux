@@ -39,8 +39,10 @@ no_mitigations="0"
 #
 reflector_countrylist="US,CA"
 
-# 0:  No desktop environment; this assumes server usage, so no accommodations for the "Linux Desktop".
+# 0:  No desktop environment; Do It Yourself.
 # 1:  GNOME -> https://www.gnome.org/
+# 2:  IceWM -> https://ice-wm.org/
+# 99: Server usage; no desktop environment, and no accommodations for desktop usage.
 desktop_environment="1"
 
 # === Desktop Environment: GNOME ===

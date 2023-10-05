@@ -16,14 +16,14 @@ fi
 sudo -H -u "${WHICH_USER}" bash -c "${SYSTEMD_USER_ENV} systemctl --user enable dbus-broker.service"
 
 # Scripts in "_do_last" have to forcefully logout to apply changes.
-_do_last() {
+DoLast() {
     if [[ ${desktop_environment} -eq 1 ]]; then
-        _gnome_rice() {
-            (bash "${GIT_DIR}/scripts/GNOME_Rice_1.sh") |& tee "${GIT_DIR}/logs/GNOME_Rice_1.log" || return
+        RiceGNOME() {
+            (bash "${GIT_DIR}/scripts/DE/GNOME_Rice_1.sh") |& tee "${GIT_DIR}/logs/GNOME_Rice_1.log" || return
         }
-        [[ ${allow_gnome_rice} -eq 1 ]] && _gnome_rice
+        [[ ${allow_gnome_rice} -eq 1 ]] && RiceGNOME
     fi
 
 	chown -R "${WHICH_USER}:${WHICH_USER}" /home/"${WHICH_USER}"/{dux,dux_backups}
 }
-trap _do_last EXIT
+trap DoLast EXIT

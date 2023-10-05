@@ -282,3 +282,9 @@ ___
 
 ___
 *If you have issues, please read => link:potential_fixes.adoc[potential_fixes.adoc]*
+
+== How to help Dux out
+- Make an account on the Arch Linux user repository, and "Vote for this package" for the following:
+. https://aur.archlinux.org/packages/refind-btrfs
+. https://aur.archlinux.org/packages/btrfs-assistant
+. 
