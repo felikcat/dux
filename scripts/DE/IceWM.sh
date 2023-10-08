@@ -13,4 +13,4 @@ PKGS="icewm xorg-xinit lxqt-policykit lxrandr-gtk3 arc-gtk-theme "
 
 _pkgs_add
 
-(sudo -H -u "${WHICH_USER}" DENY_SUPERUSER=1 ${SYSTEMD_USER_ENV} bash "/home/${WHICH_USER}/dux/scripts/DE/IceWM_Rice.sh") |& tee "${GIT_DIR}/logs/IceWM_Rice.log"
+bash "/home/${WHICH_USER}/dux/scripts/DE/IceWM_Rice.sh" |& tee "${GIT_DIR}/logs/IceWM_Rice.log"

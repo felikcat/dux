@@ -93,13 +93,13 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 Hardware() {
 	if [[ ${hardware_wifi_and_bluetooth} -eq 1 ]]; then
-		PKGS+="iwd bluez bluez-utils "
+		PKGS+="iwd bluez bluez-utils"
 		SERVICES+="iwd.service bluetooth.service "
 	fi
 
 	if [[ ${hardware_printers_and_scanners} -eq 1 ]]; then
 		# Also requires nss-mdns; installed by default.
-		PKGS+="cups cups-filters ghostscript gsfonts cups-pk-helper sane system-config-printer simple-scan "
+		PKGS+="cups cups-filters ghostscript gsfonts cups-pk-helper sane system-config-printer simple-scan"
 		# Also requires avahi-daemon.service; enabled by default.
 		SERVICES+="cups.socket "
 		ConfigCUPS() {
@@ -124,32 +124,32 @@ PKGS+="refind \
 irqbalance power-profiles-daemon thermald dbus-broker gamemode lib32-gamemode iptables-nft \
 chrony dnsmasq openresolv libnewt pigz pbzip2 strace usbutils linux-firmware gnome-keyring avahi nss-mdns \
 man-db man-pages pacman-contrib mkinitcpio bat \
-wget trash-cli reflector rebuild-detector vim "
+wget trash-cli reflector rebuild-detector vim"
 
 case $(systemd-detect-virt) in
 "none")
 	if [[ ${CPU_VENDOR} = "AuthenticAMD" ]]; then
-		PKGS+="amd-ucode "
+		PKGS+="amd-ucode"
 		MICROCODE="initrd=amd-ucode.img initrd=initramfs-%v.img"
 	elif [[ ${CPU_VENDOR} = "GenuineIntel" ]]; then
-		PKGS+="intel-ucode "
+		PKGS+="intel-ucode"
 		MICROCODE="initrd=intel-ucode.img initrd=initramfs-%v.img"
 	fi
 	;;
 "kvm")
-	PKGS+="qemu-guest-agent "
+	PKGS+="qemu-guest-agent"
 	;;
 "vmware")
-	PKGS+="open-vm-tools "
+	PKGS+="open-vm-tools"
 	# Our vmware-user.service is created then enabled in 05-booted.sh
 	SERVICES+="vmtoolsd.service vmware-vmblock-fuse.service "
 	;;
 "oracle")
-	PKGS+="virtualbox-guest-utils "
+	PKGS+="virtualbox-guest-utils"
 	SERVICES+="vboxservice.service "
 	;;
 "microsoft")
-	PKGS+="hyperv "
+	PKGS+="hyperv"
 	SERVICES+="hv_fcopy_daemon.service hv_kvp_daemon.service hv_vss_daemon.service "
 	;;
 *)

@@ -208,10 +208,7 @@ WARNING: This will destroy all previous data on the targeted device!
 https://github.com/pbatard/rufus/releases
 . Add the Arch ISO through Select, click Start, then write in DD Image mode.
 
-=== macOS
-* Use https://github.com/balena-io/etcher/releases[balenaEtcher].
-
-=== Linux
+=== macOS and Linux
 * Use https://github.com/balena-io/etcher/releases[balenaEtcher].
 
 .dd method (a not recommended alternative)

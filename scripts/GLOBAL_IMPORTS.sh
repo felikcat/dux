@@ -55,7 +55,7 @@ _flatpak_silent() {
 }
 _flatpaks_add() {
 	[[ -n ${FLATPAKS} ]] &&
-		flatpak install --noninteractive flathub ${FLATPAKS}
+		flatpak install --noninteractive flathub "${FLATPAKS[*]}"
 }
 _fix_services_syntax() {
 	systemctl daemon-reload
@@ -86,7 +86,7 @@ _move2bkup() {
 _pkgs_aur_add() {
 	[[ -n ${PKGS_AUR} ]] &&
 		# Use -Syu instead of -Syuu for paru.
-		# NoProgressBar: the TTY framebuffer is likely not GPU accelerated while booted into the Arch Linux ISO; making rendering less text = Dux installs faster.
+		# NoProgressBar: the TTY framebuffer is likely not GPU accelerated while booted into the Arch Linux ISO; render less text = Dux installs faster.
 		sudo -H -u "${WHICH_USER}" bash -c "${SYSTEMD_USER_ENV} DENY_SUPERUSER=1 paru -Syu --aur --quiet --noprogressbar --noconfirm --useask --needed --skipreview ${PKGS_AUR}"
 }
 
@@ -109,10 +109,8 @@ fi
 # Functions requiring superuser
 if [[ ${DENY_SUPERUSER:-} -ne 1 && $(id -u) -eq 0 ]]; then
 	_pkgs_add() {
-		# If ${PKGS} is empty, don't bother doing anything.
 		[[ -n ${PKGS} ]] &&
-			# Word splitting is a non-issue for both Pacman and Paru, so using arrays[@] will reduce performance needlessly.
-			pacman -Syu --quiet --noprogressbar --noconfirm --ask=4 --needed ${PKGS}
+			sudo pacman -Syu --quiet --noprogressbar --noconfirm --ask=4 --needed "${PKGS[*]}"
 	}
 	_modify_kernel_parameters() {
 		if ! grep -q "${KERNEL_PARAMS}" "${BOOT_CONF}"; then
