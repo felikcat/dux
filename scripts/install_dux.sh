@@ -80,10 +80,11 @@ SetupAudio() {
 SetupAudio
 
 SetupDesktopEnvironment() {
-    [[ ${desktop_environment} -eq 1 ]] &&
+	if [[ ${desktop_environment} -eq 1 ]]; then
 		(arch-chroot /mnt "${GIT_DIR}/scripts/DE/GNOME.sh") |& tee "${GIT_DIR}/logs/GNOME.log" || return
-	[[ ${desktop_environment} -eq 2 ]] &&
-		(arch-chroot /mnt "${GIT_DIR}/scripts/DE/IceWM.sh") |& tee "${GIT_DIR}/logs/IceWM.log" || return
+		elif [[ ${desktop_environment} -eq 2 ]]; then
+			(arch-chroot /mnt "${GIT_DIR}/scripts/DE/IceWM.sh") |& tee "${GIT_DIR}/logs/IceWM.log" || return
+	fi
 }
 SetupDesktopEnvironment
 

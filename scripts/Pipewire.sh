@@ -23,4 +23,4 @@ mkdir "${mkdir_flags}" /etc/security/limits.d
 \cp "${cp_flags}" -R "${GIT_DIR}"/files/etc/pipewire/ "/etc/"
 
 # Some games using an old version of the FMOD audio engine invoke pulseaudio --check and crash if that command fails.
-ln -s /bin/true /bin/pulseaudio
+ln -sf /bin/true /bin/pulseaudio

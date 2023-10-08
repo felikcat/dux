@@ -2,6 +2,8 @@
 set +H
 set -e
 
+export DENY_SUPERUSER=1
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
 source "${GIT_DIR}/scripts/GLOBAL_IMPORTS.sh"
@@ -13,7 +15,7 @@ if [[ $(systemd-detect-virt) = "vmware" ]]; then
     systemctl --user enable vmware-user.service"
 fi
 
-"${SYSTEMD_USER_ENV}" systemctl --user enable dbus-broker.service
+systemctl --user enable dbus-broker.service
 
 # Makes our font and cursor settings work inside Flatpak.
 ConfigFlatpak() {
@@ -22,18 +24,18 @@ ConfigFlatpak() {
     	\cp "${cp_flags}" "${GIT_DIR}"/files/etc/fonts/local.conf "/etc/fonts/"
 
     _move2bkup "/home/${WHICH_USER}/.config/fontconfig/conf.d/99-custom.conf" &&
-            \cp "${cp_flags}" /etc/fonts/local.conf "/home/${WHICH_USER}/.config/fontconfig/conf.d/" &&
+        \cp "${cp_flags}" /etc/fonts/local.conf "/home/${WHICH_USER}/.config/fontconfig/conf.d/" &&
             chown -R "${WHICH_USER}:${WHICH_USER}" "/home/${WHICH_USER}/.config/fontconfig/conf.d/"
 
     FLATPAK_PARAMS="--filesystem=xdg-config/fontconfig:ro --filesystem=/home/${WHICH_USER}/.icons/:ro --filesystem=/home/${WHICH_USER}/.local/share/icons/:ro --filesystem=/usr/share/icons/:ro"
     if [[ ${DEBUG} -eq 1 ]]; then
         # shellcheck disable=SC2086
-        flatpak -vv override ${FLATPAK_PARAMS}
+        sudo flatpak -vv override ${FLATPAK_PARAMS}
         # Cannot run at all under sudo!
         flatpak --user -vv override ${FLATPAK_PARAMS}
     else
         # shellcheck disable=SC2086
-        flatpak override ${FLATPAK_PARAMS}
+        sudo flatpak override ${FLATPAK_PARAMS}
         flatpak --user override ${FLATPAK_PARAMS}
     fi
 }
@@ -42,7 +44,7 @@ GnomeSpecific() {
 	FLATPAKS+="org.kde.KStyle.Kvantum//5.15-22.08 org.gtk.Gtk3theme.adw-gtk3-dark "
 	_flatpaks_add
 
-	flatpak override --env=QT_STYLE_OVERRIDE=kvantum --filesystem=xdg-config/Kvantum:ro
+	sudo flatpak override --env=QT_STYLE_OVERRIDE=kvantum --filesystem=xdg-config/Kvantum:ro
 }
 [[ ${desktop_environment} -eq 1 ]] && GnomeSpecific
 

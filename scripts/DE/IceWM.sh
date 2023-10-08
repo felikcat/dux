@@ -10,14 +10,7 @@ source "${GIT_DIR}/configs/settings.sh"
 # lxqt-policykit: Polkit support; asks for privilege escalation with a GUI prompt.
 # lxrandr-gtk3: Display resolution / refresh rate configurator.
 PKGS="icewm xorg-xinit lxqt-policykit lxrandr-gtk3 arc-gtk-theme "
-PKGS_AUR="arc-kde kvantum-theme-arc "
 
-echo "dbus-update-activation-environment --systemd --all
-xrdb -merge ~/.Xresources
-lxqt-policykit-agent &
-exec icewm-session" > ${WHICH_USER}/.xinitrc
+_pkgs_add
 
-mkdir -p ${WHICH_USER}/.icewm/themes
-\cp ${cp_flags} "${GIT_DIR}"/files/THIRD-PARTY/Arc-Ice-1.3.tar.xz ${WHICH_USER}/.icewm/themes
-tar xpvf ${WHICH_USER}/.icewm/themes/Arc-Ice-1.3.tar.xz
-rm -f ${WHICH_USER}/.icewm/themes/Arc-Ice-1.3.tar.xz
+(sudo -H -u "${WHICH_USER}" DENY_SUPERUSER=1 ${SYSTEMD_USER_ENV} bash "/home/${WHICH_USER}/dux/scripts/DE/IceWM_Rice.sh") |& tee "${GIT_DIR}/logs/IceWM_Rice.log"

@@ -20,6 +20,9 @@ chown -R "${WHICH_USER}:${WHICH_USER}" "/home/${WHICH_USER}/.config/systemd/user
 
 chmod +x -R "${GIT_DIR}"
 
+[[ ${appimagelauncher} -eq 1 ]] &&
+	PKGS_AUR+="appimagelauncher "
+
 [[ ${qpwgraph} -eq 1 ]] &&
 	PKGS+="qpwgraph "
 

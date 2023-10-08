@@ -11,6 +11,9 @@ discord="1"
 
 
 # === Open-Source Software ===
+# Adds full support for AppImages.
+appimagelauncher="0"
+
 # The overall best Microsoft Office replacement.
 onlyoffice="1"
 

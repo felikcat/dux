@@ -42,14 +42,10 @@ konsole kconfig dconf-editor seahorse \
 qt5-wayland qt6-wayland \
 nuspell hunspell-en_us"
 
-# Adds full support for AppImages.
-PKGS_AUR+="appimagelauncher "
-
 
 ConfigGDM
 _pkgs_add
 _pkgs_aur_add || :
-ConfigFlatpak
 
 ConfigNetworkmanager() {
 	local DIR="etc/NetworkManager/conf.d"
