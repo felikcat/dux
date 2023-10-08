@@ -12,12 +12,6 @@ if [[ ${IS_CHROOT} -eq 1 ]]; then
 	exit 1
 fi
 
-_gnome_flatpak() {
-	FLATPAKS+="org.kde.KStyle.Kvantum//5.15-22.08 org.gtk.Gtk3theme.adw-gtk3-dark "
-	_flatpaks_add
-
-	flatpak override --env=QT_STYLE_OVERRIDE=kvantum --filesystem=xdg-config/Kvantum:ro
-}
 
 PKGS+="kvantum qt6-svg qt5ct qt6ct papirus-icon-theme "
 
@@ -30,7 +24,5 @@ _pkgs_add
 _pkgs_aur_add
 
 papirus-folders -C brown --theme Papirus-Dark
-
-_gnome_flatpak
 
 (sudo -H -u "${WHICH_USER}" DENY_SUPERUSER=1 ${SYSTEMD_USER_ENV} bash "/home/${WHICH_USER}/dux/scripts/DE/GNOME_Rice_2.sh") |& tee "${GIT_DIR}/logs/GNOME_Rice_2.log"

@@ -13,7 +13,7 @@ if [[ ${IS_CHROOT} -eq 1 ]]; then
 	exit 1
 fi
 
-_set_configs() {
+ExternalGnomeSettings() {
 	cat << 'EOF' >>"/home/${WHICH_USER}/.zshrc"
 
 # Make files in '~/.config/environment.d' apply.
@@ -34,12 +34,12 @@ EOF
 	kwriteconfig5 --file /home/"${WHICH_USER}"/.config/konsolerc --group "UiSettings" --key "ColorScheme" "KvGnomeDark"
 	kwriteconfig5 --file /home/"${WHICH_USER}"/.config/konsolerc --group "UiSettings" --key "WindowColorScheme" "KvGnomeDark"
 }
-_set_configs
+ExternalGnomeSettings
 
 PKGS_AUR+="adw-gtk3-git "
 _pkgs_aur_add
 
-_org_gnome_desktop() {
+GnomeSettings() {
 	local SCHEMA="org.gnome.desktop"
 	gsettings set "${SCHEMA}".interface document-font-name "Inter Regular 11"
 	gsettings set "${SCHEMA}".interface font-name "Inter Regular 11"
@@ -62,7 +62,7 @@ _org_gnome_desktop() {
 	[[ ${gnome_no_idle} -eq 1 ]] &&
 		gsettings set "${SCHEMA}".session idle-delay "0"
 }
-_org_gnome_desktop
+GnomeSettings
 
 if [[ ${gnome_no_window_shadows} -eq 1 ]]; then
 	if ! grep -q "decoration {box-shadow: none;}" /home/"${WHICH_USER}"/.config/gtk-3.0/gtk.css; then

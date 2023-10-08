@@ -9,17 +9,48 @@ source "${GIT_DIR}/configs/settings.sh"
 
 
 if [[ $(systemd-detect-virt) = "vmware" ]]; then
-    sudo -H -u "${WHICH_USER}" bash -c "${SYSTEMD_USER_ENV} DENY_SUPERUSER=1 \cp ${cp_flags} ${GIT_DIR}/files/home/.config/systemd/user/vmware-user.service /home/${WHICH_USER}/.config/systemd/user/"
-    sudo -H -u "${WHICH_USER}" bash -c "${SYSTEMD_USER_ENV} systemctl --user enable vmware-user.service"
+    \cp ${cp_flags} ${GIT_DIR}/files/home/.config/systemd/user/vmware-user.service /home/${WHICH_USER}/.config/systemd/user/"
+    systemctl --user enable vmware-user.service"
 fi
 
-sudo -H -u "${WHICH_USER}" bash -c "${SYSTEMD_USER_ENV} systemctl --user enable dbus-broker.service"
+"${SYSTEMD_USER_ENV}" systemctl --user enable dbus-broker.service
+
+# Makes our font and cursor settings work inside Flatpak.
+ConfigFlatpak() {
+    # Flatpak requires this for "--filesystem=xdg-config/fontconfig:ro"
+    _move2bkup "/etc/fonts/local.conf" &&
+    	\cp "${cp_flags}" "${GIT_DIR}"/files/etc/fonts/local.conf "/etc/fonts/"
+
+    _move2bkup "/home/${WHICH_USER}/.config/fontconfig/conf.d/99-custom.conf" &&
+            \cp "${cp_flags}" /etc/fonts/local.conf "/home/${WHICH_USER}/.config/fontconfig/conf.d/" &&
+            chown -R "${WHICH_USER}:${WHICH_USER}" "/home/${WHICH_USER}/.config/fontconfig/conf.d/"
+
+    FLATPAK_PARAMS="--filesystem=xdg-config/fontconfig:ro --filesystem=/home/${WHICH_USER}/.icons/:ro --filesystem=/home/${WHICH_USER}/.local/share/icons/:ro --filesystem=/usr/share/icons/:ro"
+    if [[ ${DEBUG} -eq 1 ]]; then
+        # shellcheck disable=SC2086
+        flatpak -vv override ${FLATPAK_PARAMS}
+        # Cannot run at all under sudo!
+        flatpak --user -vv override ${FLATPAK_PARAMS}
+    else
+        # shellcheck disable=SC2086
+        flatpak override ${FLATPAK_PARAMS}
+        flatpak --user override ${FLATPAK_PARAMS}
+    fi
+}
+
+GnomeSpecific() {
+	FLATPAKS+="org.kde.KStyle.Kvantum//5.15-22.08 org.gtk.Gtk3theme.adw-gtk3-dark "
+	_flatpaks_add
+
+	flatpak override --env=QT_STYLE_OVERRIDE=kvantum --filesystem=xdg-config/Kvantum:ro
+}
+[[ ${desktop_environment} -eq 1 ]] && GnomeSpecific
 
 # Scripts in "_do_last" have to forcefully logout to apply changes.
 DoLast() {
     if [[ ${desktop_environment} -eq 1 ]]; then
         RiceGNOME() {
-            (bash "${GIT_DIR}/scripts/DE/GNOME_Rice_1.sh") |& tee "${GIT_DIR}/logs/GNOME_Rice_1.log" || return
+            (sudo bash "${GIT_DIR}/scripts/DE/GNOME_Rice_1.sh") |& tee "${GIT_DIR}/logs/GNOME_Rice_1.log" || return
         }
         [[ ${allow_gnome_rice} -eq 1 ]] && RiceGNOME
     fi
