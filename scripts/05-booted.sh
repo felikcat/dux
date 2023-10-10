@@ -41,7 +41,7 @@ ConfigFlatpak() {
 }
 
 GnomeSpecific() {
-	FLATPAKS+="org.kde.KStyle.Kvantum//5.15-22.08 org.gtk.Gtk3theme.adw-gtk3-dark "
+	FLATPAKS+="org.kde.KStyle.Kvantum//5.15-22.08 org.gtk.Gtk3theme.adw-gtk3-dark"
 	_flatpaks_add
 
 	sudo flatpak override --env=QT_STYLE_OVERRIDE=kvantum --filesystem=xdg-config/Kvantum:ro

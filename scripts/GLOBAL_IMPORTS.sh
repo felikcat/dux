@@ -57,18 +57,6 @@ _flatpaks_add() {
 	[[ -n ${FLATPAKS} ]] &&
 		flatpak install --noninteractive flathub "${FLATPAKS[*]}"
 }
-_fix_services_syntax() {
-	systemctl daemon-reload
-	# "systemctl enable/disable" will fail if trailing whitespace is not removed
-	SERVICES=$(echo ${SERVICES} | xargs) && export SERVICES
-}
-# Use this '_systemctl' function instead of the 'systemctl' command if reading from ${SERVICES}
-_systemctl() {
-	if [[ -n ${SERVICES} ]]; then
-		_fix_services_syntax
-		systemctl "$@"
-	fi
-}
 _move2bkup() {
 	local target
 	for target in "$@"; do

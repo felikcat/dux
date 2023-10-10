@@ -22,7 +22,7 @@ ConfigGDM() {
 		sed -i '/^#WaylandEnable/s/^#//' "${GDM_CONF}"
 
 	systemctl disable entrance.service lightdm.service lxdm.service xdm.service tdm.service sddm.service >&/dev/null || :
-	SERVICES+="gdm.service "
+	SERVICES+="gdm.service"
 }
 
 # At one point it was required to install these before the rest of GNOME.
@@ -56,11 +56,11 @@ ConfigNetworkmanager() {
 	# Tell NetworkManager to use iwd by default for increased WiFi reliability and speed.
     \cp "${cp_flags}" "${GIT_DIR}/files/etc/NetworkManager/conf.d/wifi_backend.conf" "/${DIR}/"
 
-    SERVICES+="NetworkManager.service "
+    SERVICES+="NetworkManager.service"
     # These conflict with NetworkManager.
     systemctl disable connman.service systemd-networkd.service iwd.service >&/dev/null || :
 }
 ConfigNetworkmanager
 
 # shellcheck disable=SC2086
-_systemctl enable ${SERVICES}
+systemctl enable "${SERVICES[*]}"

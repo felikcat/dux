@@ -94,14 +94,14 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 Hardware() {
 	if [[ ${hardware_wifi_and_bluetooth} -eq 1 ]]; then
 		PKGS+="iwd bluez bluez-utils"
-		SERVICES+="iwd.service bluetooth.service "
+		SERVICES+="iwd.service bluetooth.service"
 	fi
 
 	if [[ ${hardware_printers_and_scanners} -eq 1 ]]; then
 		# Also requires nss-mdns; installed by default.
 		PKGS+="cups cups-filters ghostscript gsfonts cups-pk-helper sane system-config-printer simple-scan"
 		# Also requires avahi-daemon.service; enabled by default.
-		SERVICES+="cups.socket "
+		SERVICES+="cups.socket"
 		ConfigCUPS() {
 			chattr -f -i /etc/nsswitch.conf # Ensure file is writable.
 			sed -i "s/hosts:.*/hosts: files mymachines myhostname mdns_minimal [NOTFOUND=return] resolve/" /etc/nsswitch.conf
@@ -142,15 +142,15 @@ case $(systemd-detect-virt) in
 "vmware")
 	PKGS+="open-vm-tools"
 	# Our vmware-user.service is created then enabled in 05-booted.sh
-	SERVICES+="vmtoolsd.service vmware-vmblock-fuse.service "
+	SERVICES+="vmtoolsd.service vmware-vmblock-fuse.service"
 	;;
 "oracle")
 	PKGS+="virtualbox-guest-utils"
-	SERVICES+="vboxservice.service "
+	SERVICES+="vboxservice.service"
 	;;
 "microsoft")
 	PKGS+="hyperv"
-	SERVICES+="hv_fcopy_daemon.service hv_kvp_daemon.service hv_vss_daemon.service "
+	SERVICES+="hv_fcopy_daemon.service hv_kvp_daemon.service hv_vss_daemon.service"
 	;;
 *)
 	printf "\nWARNING: Your virtualization environment or CPU vendor is not supported.\n"
@@ -168,9 +168,9 @@ ln -sf /dev/null /usr/share/libalpm/hooks/90-mkinitcpio-install.hook
 # rfkill-unblock@all: Ensure Wi-Fi & Bluetooth aren't soft blocked on startup.
 SERVICES+="fstrim.timer btrfs-scrub@-.timer \
 irqbalance.service dbus-broker.service power-profiles-daemon.service thermald.service avahi-daemon.service chronyd.service \
-rfkill-unblock@all "
+rfkill-unblock@all"
 
-_systemctl enable ${SERVICES}
+systemctl enable "${SERVICES[*]}"
 
 # systemd devs make fixes to problems that don't matter to others, and half-ass their solutions due to maintaining everything under the sun; systemd suffers from insane levels of feature creep.
 # Less importantly, systemd is for corporate users, not you. Even then, s6 is suitable for server usage with some elbow grease put into it; runit is not suitable.
@@ -220,7 +220,7 @@ RefindBootloaderCFG
 
 # Configures various kernel parameters.
 \cp "${cp_flags}" "${GIT_DIR}/files/etc/sysctl.d/99-custom.conf"  "/etc/sysctl.d/"
-\cp "${cp_flags}" "${GIT_DIR}/files/etc/sysfs.conf" 			 "/etc/"
+\cp "${cp_flags}" "${GIT_DIR}/files/etc/sysfs.conf" 			  "/etc/"
 
 # Use overall best I/O scheduler for each drive type (NVMe, SSD, HDD).
 \cp "${cp_flags}" "${GIT_DIR}"/files/etc/udev/rules.d/60-io-schedulers.rules "/etc/udev/rules.d/"

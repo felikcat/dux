@@ -28,13 +28,13 @@ chmod +x -R "${GIT_DIR}"
 
 if [[ ${opensnitch} -eq 1 ]]; then
 	PKGS+="opensnitch"
-	SERVICES+="opensnitchd.service "
+	SERVICES+="opensnitchd.service"
 fi
 
 if [[ ${syncthing} -eq 1 ]]; then
 	PKGS+="syncthing"
-  _syncthing_autorun() {
-    sudo -H -u "${WHICH_USER}" bash -c "${SYSTEMD_USER_ENV} systemctl --user enable syncthing.service"
+    _syncthing_autorun() {
+    	sudo -H -u "${WHICH_USER}" bash -c "${SYSTEMD_USER_ENV} systemctl --user enable syncthing.service"
   }
 fi
 
@@ -134,7 +134,7 @@ _pkgs_add
 _pkgs_aur_add
 _flatpaks_add
 
-_systemctl enable --now ${SERVICES}
+systemctl enable --now "${SERVICES[*]}"
 
 [[ ${nomacs} -eq 1 ]] && _config_nomacs
 [[ ${dolphin} -eq 1 ]] && _config_dolphin
