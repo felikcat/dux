@@ -28,7 +28,7 @@ chmod +x -R "${GIT_DIR}"
 
 if [[ ${opensnitch} -eq 1 ]]; then
 	PKGS+="opensnitch"
-	SERVICES+="opensnitchd.service"
+	SERVICES+=(opensnitchd.service)
 fi
 
 if [[ ${syncthing} -eq 1 ]]; then

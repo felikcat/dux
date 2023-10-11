@@ -19,5 +19,5 @@ _pkgs_aur_add
 snapper --no-dbus create-config / || :
 \cp "${cp_flags}" "${GIT_DIR}"/files/etc/snapper/configs/root "/etc/snapper/configs/"
 
-SERVICES+="refind-btrfs.service snapper-boot.timer snapper-cleanup.timer snapper-timeline.timer"
+SERVICES+=(refind-btrfs.service snapper-boot.timer snapper-cleanup.timer snapper-timeline.timer)
 systemctl enable "${SERVICES[@]}"
