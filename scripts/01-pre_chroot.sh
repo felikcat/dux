@@ -77,10 +77,11 @@ else
 	MountPartitions
 fi
 
-if [[ ${SKIP_REFLECTOR} -ne 1 ]]; then
+if [[ ! -a "/mnt/tmp/SKIP_REFLECTOR" ]]; then
 	# Test the 10 most reliable mirrors, given their last full sync is at max 45 minutes delayed.
 	reflector --verbose -c ${reflector_countrylist} -p https --delay 0.75 --score 10 --fastest 6 --save /etc/pacman.d/mirrorlist
 fi
+touch /mnt/tmp/SKIP_REFLECTOR
 
 # Account for Pacman suddenly exiting (due to the user sending SIGINT by pressing Ctrl + C).
 rm -f /mnt/var/lib/pacman/db.lck &&
