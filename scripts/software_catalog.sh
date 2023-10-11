@@ -21,18 +21,18 @@ chown -R "${WHICH_USER}:${WHICH_USER}" "/home/${WHICH_USER}/.config/systemd/user
 chmod +x -R "${GIT_DIR}"
 
 [[ ${appimagelauncher} -eq 1 ]] &&
-	PKGS_AUR+="appimagelauncher"
+	PKGS_AUR+=(appimagelauncher)
 
 [[ ${qpwgraph} -eq 1 ]] &&
-	PKGS+="qpwgraph"
+	PKGS+=(qpwgraph)
 
 if [[ ${opensnitch} -eq 1 ]]; then
-	PKGS+="opensnitch"
+	PKGS+=(opensnitch)
 	SERVICES+=(opensnitchd.service)
 fi
 
 if [[ ${syncthing} -eq 1 ]]; then
-	PKGS+="syncthing"
+	PKGS+=(syncthing)
     _syncthing_autorun() {
     	sudo -H -u "${WHICH_USER}" bash -c "${SYSTEMD_USER_ENV} systemctl --user enable syncthing.service"
   }
@@ -41,7 +41,7 @@ fi
 if [[ ${dolphin} -eq 1 ]]; then
   # packagekit-qt5: Required for "Configure > Configure Dolphin > Context Menu > Download New Services".
   # meld: "Compare files" support.
-	PKGS+="kconfig ark dolphin kde-cli-tools kdegraphics-thumbnailers kimageformats qt5-imageformats ffmpegthumbs taglib openexr libjxl android-udev packagekit-qt5 packagekit-qt6 meld"
+	PKGS+=(kconfig ark dolphin kde-cli-tools kdegraphics-thumbnailers kimageformats qt5-imageformats ffmpegthumbs taglib openexr libjxl android-udev packagekit-qt5 packagekit-qt6 meld)
 	_config_dolphin() {
 		local CONF="/home/${WHICH_USER}/.config/dolphinrc"
 		kwriteconfig5 --file "${CONF}" --group "General" --key "ShowFullPath" "true"
@@ -52,21 +52,21 @@ if [[ ${dolphin} -eq 1 ]]; then
 fi
 
 if [[ ${mpv} -eq 1 ]]; then
-	PKGS+="mpv"
+	PKGS+=(mpv)
 	trap 'sudo -H -u "${WHICH_USER}" bash -c "${SYSTEMD_USER_ENV} DENY_SUPERUSER=1 /home/${WHICH_USER}/dux/scripts/non-SU/software_catalog/mpv_config.sh"' EXIT
 fi
 
 [[ ${onlyoffice} -eq 1 ]] &&
-	FLATPAKS+="org.onlyoffice.desktopeditors"
+	FLATPAKS+=(org.onlyoffice.desktopeditors)
 
 [[ ${evince} -eq 1 ]] &&
-	PKGS+="evince"
+	PKGS+=(evince)
 
 if [[ ${obs_studio} -eq 1 ]]; then
 	# v4l2loopback = for Virtual Camera; a good universal way to screenshare.
-	PKGS+="obs-studio v4l2loopback-dkms"
+	PKGS+=(obs-studio v4l2loopback-dkms)
 	if hash pipewire >&/dev/null; then
-		PKGS+="pipewire-v4l2 lib32-pipewire-v4l2 "
+		PKGS+=(pipewire-v4l2 lib32-pipewire-v4l2)
 	fi
 	# Autostart OBS to replicate NVIDIA ShadowPlay / AMD ReLive.
 	_obs_autorun() {
@@ -76,39 +76,34 @@ if [[ ${obs_studio} -eq 1 ]]; then
 fi
 
 [[ ${firefox_dev} -eq 1 ]] &&
-	PKGS+="libgnome-keyring libnotify firefox-developer-edition"
+	PKGS+=(libgnome-keyring libnotify firefox-developer-edition)
 
 [[ ${foliate} -eq 1 ]] &&
-	PKGS+="foliate"
+	PKGS+=(foliate)
 
 [[ ${qbittorrent_enhanced} -eq 1 ]] &&
-	PKGS_AUR+="qbittorrent-enhanced"
+	PKGS_AUR+=(qbittorrent-enhanced)
 
 [[ ${feh} -eq 1 ]] &&
-	PKGS+="feh"
+	PKGS+=(feh)
 
 [[ ${yt_dlp} -eq 1 ]] &&
-	PKGS+="aria2 atomicparsley ffmpeg rtmpdump yt-dlp"
+	PKGS+=(aria2 atomicparsley ffmpeg rtmpdump yt-dlp)
 
 [[ ${evolution} -eq 1 ]] &&
-	PKGS+="evolution"
+	PKGS+=(evolution)
 
 [[ ${discord} -eq 1 ]] &&
-	FLATPAKS+="com.discordapp.Discord"
+	FLATPAKS+=(com.discordapp.Discord)
 
 [[ ${telegram} -eq 1 ]] &&
-	FLATPAKS+="org.telegram.desktop"
-
-if [[ ${cxx_toolbox} -eq 1 ]]; then
-	PKGS+="gdb gperftools valgrind pwndbg rz-cutter rz-ghidra"
-	PKGS_AUR+="lib32-gperftools"
-fi
+	FLATPAKS+=(org.telegram.desktop)
 
 [[ ${task_manager} -eq 1 ]] &&
-	PKGS+="gnome-system-monitor"
+	PKGS+=(gnome-system-monitor)
 
 if [[ ${virtual_machines} -eq 1 ]]; then
-  PKGS+="qemu-desktop libvirt virt-manager edk2-ovmf iptables-nft dnsmasq virglrenderer hwloc dmidecode usbutils swtpm"
+  PKGS+=(qemu-desktop libvirt virt-manager edk2-ovmf iptables-nft dnsmasq virglrenderer hwloc dmidecode usbutils swtpm)
 
   mkdir -p /etc/{modprobe.d,udev/rules.d}
   # qemu: If using QEMU directly is desired instead of libvirt.
@@ -128,7 +123,7 @@ if [[ ${virtual_machines} -eq 1 ]]; then
 fi
 
 # Control Flatpak settings per application
-FLATPAKS+="com.github.tchx84.Flatseal "
+FLATPAKS+=(com.github.tchx84.Flatseal)
 
 _pkgs_add
 _pkgs_aur_add

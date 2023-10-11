@@ -36,7 +36,7 @@ EOF
 }
 ExternalGnomeSettings
 
-PKGS_AUR+="adw-gtk3-git "
+PKGS_AUR+=(adw-gtk3-git)
 _pkgs_aur_add
 
 GnomeSettings() {

@@ -9,7 +9,7 @@ source "${GIT_DIR}/configs/settings.sh"
 
 # lxqt-policykit: Polkit support; asks for privilege escalation with a GUI prompt.
 # lxrandr-gtk3: Display resolution / refresh rate configurator.
-PKGS="icewm xorg-xinit lxqt-policykit lxrandr-gtk3 arc-gtk-theme "
+PKGS=(icewm xorg-xinit lxqt-policykit lxrandr-gtk3 arc-gtk-theme)
 
 _pkgs_add
 

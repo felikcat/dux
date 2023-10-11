@@ -10,7 +10,7 @@ source "${GIT_DIR}/configs/settings.sh"
 _pkgs_aur_add() {
 	[[ -n ${PKGS_AUR} ]] &&
 		# -Sdd bypasses a dependency cycle problem proprietary NVIDIA drivers have (only if a different proprietary version is installed such as 'nvidia-lts')
-		sudo -H -u "${WHICH_USER}" bash -c "${SYSTEMD_USER_ENV} DENY_SUPERUSER=1 paru -Sdd --quiet --noconfirm --useask --needed --skipreview ${PKGS_AUR}"
+		sudo -H -u "${WHICH_USER}" bash -c "${SYSTEMD_USER_ENV} DENY_SUPERUSER=1 paru -Sdd --quiet --noconfirm --useask --needed --skipreview ${PKGS_AUR[*]}"
 }
 
 NvidiaGPUSetup() {
@@ -22,7 +22,7 @@ NvidiaGPUSetup() {
 	nvidia-dkms egl-wayland nvidia-utils opencl-nvidia libxnvctrl nvidia-settings \
   				lib32-nvidia-utils lib32-opencl-nvidia)
 	# VDPAU -> VA-API translation layer, mainly for 'mpv' and 'Firefox'.
-  	PKGS_AUR+="libva-nvidia-driver "
+  	PKGS_AUR+=(libva-nvidia-driver)
 
 	_move2bkup "/etc/modprobe.d/nvidia.conf" &&
 		\cp "${cp_flags}" "${GIT_DIR}"/files/etc/modprobe.d/nvidia.conf "/etc/modprobe.d/"

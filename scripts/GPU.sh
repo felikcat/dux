@@ -7,19 +7,19 @@ cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
 source "${GIT_DIR}/scripts/GLOBAL_IMPORTS.sh"
 source "${GIT_DIR}/configs/settings.sh"
 
-PKGS+="lib32-mesa lib32-ocl-icd lib32-vulkan-icd-loader mesa ocl-icd vulkan-icd-loader"
+PKGS+=(lib32-mesa lib32-ocl-icd lib32-vulkan-icd-loader mesa ocl-icd vulkan-icd-loader)
 
 NvidiaGPUSetup() {
 	(bash "${GIT_DIR}/scripts/_NVIDIA.sh") |& tee "${GIT_DIR}/logs/_NVIDIA.log" || return
 }
 
 IntelGPUSetup() {
-	PKGS+="vulkan-intel"
+	PKGS+=(vulkan-intel)
 
 	[[ ${intel_video_accel} -eq 1 ]] &&
-		PKGS+="libva-intel-driver lib32-libva-intel-driver"
+		PKGS+=(libva-intel-driver lib32-libva-intel-driver)
 	[[ ${intel_video_accel} -eq 2 ]] &&
-		PKGS+="intel-media-driver intel-media-sdk"
+		PKGS+=(intel-media-driver intel-media-sdk)
 
 	# Early load KMS driver
 	if ! grep -q "i915" /etc/mkinitcpio.conf; then
@@ -39,10 +39,10 @@ case $(lspci | grep -P "VGA|3D|Display" | grep -Po "NVIDIA|Intel|VMware SVGA|Red
 	IntelGPUSetup
 	;;&
 *"VMware"*)
-	PKGS+="xf86-video-vmware"
+	PKGS+=(xf86-video-vmware)
 	;;&
 *"Red Hat"*)
-	PKGS+="xf86-video-qxl spice-vdagent qemu-guest-agent"
+	PKGS+=(xf86-video-qxl spice-vdagent qemu-guest-agent)
 	;;
 esac
 

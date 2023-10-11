@@ -9,10 +9,10 @@ source "${GIT_DIR}/scripts/GLOBAL_IMPORTS.sh"
 groupadd --force -g 509 pipewire
 gpasswd -a "${WHICH_USER}" pipewire
 
-PKGS+="rtkit alsa-firmware sof-firmware alsa-ucm-conf \
-pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack pipewire-zeroconf pipewire-v4l2 \
-lib32-pipewire lib32-pipewire-jack gst-plugin-pipewire \
-libpulse lib32-libpulse alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib"
+PKGS+=(rtkit alsa-firmware sof-firmware alsa-ucm-conf
+pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack pipewire-zeroconf pipewire-v4l2
+lib32-pipewire lib32-pipewire-jack gst-plugin-pipewire
+libpulse lib32-libpulse alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib)
 _pkgs_add
 
 # Maintain Pipewire performance without resorting to adding ${WHICH_USER} to 'realtime' group.

@@ -20,9 +20,6 @@ onlyoffice="1"
 # Interactive application firewall.
 opensnitch="1"
 
-# C/C++ debugging and reverse engineering: Valgrind, GDB, radere2 + ghidra (graphical interface: Cutter), pwndbg.
-cxx_toolbox="0"
-
 # Generally the best web browser on Linux; installs the "Developer Edition" for its additional tools.
 firefox_dev="1"
 

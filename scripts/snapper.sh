@@ -12,7 +12,7 @@ clear
 # The developer of python-pid might let their PGP key expire again.
 gpg --recv-keys 13FFEEE3DF809D320053C587D6E95F20305701A1
 
-PKGS_AUR+="refind-btrfs "
+PKGS_AUR+=(refind-btrfs)
 _pkgs_aur_add
 
 # If /.snapshots already exists, snapper will fail to create its config.

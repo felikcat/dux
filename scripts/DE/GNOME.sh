@@ -26,20 +26,20 @@ ConfigGDM() {
 }
 
 # At one point it was required to install these before the rest of GNOME.
-PKGS="gdm libnm libnma "
+PKGS=(gdm libnm libnma)
 _pkgs_add
-PKGS=""
+PKGS=()
 
 # gst-plugins-good -> Required for: Animated setting previews, such as Mouse & Touchpad -> Scroll Direction.
 # Language support list for the spell checking: https://archlinux.org/packages/?q=hunspell-
 # xdg-user-dirs: Some XDG compliant programs rely on this.
-PKGS+="ttf-liberation ttf-carlito ttf-caladea ttf-hack inter-font \
-gnome-themes-extra gnome-shell gnome-session gnome-control-center networkmanager gst-plugins-base gst-plugins-good \
-gsettings-desktop-schemas flatpak xdg-desktop-portal xdg-desktop-portal-gtk ibus xdg-desktop-portal-gnome xdg-user-dirs \
-gnome-clocks gnome-weather gnome-logs \
-konsole kconfig dconf-editor seahorse \
-qt5-wayland qt6-wayland \
-nuspell hunspell-en_us"
+PKGS+=(ttf-liberation ttf-carlito ttf-caladea ttf-hack inter-font
+gnome-themes-extra gnome-shell gnome-session gnome-control-center networkmanager gst-plugins-base gst-plugins-good
+gsettings-desktop-schemas flatpak xdg-desktop-portal xdg-desktop-portal-gtk ibus xdg-desktop-portal-gnome xdg-user-dirs
+gnome-clocks gnome-weather gnome-logs
+konsole kconfig dconf-editor seahorse
+qt5-wayland qt6-wayland
+nuspell hunspell-en_us)
 
 
 ConfigGDM

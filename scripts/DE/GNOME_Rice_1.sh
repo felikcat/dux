@@ -13,13 +13,13 @@ if [[ ${IS_CHROOT} -eq 1 ]]; then
 fi
 
 
-PKGS+="kvantum qt6-svg qt5ct qt6ct papirus-icon-theme"
+PKGS+=(kvantum qt6-svg qt5ct qt6ct papirus-icon-theme)
 
 [[ ${gnome_extension_appindicator} -eq 1 ]] &&
-	PKGS+="lib32-libappindicator-gtk2 lib32-libappindicator-gtk3 libappindicator-gtk2 libappindicator-gtk3 gnome-shell-extension-appindicator"
+	PKGS+=(lib32-libappindicator-gtk2 lib32-libappindicator-gtk3 libappindicator-gtk2 libappindicator-gtk3 gnome-shell-extension-appindicator)
 
 # mutter-x11-scaling = Fractional scaling support for Xorg.
-PKGS_AUR+="papirus-folders-git mutter-x11-scaling"
+PKGS_AUR+=(papirus-folders-git mutter-x11-scaling)
 _pkgs_add
 _pkgs_aur_add
 

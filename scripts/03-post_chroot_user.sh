@@ -26,6 +26,6 @@ SetupOtherUserFiles() {
 	fi
 }
 
-PKGS_AUR+="btrfs-assistant "
+PKGS_AUR+=(btrfs-assistant)
 _pkgs_aur_add
 SetupOtherUserFiles

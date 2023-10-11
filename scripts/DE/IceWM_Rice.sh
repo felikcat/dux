@@ -7,7 +7,7 @@ cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
 source "${GIT_DIR}/scripts/GLOBAL_IMPORTS.sh"
 source "${GIT_DIR}/configs/settings.sh"
 
-PKGS_AUR="arc-kde kvantum-theme-arc "
+PKGS_AUR=(arc-kde kvantum-theme-arc)
 _pkgs_aur_add
 
 echo "dbus-update-activation-environment --systemd --all
