@@ -170,7 +170,7 @@ SERVICES+="fstrim.timer btrfs-scrub@-.timer \
 irqbalance.service dbus-broker.service power-profiles-daemon.service thermald.service avahi-daemon.service chronyd.service \
 rfkill-unblock@all"
 
-systemctl enable "${SERVICES[*]}"
+systemctl enable "${SERVICES[@]}"
 
 # systemd devs make fixes to problems that don't matter to others, and half-ass their solutions due to maintaining everything under the sun; systemd suffers from insane levels of feature creep.
 # Less importantly, systemd is for corporate users, not you. Even then, s6 is suitable for server usage with some elbow grease put into it; runit is not suitable.

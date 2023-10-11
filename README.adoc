@@ -9,7 +9,7 @@ ifdef::env-github[]
 endif::[]
 :imagesdir: imgs/
 
-*Dux*, also known as "Turbo Arch Linux", is a highly refined and simplistic Arch Linux installer programmed in Bash.
+*Dux* is a highly refined and simplistic Arch Linux installer programmed in Bash.
 
 .*In-depth overview of what Dux does and its intentions.*
 [%collapsible]
@@ -19,8 +19,6 @@ endif::[]
 Goals:
 
 * Being easy to layer on your own additions to Dux to suit your specific needs, or to fork Dux into a custom spin.
-
-* Backups are made for every file/folder modified by Dux.
 
 * The built-in ricing is ensured to not cause breakages in future updates for KDE.
 

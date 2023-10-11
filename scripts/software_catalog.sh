@@ -134,7 +134,7 @@ _pkgs_add
 _pkgs_aur_add
 _flatpaks_add
 
-systemctl enable --now "${SERVICES[*]}"
+systemctl enable --now "${SERVICES[@]}"
 
 [[ ${nomacs} -eq 1 ]] && _config_nomacs
 [[ ${dolphin} -eq 1 ]] && _config_dolphin

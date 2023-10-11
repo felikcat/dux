@@ -98,3 +98,6 @@ genfstab -U /mnt >>/mnt/etc/fstab
 
 sed -i -e 's/^#Color/Color/' \
 	-e '/^#ParallelDownloads/s/^#//' /mnt/etc/pacman.conf
+
+# Keep DNS resolving functional if the installer was ran more than once.
+ln -sf ../run/systemd/resolve/stub-resolv.conf /etc/resolv.conf

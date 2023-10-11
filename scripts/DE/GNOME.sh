@@ -30,8 +30,7 @@ PKGS="gdm libnm libnma "
 _pkgs_add
 PKGS=""
 
-# gst-plugins-good -> Required for:
-# - Animated setting previews, such as Mouse & Touchpad -> Scroll Direction.
+# gst-plugins-good -> Required for: Animated setting previews, such as Mouse & Touchpad -> Scroll Direction.
 # Language support list for the spell checking: https://archlinux.org/packages/?q=hunspell-
 # xdg-user-dirs: Some XDG compliant programs rely on this.
 PKGS+="ttf-liberation ttf-carlito ttf-caladea ttf-hack inter-font \
@@ -63,4 +62,4 @@ ConfigNetworkmanager() {
 ConfigNetworkmanager
 
 # shellcheck disable=SC2086
-systemctl enable "${SERVICES[*]}"
+systemctl enable "${SERVICES[@]}"

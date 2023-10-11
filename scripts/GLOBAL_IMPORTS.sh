@@ -98,7 +98,7 @@ fi
 if [[ ${DENY_SUPERUSER:-} -ne 1 && $(id -u) -eq 0 ]]; then
 	_pkgs_add() {
 		[[ -n ${PKGS} ]] &&
-			sudo pacman -Syu --quiet --noprogressbar --noconfirm --ask=4 --needed "${PKGS[*]}"
+			sudo pacman -Syu --quiet --noprogressbar --noconfirm --ask=4 --needed "${PKGS[@]}"
 	}
 	_modify_kernel_parameters() {
 		if ! grep -q "${KERNEL_PARAMS}" "${BOOT_CONF}"; then
