@@ -120,11 +120,11 @@ if ! grep -q 'PRUNENAMES = ".snapshots"' /etc/updatedb.conf >&/dev/null; then
 fi
 
 # Default packages, regardless of options selected.
-PKGS+="refind \
-irqbalance power-profiles-daemon thermald dbus-broker gamemode lib32-gamemode iptables-nft \
-chrony dnsmasq openresolv libnewt pigz pbzip2 strace usbutils linux-firmware gnome-keyring avahi nss-mdns \
-man-db man-pages pacman-contrib mkinitcpio bat \
-wget trash-cli reflector rebuild-detector vim"
+PKGS+=(refind
+irqbalance power-profiles-daemon thermald dbus-broker gamemode lib32-gamemode iptables-nft
+chrony dnsmasq openresolv libnewt pigz pbzip2 strace usbutils linux-firmware gnome-keyring avahi nss-mdns
+man-db man-pages pacman-contrib mkinitcpio bat
+wget trash-cli reflector rebuild-detector vim)
 
 case $(systemd-detect-virt) in
 "none")

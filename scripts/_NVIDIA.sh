@@ -18,9 +18,9 @@ NvidiaGPUSetup() {
     local KERNEL_PARAMS="ibt=off"
     _modify_kernel_parameters
 
-	PKGS+="xorg-server-devel nvidia-prime \
+	PKGS+=(xorg-server-devel nvidia-prime \
 	nvidia-dkms egl-wayland nvidia-utils opencl-nvidia libxnvctrl nvidia-settings \
-  				lib32-nvidia-utils lib32-opencl-nvidia"
+  				lib32-nvidia-utils lib32-opencl-nvidia)
 	# VDPAU -> VA-API translation layer, mainly for 'mpv' and 'Firefox'.
   	PKGS_AUR+="libva-nvidia-driver "
 
