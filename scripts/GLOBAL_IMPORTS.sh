@@ -48,15 +48,11 @@ fi
 
 BACKUPS="/home/${WHICH_USER}/dux_backups" && export BACKUPS
 
-# NOTES:
-# trap's EXIT signal is for the Bash instance as a whole, not per "source"d script
-_flatpak_silent() {
-	flatpak "$@" >&/dev/null
-}
 _flatpaks_add() {
 	[[ -n ${FLATPAKS} ]] &&
-		flatpak install --noninteractive flathub "${FLATPAKS[*]}"
+		flatpak install --noninteractive flathub "${FLATPAKS[@]}"
 }
+
 _move2bkup() {
 	local target
 	for target in "$@"; do
@@ -71,6 +67,7 @@ _move2bkup() {
 		fi
 	done
 }
+
 _pkgs_aur_add() {
 	[[ -n ${PKGS_AUR} ]] &&
 		# Use -Syu instead of -Syuu for paru.
