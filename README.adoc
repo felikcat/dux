@@ -9,7 +9,11 @@ ifdef::env-github[]
 endif::[]
 :imagesdir: imgs/
 
-*Dux* is a highly refined and simplistic Arch Linux installer programmed in Bash.
+.*Dux* is simplistic installer for **pure** Arch Linux; no different release schedules and breakage that Manjaro inflicts, and no third-party repos.
+- It is also simple to modify for accomodating your own preferences, as it's programmed in Bash.
+- Uses tricks to speed up installation compared to alternatives, without causing issues.
+- Has lots of desktop-specific optimizations that ArchInstall and ArchTitus fail to do themselves, the ladder two being optimized for servers instead (Linux defaults).
+- A focus on maintaining a stable OS, such as using Btrfs snapshots automatically.
 
 .*In-depth overview of what Dux does and its intentions.*
 [%collapsible]
