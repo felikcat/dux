@@ -29,7 +29,7 @@ else
 fi
 
 MakeDirs() {
-	mkdir "${mkdir_flags}" /mnt/{boot,btrfs,var/{log,cache/pacman/pkg},srv,root,home}
+	mkdir "${mkdir_flags}" /mnt/{tmp,boot,btrfs,var/{log,cache/pacman/pkg},srv,root,home}
 }
 
 # If the Btrfs filesystem doesn't exist on the "root" partition, create it.

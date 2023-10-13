@@ -148,7 +148,8 @@ Every program installed is another developer or set of developers to trust; keep
 * link:https://archive.is/QwLMB[Disable UEFI Secure Boot]
 ** If convincing is needed, link:https://github.com/pbatard/rufus/wiki/FAQ#Why_do_I_need_to_disable_Secure_Boot_to_use_UEFINTFS[read this].
 * The latest link:https://archlinux.org/download/[Arch Linux ISO]; if you have no torrent client, use link:https://www.qbittorrent.org/download.php[qBittorrent].
-. Dual-booting (or more OSes) are supported.
+
+NOTE: Dual-booting is supported, given Windows is on a different disk (hard drive) than Arch Linux.
 
 == 1. [Optional / Security] Verify ISO authenticity
 
@@ -225,14 +226,20 @@ Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? O
 WARNING: This will destroy all previous data on the targeted device!
 
 === Windows
+Use https://github.com/balena-io/etcher/releases[balenaEtcher].
+
+.Rufus method (not recommended)
+[%collapsible]
+====
 . Download and install rufus-$version.exe +
 https://github.com/pbatard/rufus/releases
 . Add the Arch ISO through Select, click Start, then write in DD Image mode.
+====
 
 === macOS and Linux
-* Use https://github.com/balena-io/etcher/releases[balenaEtcher].
+Use https://github.com/balena-io/etcher/releases[balenaEtcher].
 
-.dd method (a not recommended alternative)
+.dd method (not recommended)
 [%collapsible]
 ====
 . Thoroughly list disks and partitions; to see what disk/drive you are going to format. +
@@ -275,6 +282,8 @@ TIP: If "wlan0" is not the correct interface, use iwctl's `station list` to see 
 ====
 
 
+. `# pacman-key --init`
+
 . `# pacman -Syy git`
 
 . `# git clone --depth=1 -b r1 https://github.com/felikcat/dux`
@@ -291,6 +300,7 @@ TIP: If "wlan0" is not the correct interface, use iwctl's `station list` to see 
 ___
 
 .After the reboot:
+* Connect to your Wi-Fi network again if needed.
 * Open "Konsole".
 . `$ bash ~/dux/scripts/05-booted.sh`
 - During this script, your account password will be asked for.
