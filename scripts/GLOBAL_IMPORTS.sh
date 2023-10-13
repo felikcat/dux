@@ -6,8 +6,6 @@ set -e
 [[ ${KEEP_GOING} -eq 1 ]] &&
 	set +e
 
-LOGIN_USER="$(stat -c %U "$(readlink /proc/self/fd/0)")"
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # SCRIPT_DIR is used to make GIT_DIR reliable
 cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
@@ -38,15 +36,7 @@ if systemd-detect-virt --chroot >&/dev/null; then
 	IS_CHROOT=1
 fi
 
-# INITIAL_USER = running from arch-chroot
-# LOGIN_USER = not a chroot or permission denied (DENY_SUPERUSER=1)
-if [[ ${IS_CHROOT} -eq 1 ]]; then
-	WHICH_USER="${INITIAL_USER}" && export WHICH_USER
-elif [[ ${IS_CHROOT} -eq 0 ]]; then
-	WHICH_USER="${LOGIN_USER}" && export WHICH_USER
-fi
-
-BACKUPS="/home/${WHICH_USER}/dux_backups" && export BACKUPS
+BACKUPS="/home/${INITIAL_USER}/dux_backups" && export BACKUPS
 
 _flatpaks_add() {
 	# shellcheck disable=SC2048

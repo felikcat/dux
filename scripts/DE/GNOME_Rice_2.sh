@@ -14,25 +14,25 @@ if [[ ${IS_CHROOT} -eq 1 ]]; then
 fi
 
 ExternalGnomeSettings() {
-	cat << 'EOF' >>"/home/${WHICH_USER}/.zshrc"
+	cat << 'EOF' >>"/home/${INITIAL_USER}/.zshrc"
 
 # Make files in '~/.config/environment.d' apply.
 /usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator >&/dev/null
 EOF
 
-	_move2bkup /home/"${WHICH_USER}"/.gtkrc-2.0
-	_move2bkup /home/"${WHICH_USER}"/.config/{environment.d,gtk-3.0,gtk-4.0,Kvantum,qt5ct,qt6ct} &&
-		mkdir "${mkdir_flags}" /home/"${WHICH_USER}"/.config/{environment.d,Kvantum,qt5ct,qt6ct}
+	_move2bkup /home/"${INITIAL_USER}"/.gtkrc-2.0
+	_move2bkup /home/"${INITIAL_USER}"/.config/{environment.d,gtk-3.0,gtk-4.0,Kvantum,qt5ct,qt6ct} &&
+		mkdir "${mkdir_flags}" /home/"${INITIAL_USER}"/.config/{environment.d,Kvantum,qt5ct,qt6ct}
 
-	\cp "${cp_flags}" "${GIT_DIR}"/files/home/.gtkrc-2.0 "/home/${WHICH_USER}/"
-	\cp "${cp_flags}" "${GIT_DIR}"/files/home/.config/environment.d/gnome.conf "/home/${WHICH_USER}/.config/environment.d/"
-	\cp "${cp_flags}" "${GIT_DIR}"/files/home/.config/qt5ct/qt5ct.conf "/home/${WHICH_USER}/.config/qt5ct/"
-	\cp "${cp_flags}" "${GIT_DIR}"/files/home/.config/qt6ct/qt6ct.conf "/home/${WHICH_USER}/.config/qt6ct/"
+	\cp "${cp_flags}" "${GIT_DIR}"/files/home/.gtkrc-2.0 "/home/${INITIAL_USER}/"
+	\cp "${cp_flags}" "${GIT_DIR}"/files/home/.config/environment.d/gnome.conf "/home/${INITIAL_USER}/.config/environment.d/"
+	\cp "${cp_flags}" "${GIT_DIR}"/files/home/.config/qt5ct/qt5ct.conf "/home/${INITIAL_USER}/.config/qt5ct/"
+	\cp "${cp_flags}" "${GIT_DIR}"/files/home/.config/qt6ct/qt6ct.conf "/home/${INITIAL_USER}/.config/qt6ct/"
 
-	kwriteconfig5 --file /home/"${WHICH_USER}"/.config/Kvantum/kvantum.kvconfig --group "General" --key "theme" "KvGnomeDark"
+	kwriteconfig5 --file /home/"${INITIAL_USER}"/.config/Kvantum/kvantum.kvconfig --group "General" --key "theme" "KvGnomeDark"
 
-	kwriteconfig5 --file /home/"${WHICH_USER}"/.config/konsolerc --group "UiSettings" --key "ColorScheme" "KvGnomeDark"
-	kwriteconfig5 --file /home/"${WHICH_USER}"/.config/konsolerc --group "UiSettings" --key "WindowColorScheme" "KvGnomeDark"
+	kwriteconfig5 --file /home/"${INITIAL_USER}"/.config/konsolerc --group "UiSettings" --key "ColorScheme" "KvGnomeDark"
+	kwriteconfig5 --file /home/"${INITIAL_USER}"/.config/konsolerc --group "UiSettings" --key "WindowColorScheme" "KvGnomeDark"
 }
 ExternalGnomeSettings
 
@@ -65,9 +65,9 @@ GnomeSettings() {
 GnomeSettings
 
 if [[ ${gnome_no_window_shadows} -eq 1 ]]; then
-	if ! grep -q "decoration {box-shadow: none;}" /home/"${WHICH_USER}"/.config/gtk-3.0/gtk.css; then
-		touch /home/"${WHICH_USER}"/.config/gtk-3.0/gtk.css
-        cat << 'EOF' >>"/home/${WHICH_USER}/.config/gtk-3.0/gtk.css"
+	if ! grep -q "decoration {box-shadow: none;}" /home/"${INITIAL_USER}"/.config/gtk-3.0/gtk.css; then
+		touch /home/"${INITIAL_USER}"/.config/gtk-3.0/gtk.css
+        cat << 'EOF' >>"/home/${INITIAL_USER}/.config/gtk-3.0/gtk.css"
 
 decoration {box-shadow: none;}
 EOF
@@ -88,4 +88,4 @@ gsettings set org.gnome.mutter center-new-windows "${gnome_center_new_windows}"
 
 # Required for ~/.config/environment.d/gnome.conf to take effect without rebooting.
 whiptail --yesno "A logout is required to complete the GNOME rice.\nLogout now?" 0 0 &&
-	loginctl terminate-user "${WHICH_USER}"
+	loginctl terminate-user "${INITIAL_USER}"

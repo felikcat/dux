@@ -42,8 +42,8 @@ NvidiaGPUSetup() {
 
 	NvidiaForceMaxSpeed() {
 		if [[ ${nvidia_force_max_performance} -eq 1 ]]; then
-			sudo -H -u "${WHICH_USER}" bash -c "${SYSTEMD_USER_ENV} DENY_SUPERUSER=1 \cp ${cp_flags} ${GIT_DIR}/files/home/.config/systemd/user/nvidia-max-performance.service /home/${WHICH_USER}/.config/systemd/user/"
-			sudo -H -u "${WHICH_USER}" bash -c "${SYSTEMD_USER_ENV} systemctl --user enable nvidia-max-performance.service"
+			sudo -H -u "${INITIAL_USER}" bash -c "${SYSTEMD_USER_ENV} DENY_SUPERUSER=1 \cp ${cp_flags} ${GIT_DIR}/files/home/.config/systemd/user/nvidia-max-performance.service /home/${INITIAL_USER}/.config/systemd/user/"
+			sudo -H -u "${INITIAL_USER}" bash -c "${SYSTEMD_USER_ENV} systemctl --user enable nvidia-max-performance.service"
 
 			# Allow the "Prefer Maximum Performance" PowerMizer setting on laptops
 			local KERNEL_PARAMS="nvidia.NVreg_RegistryDwords=OverrideMaxPerf=0x1"
@@ -66,12 +66,11 @@ _pkgs_aur_add
 
 systemctl enable nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service
 
-if [[ ${IS_CHROOT} -eq 0 ]] && [[ ${REGENERATE_INITRAMFS} -eq 1 ]]; then
-		mkinitcpio -P
-fi
+[[ ${REGENERATE_INITRAMFS} -eq 1 ]] &&
+	mkinitcpio -P
 
 cleanup() {
 	mkdir "${mkdir_flags}" "${BACKUPS}/etc/modprobe.d"
-	chown -R "${WHICH_USER}:${WHICH_USER}" "${BACKUPS}/etc/modprobe.d"
+	chown -R "${INITIAL_USER}:${INITIAL_USER}" "${BACKUPS}/etc/modprobe.d"
 }
 trap cleanup EXIT

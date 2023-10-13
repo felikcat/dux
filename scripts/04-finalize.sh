@@ -28,7 +28,7 @@ SetupSnapper() {
 SetupSnapper
 
 # Without this, Dux breaks if ran by a different user (such as root) in the home directory.
-git config --global --add safe.directory /home/"${WHICH_USER}"/dux
+git config --global --add safe.directory /home/"${INITIAL_USER}"/dux
 git config --global --add safe.directory /root/dux
 
 Cleanup() {

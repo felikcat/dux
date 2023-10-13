@@ -11,7 +11,7 @@ source "${GIT_DIR}/configs/settings.sh"
 
 
 if [[ $(systemd-detect-virt) = "vmware" ]]; then
-    \cp ${cp_flags} ${GIT_DIR}/files/home/.config/systemd/user/vmware-user.service /home/${WHICH_USER}/.config/systemd/user/"
+    \cp ${cp_flags} ${GIT_DIR}/files/home/.config/systemd/user/vmware-user.service /home/${INITIAL_USER}/.config/systemd/user/"
     systemctl --user enable vmware-user.service"
 fi
 
@@ -23,11 +23,11 @@ ConfigFlatpak() {
     _move2bkup "/etc/fonts/local.conf" &&
     	\cp "${cp_flags}" "${GIT_DIR}"/files/etc/fonts/local.conf "/etc/fonts/"
 
-    _move2bkup "/home/${WHICH_USER}/.config/fontconfig/conf.d/99-custom.conf" &&
-        \cp "${cp_flags}" /etc/fonts/local.conf "/home/${WHICH_USER}/.config/fontconfig/conf.d/" &&
-            chown -R "${WHICH_USER}:${WHICH_USER}" "/home/${WHICH_USER}/.config/fontconfig/conf.d/"
+    _move2bkup "/home/${INITIAL_USER}/.config/fontconfig/conf.d/99-custom.conf" &&
+        \cp "${cp_flags}" /etc/fonts/local.conf "/home/${INITIAL_USER}/.config/fontconfig/conf.d/" &&
+            chown -R "${INITIAL_USER}:${INITIAL_USER}" "/home/${INITIAL_USER}/.config/fontconfig/conf.d/"
 
-    FLATPAK_PARAMS="--filesystem=xdg-config/fontconfig:ro --filesystem=/home/${WHICH_USER}/.icons/:ro --filesystem=/home/${WHICH_USER}/.local/share/icons/:ro --filesystem=/usr/share/icons/:ro"
+    FLATPAK_PARAMS="--filesystem=xdg-config/fontconfig:ro --filesystem=/home/${INITIAL_USER}/.icons/:ro --filesystem=/home/${INITIAL_USER}/.local/share/icons/:ro --filesystem=/usr/share/icons/:ro"
     if [[ ${DEBUG} -eq 1 ]]; then
         # shellcheck disable=SC2086
         sudo flatpak -vv override ${FLATPAK_PARAMS}
@@ -57,6 +57,6 @@ DoLast() {
         [[ ${allow_gnome_rice} -eq 1 ]] && RiceGNOME
     fi
 
-	chown -R "${WHICH_USER}:${WHICH_USER}" /home/"${WHICH_USER}"/{dux,dux_backups}
+	sudo chown -R "${INITIAL_USER}:${INITIAL_USER}" /home/"${INITIAL_USER}"/{dux,dux_backups}
 }
 trap DoLast EXIT

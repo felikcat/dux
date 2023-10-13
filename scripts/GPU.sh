@@ -56,6 +56,6 @@ fi
 
 cleanup() {
 	mkdir "${mkdir_flags}" "${BACKUPS}/etc/modprobe.d"
-	chown -R "${WHICH_USER}:${WHICH_USER}" "${BACKUPS}/etc/modprobe.d"
+	chown -R "${INITIAL_USER}:${INITIAL_USER}" "${BACKUPS}/etc/modprobe.d"
 }
 trap cleanup EXIT

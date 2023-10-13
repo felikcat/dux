@@ -13,4 +13,4 @@ PKGS=(icewm xorg-xinit lxqt-policykit lxrandr-gtk3 arc-gtk-theme)
 
 _pkgs_add
 
-bash "/home/${WHICH_USER}/dux/scripts/DE/IceWM_Rice.sh" |& tee "${GIT_DIR}/logs/IceWM_Rice.log"
+bash "/home/${INITIAL_USER}/dux/scripts/DE/IceWM_Rice.sh" |& tee "${GIT_DIR}/logs/IceWM_Rice.log"
