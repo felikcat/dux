@@ -41,7 +41,7 @@ BACKUPS="/home/${YOUR_USER}/dux_backups" && export BACKUPS
 _flatpaks_add() {
 	# shellcheck disable=SC2048
 	[[ -n ${FLATPAKS} ]] &&
-		flatpak install --noninteractive flathub ${FLATPAKS[*]}
+		flatpak install --noninteractive flathub ${FLATPAKS[*]} || :
 }
 
 _move2bkup() {
@@ -63,7 +63,7 @@ _pkgs_aur_add() {
 	[[ -n ${PKGS_AUR} ]] &&
 		# Use -Syu instead of -Syuu for paru.
 		# NoProgressBar: the TTY framebuffer is likely not GPU accelerated while booted into the Arch Linux ISO; render less text = Dux installs faster.
-		sudo -H -u "${YOUR_USER}" bash -c "DENY_SUPERUSER=1 paru -Syu --aur --quiet --noprogressbar --noconfirm --useask --needed --skipreview ${PKGS_AUR[*]}"
+		sudo -H -u "${YOUR_USER}" bash -c "DENY_SUPERUSER=1 paru -Syu --aur --quiet --noprogressbar --noconfirm --useask --needed --skipreview ${PKGS_AUR[*]}" || :
 }
 
 if [[ ${DENY_SUPERUSER:-} -eq 1 && $(id -u) -ne 1000 ]]; then
@@ -86,7 +86,7 @@ fi
 if [[ ${DENY_SUPERUSER:-} -ne 1 && $(id -u) -eq 0 ]]; then
 	_pkgs_add() {
 		[[ -n ${PKGS} ]] &&
-			sudo pacman -Syu --quiet --noprogressbar --noconfirm --ask=4 --needed "${PKGS[@]}"
+			sudo pacman -Syu --quiet --noprogressbar --noconfirm --ask=4 --needed "${PKGS[@]}" || :
 	}
 	_modify_kernel_parameters() {
 		if ! grep -q "${KERNEL_PARAMS}" "${BOOT_CONF}"; then

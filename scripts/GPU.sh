@@ -47,8 +47,8 @@ case $(lspci | grep -P "VGA|3D|Display" | grep -Po "NVIDIA|Intel|VMware SVGA|Red
 esac
 
 _pkgs_add
-_pkgs_aur_add || :
-_flatpaks_add || :
+_pkgs_aur_add
+_flatpaks_add
 
 if [[ ${IS_CHROOT} -eq 0 ]] && [[ ${REGENERATE_INITRAMFS} -eq 1 ]]; then
     mkinitcpio -P

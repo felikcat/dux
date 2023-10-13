@@ -16,7 +16,7 @@ pacman -S --quiet --noconfirm --ask=4 --overwrite="*" mkinitcpio
 
 # Installing these late sped up the install process prior.
 PKGS+=(linux linux-headers snapper snap-pac)
-_pkgs_add || :
+_pkgs_add
 
 if lspci | grep -P "VGA|3D|Display" | grep -q "NVIDIA"; then
 	(bash "${GIT_DIR}/scripts/_NVIDIA.sh") |& tee "${GIT_DIR}/logs/_NVIDIA.log" || return

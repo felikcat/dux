@@ -44,7 +44,7 @@ nuspell hunspell-en_us)
 
 ConfigGDM
 _pkgs_add
-_pkgs_aur_add || :
+_pkgs_aur_add
 
 ConfigNetworkmanager() {
 	local DIR="etc/NetworkManager/conf.d"

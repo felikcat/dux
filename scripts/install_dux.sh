@@ -94,9 +94,9 @@ _04() {
 _04
 
 rm -rf "/mnt/root/dux/logs"
-\cp -f -R "${GIT_DIR}/logs" "/mnt/root/dux"
-
 rm -rf "/mnt/home/${YOUR_USER:?}/dux/logs"
+
+\cp -f -R "${GIT_DIR}/logs" "/mnt/root/dux"
 \cp -f -R "${GIT_DIR}/logs" "/mnt/home/${YOUR_USER}/dux"
 
 SetCorrectPermissions() {
