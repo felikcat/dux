@@ -150,23 +150,21 @@ Every program installed is another developer or set of developers to trust; keep
 * The latest link:https://archlinux.org/download/[Arch Linux ISO]; if you have no torrent client, use link:https://www.qbittorrent.org/download.php[qBittorrent].
 . Dual-booting (or more OSes) are supported.
 
-== Preparation
+== 1. [Optional / Security] Verify ISO authenticity
 
-.[Optional] Verify ISO authenticity
-[%collapsible]
-====
-
-*macOS*
-
-. Install Homebrew from https://brew.sh/  +
-`brew install gnupg`
-
+.*macOS*
+. Install Homebrew from https://brew.sh/
+. `brew install gnupg`
 . Follow the Linux instructions below.
 
-*Linux*
+.*Windows*
+. Install https://gpg4win.org/thanks-for-download.html[Gpg4Win].
+. Open `gpg.exe`; it should say "Go ahead and type your message".
+. Follow the Linux instructions below.
 
+.*Linux*
 . The full key (not short or long) is used to fully protect against collision attacks. +
-`gpg --auto-key-locate clear,wkd -v --locate-external-key pierre@archlinux.de`
+`gpg --auto-key-locate clear,wkd -v --locate-external-key pierre@archlinux.org`
 
 . Check what the PGP fingerprint is, then download "PGP signature".
 image:arch_checksums.png[]
@@ -174,35 +172,53 @@ image:arch_checksums.png[]
 . `gpg --full-gen-key`
 ```
 Please select what kind of key you want:
-   (1) RSA and RSA (default)
+   (1) RSA and RSA
    (2) DSA and Elgamal
    (3) DSA (sign only)
    (4) RSA (sign only)
+   (9) ECC (sign and encrypt) *default*
+  (10) ECC (sign only)
   (14) Existing key from card
 Your selection? ↵
 
-What keysize do you want? 4096 ↵
-Key is valid for? ↵
+Please select which elliptic curve you want:
+   (1) Curve 25519 *default*
+   (4) NIST P-384
+   (6) Brainpool P-256
+Your selection? ↵
+
+Please specify how long the key should be valid.
+         0 = key does not expire
+      <n>  = key expires in n days
+      <n>w = key expires in n weeks
+      <n>m = key expires in n months
+      <n>y = key expires in n years
+Key is valid for? (0) ↵
+Key does not expire at all
+Is this correct? (y/N) y
+
+GnuPG needs to construct a user ID to identify your key.
+
+Real name: dux
+Email address: dux@dux.com
+Comment:
+You selected this USER-ID:
+    "dux <dux@dux.com>"
+
+Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? O
 ```
-NOTE: A "Real name" of at least 5 characters long is required; "Email address" and "Comment" are not.
 
 . After your new GPG key has been generated, show its full key; [ultimate] indicates that you trust this key ultimately (you created the key), which is the desired behavior. +
 `gpg --list-secret-keys --keyid-format none`
 
 . Sign Arch's GPG key with yours. +
-`gpg --sign-key 4AA4767BBC9C4B1D18AE28B77F2D434B9741E8AC`
+`gpg --sign-key 3E80CA1A8B89F69CBA57D98A76A5EF9054449A5C`
 
 . Verify if the ISO is authentic, and its file integrity doesn't fail (indicates a broken download). +
 `gpg --verify /path/to/archkbd:[TAB].sig`
 
-*Windows*
 
-. I have no clue.
-
-___
-
-====
-
+== 2. Format a USB with the Arch Linux ISO
 WARNING: This will destroy all previous data on the targeted device!
 
 === Windows
