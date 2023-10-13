@@ -40,8 +40,9 @@ BACKUPS="/home/${YOUR_USER}/dux_backups" && export BACKUPS
 
 _flatpaks_add() {
 	# shellcheck disable=SC2048
-	[[ -n ${FLATPAKS} ]] &&
+	if [[ -n ${FLATPAKS} ]]; then
 		flatpak install --noninteractive flathub ${FLATPAKS[*]} || :
+	fi
 }
 
 _move2bkup() {
@@ -60,16 +61,18 @@ _move2bkup() {
 }
 
 _pkgs_aur_add() {
-	[[ -n ${PKGS_AUR} ]] &&
+	if [[ -n ${PKGS_AUR} ]]; then
 		# Use -Syu instead of -Syuu for paru.
 		# NoProgressBar: the TTY framebuffer is likely not GPU accelerated while booted into the Arch Linux ISO; render less text = Dux installs faster.
 		sudo -H -u "${YOUR_USER}" bash -c "paru -Syu --aur --quiet --noprogressbar --noconfirm --useask --needed --skipreview ${PKGS_AUR[*]}" || :
+	fi
 }
 
 # Functions requiring superuser
 _pkgs_add() {
-	[[ -n ${PKGS} ]] &&
+	if [[ -n ${PKGS} ]]; then
 		sudo pacman -Syu --quiet --noprogressbar --noconfirm --ask=4 --needed "${PKGS[@]}" || :
+	fi
 }
 
 if [[ ${bootloader_chosen} -eq 1 ]]; then

@@ -19,8 +19,13 @@ RefindBootloader() {
     refind-install --usedefault "${BOOT_DISK}"
     # Tell rEFInd to detect the initramfs for linux-lts & linux automatically.
     # Boot default entry immediately unless a key is held down.
-    sed -i -e 's/^#extra_kernel_version_strings.*/extra_kernel_version_strings "linux-lts,linux"/' \
-        -e "s/timeout 20/timeout -1/" /boot/EFI/refind/refind.conf
+    
+    if [[ ! -a "/tmp/RefindBootloader.empty" ]]; then
+        echo '
+extra_kernel_version_strings "linux-lts,linux"
+timeout -1' >> /boot/EFI/refind/refind.conf
+        touch /tmp/RefindBootloader.empty
+    fi
 
     \cp "${cp_flags}" "${GIT_DIR}"/files/etc/pacman.d/hooks/refind.hook "/etc/pacman.d/hooks/"
 	refind-mkdefault

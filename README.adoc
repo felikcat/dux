@@ -227,7 +227,7 @@ https://github.com/pbatard/rufus/releases
 . Add the Arch ISO then copy the following settings: +
 image:rufus-4.2_NDydafPQE3.png[480,360]
 
-. Click Start, then write in DD Image mode.
+. Click Start, then write in ESP -> .
 
 === macOS and Linux
 Use https://github.com/balena-io/etcher/releases[balenaEtcher].

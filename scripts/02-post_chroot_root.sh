@@ -114,9 +114,10 @@ Hardware
 # Root-less Xorg to lower its memory usage and increase overall security.
 \cp "${cp_flags}" "${GIT_DIR}"/files/etc/X11/Xwrapper.config "/etc/X11/"
 
-if ! grep -q 'PRUNENAMES = ".snapshots"' /etc/updatedb.conf >&/dev/null; then
-	# Tells mlocate to ignore Snapper's Btrfs snapshots; avoids slowdowns and excessive memory usage.
-	printf 'PRUNENAMES = ".snapshots"' >>/etc/updatedb.conf
+# Tells mlocate to ignore Snapper's Btrfs snapshots; avoids slowdowns and excessive memory usage.
+if [[ ! -a "/tmp/UpdateDB.empty" ]]; then
+	echo 'PRUNENAMES = ".snapshots"' >>/etc/updatedb.conf
+	touch /tmp/UpdateDB.empty
 fi
 
 # Default packages, regardless of options selected.
@@ -163,6 +164,12 @@ pacman -Syuu --quiet --noconfirm --ask=4 --needed "${PKGS[@]}"
 # Prevents many unnecessary initramfs generations to speed up the install process drastically.
 ln -sf /dev/null /usr/share/libalpm/hooks/60-mkinitcpio-remove.hook
 ln -sf /dev/null /usr/share/libalpm/hooks/90-mkinitcpio-install.hook
+
+# Prevent instability if any program attempts to bruteforce your login's password.
+if [[ ! -a "/tmp/FailLock.empty" ]]; then
+	echo 'deny = 0' >> /etc/security/faillock.conf
+	touch /tmp/FailLock.empty
+fi
 
 # Default services, regardless of options selected.
 # rfkill-unblock@all: Ensure Wi-Fi & Bluetooth aren't soft blocked on startup.
