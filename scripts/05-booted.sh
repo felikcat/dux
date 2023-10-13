@@ -2,8 +2,6 @@
 set +H
 set -e
 
-export DENY_SUPERUSER=1
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
 source "${GIT_DIR}/scripts/GLOBAL_IMPORTS.sh"
@@ -51,7 +49,7 @@ GnomeSpecific() {
 DoLast() {
     if [[ ${desktop_environment} -eq 1 ]]; then
         RiceGNOME() {
-            (sudo bash "${GIT_DIR}/scripts/DE/GNOME_Rice_1.sh") |& tee "${GIT_DIR}/logs/GNOME_Rice_1.log" || return
+            (sudo bash "${GIT_DIR}/scripts/DE/GNOME_Rice.sh") |& tee "${GIT_DIR}/logs/GNOME_Rice.log" || return
         }
         [[ ${allow_gnome_rice} -eq 1 ]] && RiceGNOME
     fi

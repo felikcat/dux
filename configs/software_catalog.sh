@@ -11,6 +11,9 @@ discord="1"
 
 
 # === Open-Source Software ===
+# Protontricks and ProtonUp are avoided in favor of Bottles.
+gaming_setup="1"
+
 # Adds full support for AppImages.
 appimagelauncher="0"
 

@@ -63,35 +63,23 @@ _pkgs_aur_add() {
 	[[ -n ${PKGS_AUR} ]] &&
 		# Use -Syu instead of -Syuu for paru.
 		# NoProgressBar: the TTY framebuffer is likely not GPU accelerated while booted into the Arch Linux ISO; render less text = Dux installs faster.
-		sudo -H -u "${YOUR_USER}" bash -c "DENY_SUPERUSER=1 paru -Syu --aur --quiet --noprogressbar --noconfirm --useask --needed --skipreview ${PKGS_AUR[*]}" || :
+		sudo -H -u "${YOUR_USER}" bash -c "paru -Syu --aur --quiet --noprogressbar --noconfirm --useask --needed --skipreview ${PKGS_AUR[*]}" || :
 }
 
-if [[ ${DENY_SUPERUSER:-} -eq 1 && $(id -u) -ne 1000 ]]; then
-	echo -e "\e[1m\nNormal privileges required; don't use sudo or doas!\e[0m\nCurrently affected scripts: \"${BASH_SOURCE[*]}\"\n" >&2
-	exit 1
-fi
-
-if [[ ${DENY_SUPERUSER:-} -ne 1 && $(id -u) -ne 0 ]]; then
-	echo -e "\e[1m\nSuperuser required, prompting if needed...\e[0m\nCurrently affected scripts: \"${BASH_SOURCE[*]}\"\n" >&2
-	if hash sudo >&/dev/null; then
-		sudo bash "${0}"
-		exit $?
-	elif hash doas >&/dev/null; then
-		doas bash "${0}"
-		exit $?
-	fi
-fi
-
 # Functions requiring superuser
-if [[ ${DENY_SUPERUSER:-} -ne 1 && $(id -u) -eq 0 ]]; then
-	_pkgs_add() {
-		[[ -n ${PKGS} ]] &&
-			sudo pacman -Syu --quiet --noprogressbar --noconfirm --ask=4 --needed "${PKGS[@]}" || :
-	}
+_pkgs_add() {
+	[[ -n ${PKGS} ]] &&
+		sudo pacman -Syu --quiet --noprogressbar --noconfirm --ask=4 --needed "${PKGS[@]}" || :
+}
+
+if [[ ${bootloader_chosen} -eq 1 ]]; then
+	source "${GIT_DIR}/Bootloaders/Install_GRUB.sh"
+elif [[ ${bootloader_chosen} -eq 2 ]]; then
 	_modify_kernel_parameters() {
 		if ! grep -q "${KERNEL_PARAMS}" "${BOOT_CONF}"; then
-            sed -i -e "s/standard options\"[ ]*\"[^\"]*/& ${KERNEL_PARAMS}/" \
-                -e "s/user mode\"[ ]*\"[^\"]*/& ${KERNEL_PARAMS}/" "${BOOT_CONF}"
+			sed -i -e "s/standard options\"[ ]*\"[^\"]*/& ${KERNEL_PARAMS}/" \
+				-e "s/user mode\"[ ]*\"[^\"]*/& ${KERNEL_PARAMS}/" "${BOOT_CONF}"
 		fi
 	}
 fi
+

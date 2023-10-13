@@ -10,7 +10,7 @@ source "${GIT_DIR}/configs/settings.sh"
 _pkgs_aur_add() {
 	[[ -n ${PKGS_AUR} ]] &&
 		# -Sdd bypasses a dependency cycle problem proprietary NVIDIA drivers have (only if a different proprietary version is installed such as 'nvidia-lts')
-		sudo -H -u "${YOUR_USER}" bash -c "DENY_SUPERUSER=1 paru -Sdd --quiet --noconfirm --useask --needed --skipreview ${PKGS_AUR[*]}"
+		sudo -H -u "${YOUR_USER}" bash -c "paru -Sdd --quiet --noconfirm --useask --needed --skipreview ${PKGS_AUR[*]}"
 }
 
 NvidiaGPUSetup() {
@@ -42,7 +42,7 @@ NvidiaGPUSetup() {
 
 	NvidiaForceMaxSpeed() {
 		if [[ ${nvidia_force_max_performance} -eq 1 ]]; then
-			sudo -H -u "${YOUR_USER}" bash -c "DENY_SUPERUSER=1 \cp ${cp_flags} ${GIT_DIR}/files/home/.config/systemd/user/nvidia-max-performance.service /home/${YOUR_USER}/.config/systemd/user/"
+			sudo -H -u "${YOUR_USER}" bash -c "\cp ${cp_flags} ${GIT_DIR}/files/home/.config/systemd/user/nvidia-max-performance.service /home/${YOUR_USER}/.config/systemd/user/"
 			sudo -H -u "${YOUR_USER}" bash -c "systemctl --user enable nvidia-max-performance.service"
 
 			# Allow the "Prefer Maximum Performance" PowerMizer setting on laptops

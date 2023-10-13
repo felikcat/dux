@@ -24,7 +24,7 @@ if [[ ${use_luks2} -eq 1 ]]; then
 	fi
 	LOCATION="/dev/mapper/root"
 else
-	ROOT_DISK=$(blkid -s PARTLABEL -s PARTUUID | sed -n '/"ROOT"/p' | cut -f3 -d' ' | cut -d '=' -f2 | sed 's/\"//g')
+	ROOT_DISK=$(blkid -s PARTLABEL -s PARTUUID | sed -n '/"ROOT"/p' | cut -f3 -d' ' | cut -d '"' -f2)
 	LOCATION="/dev/disk/by-partuuid/${ROOT_DISK}"
 fi
 

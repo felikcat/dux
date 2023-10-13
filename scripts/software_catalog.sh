@@ -53,7 +53,7 @@ fi
 
 if [[ ${mpv} -eq 1 ]]; then
 	PKGS+=(mpv)
-	trap 'sudo -H -u "${YOUR_USER}" bash -c "DENY_SUPERUSER=1 /home/${YOUR_USER}/dux/scripts/non-SU/software_catalog/mpv_config.sh"' EXIT
+	trap 'sudo -H -u "${YOUR_USER}" bash -c "/home/${YOUR_USER}/dux/scripts/non-SU/software_catalog/mpv_config.sh"' EXIT
 fi
 
 [[ ${onlyoffice} -eq 1 ]] &&
@@ -70,7 +70,7 @@ if [[ ${obs_studio} -eq 1 ]]; then
 	fi
 	# Autostart OBS to replicate NVIDIA ShadowPlay / AMD ReLive.
 	_obs_autorun() {
-		sudo -H -u "${YOUR_USER}" bash -c "DENY_SUPERUSER=1 \cp ${cp_flags} ${GIT_DIR}/files/home/.config/systemd/user/obs-studio.service /home/${YOUR_USER}/.config/systemd/user/"
+		sudo -H -u "${YOUR_USER}" bash -c "\cp ${cp_flags} ${GIT_DIR}/files/home/.config/systemd/user/obs-studio.service /home/${YOUR_USER}/.config/systemd/user/"
 		sudo -H -u "${YOUR_USER}" bash -c "systemctl --user enable obs-studio.service"
 	}
 fi

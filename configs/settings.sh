@@ -5,6 +5,10 @@ set -a
 # Disk encryption.
 use_luks2="1"
 
+# 1: GRUB2 (recommended)
+# 2: rEFInd
+bootloader_chosen="1"
+
 # Do not use any of the following: symbols, spaces, upper-case letters.
 YOUR_USER="admin"
 

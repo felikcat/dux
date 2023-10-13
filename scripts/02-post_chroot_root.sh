@@ -186,34 +186,11 @@ else
 	REQUIRED_PARAMS="root=/dev/disk/by-partuuid/${ROOT_DISK} rootflags=subvol=@root rw"
 fi
 
-# loglevel=3: print only 3 (KERN_ERR) conditions during boot process.
-# acpi_osi=Linux: tell the motherboard's BIOS to load their ACPI tables for Linux.
-COMMON_PARAMS="loglevel=3 quiet add_efi_memmap acpi_osi=Linux skew_tick=1 mce=ignore_ce nowatchdog tsc=reliable no_timer_check ${MICROCODE:-}"
-
-RefindBootloader() {
-    # x86_64-efi: rEFInd overrides GRUB2 without issues.
-    refind-install
-    # Tell rEFInd to detect the initramfs for linux-lts & linux automatically.
-    # Boot default entry immediately unless a key is held down.
-    sed -i -e '/^#extra_kernel_version_strings/s/^#//' \
-        -e "s/timeout 20/timeout -1/" /boot/EFI/refind/refind.conf
-
-    \cp "${cp_flags}" "${GIT_DIR}"/files/etc/pacman.d/hooks/refind.hook "/etc/pacman.d/hooks/"
-	refind-mkdefault
-}
-
-RefindBootloaderCFG() {
-    cat <<EOF >"${BOOT_CONF}"
-"Boot using standard options"  "${MITIGATIONS_OFF:-} ${REQUIRED_PARAMS} ${COMMON_PARAMS}"
-
-"Boot to single-user mode"  "single ${MITIGATIONS_OFF:-} ${REQUIRED_PARAMS} ${COMMON_PARAMS}"
-
-"Boot with minimal options"  "${MITIGATIONS_OFF:-} ${REQUIRED_PARAMS} ${MICROCODE:-}"
-EOF
-}
-RefindBootloader
-RefindBootloaderCFG
-
+if [[ ${bootloader_chosen} -eq 1 ]]; then
+	source "${GIT_DIR}/Bootloaders/Install_GRUB.sh"
+elif [[ ${bootloader_chosen} -eq 2 ]]; then
+	source "${GIT_DIR}/Bootloaders/Install_rEFInd.sh"
+fi
 
 # Ensure "net.ipv4.tcp_congestion_control = bbr" is a valid option.
 \cp "${cp_flags}" "${GIT_DIR}"/files/etc/modules-load.d/tcp_bbr.conf "/etc/modules-load.d/"

@@ -1,5 +1,4 @@
 #!/bin/bash
-# shellcheck disable=SC2154
 set +H
 set -e
 
@@ -12,6 +11,19 @@ if [[ ${IS_CHROOT} -eq 1 ]]; then
     echo -e "\nERROR: Do not run this script inside a chroot!\n"
 	exit 1
 fi
+
+
+PKGS+=(kvantum qt6-svg qt5ct qt6ct papirus-icon-theme)
+
+[[ ${gnome_extension_appindicator} -eq 1 ]] &&
+	PKGS+=(lib32-libappindicator-gtk2 lib32-libappindicator-gtk3 libappindicator-gtk2 libappindicator-gtk3 gnome-shell-extension-appindicator)
+
+# mutter-x11-scaling = Fractional scaling support for Xorg.
+PKGS_AUR+=(papirus-folders mutter-x11-scaling adw-gtk3-git)
+_pkgs_add
+_pkgs_aur_add
+
+papirus-folders -C brown --theme Papirus-Dark
 
 ExternalGnomeSettings() {
 	cat << 'EOF' >>"/home/${YOUR_USER}/.zshrc"
@@ -35,9 +47,6 @@ EOF
 	kwriteconfig5 --file /home/"${YOUR_USER}"/.config/konsolerc --group "UiSettings" --key "WindowColorScheme" "KvGnomeDark"
 }
 ExternalGnomeSettings
-
-PKGS_AUR+=(adw-gtk3-git)
-_pkgs_aur_add
 
 GnomeSettings() {
 	local SCHEMA="org.gnome.desktop"

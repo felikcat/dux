@@ -60,10 +60,6 @@ Actions taken by Dux:
 * `LUKS2`
 ** Disk encryption to act as an anti-theft measure with minimal performance reduction.
 
-* `Pipewire` customizations:
-- `resample.quality = 10`; audio quality fall-off at ~21kHz instead of ~18kHz.
-- `mem.mlock-all = true`; avoids paging the memory regions of Pipewire whenever possible to prevent audio glitches.
-
 * Swap partition that's the same size as total RAM
 ** Under high memory pressure situations this keeps Linux afloat in terms of performance; video games run smoother while this is happening.
 ** Adds support for hibernation to disk, everything is kept as it were before hitting the hibernate button, allowing you to resume your work at a later date with 0 power usage until removed from hibernation.
