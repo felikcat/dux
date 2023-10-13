@@ -19,7 +19,7 @@ PKGS+=(kvantum qt6-svg qt5ct qt6ct papirus-icon-theme)
 	PKGS+=(lib32-libappindicator-gtk2 lib32-libappindicator-gtk3 libappindicator-gtk2 libappindicator-gtk3 gnome-shell-extension-appindicator)
 
 # mutter-x11-scaling = Fractional scaling support for Xorg.
-PKGS_AUR+=(papirus-folders-git mutter-x11-scaling)
+PKGS_AUR+=(papirus-folders mutter-x11-scaling)
 _pkgs_add
 _pkgs_aur_add
 
