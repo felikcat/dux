@@ -152,22 +152,23 @@ Every program installed is another developer or set of developers to trust; keep
 
 == 1. [Optional / Security] Verify ISO authenticity
 
-.*macOS*
+=== macOS
 . Install Homebrew from https://brew.sh/
 . `brew install gnupg`
 . Follow the Linux instructions below.
 
-.*Windows*
-. Install https://gpg4win.org/thanks-for-download.html[Gpg4Win].
-. Open `gpg.exe`; it should say "Go ahead and type your message".
+=== *Windows*
+. Install https://gpg4win.org/thanks-for-download.html[GnuPG] using its latest simple installer: +
+image:GPG/firefox_4EiWmbJfJo.png[480,360]
+. Open a Terminal or PowerShell in the directory of `gpg.exe`: +
+image:GPG/explorer_sIHtC1HEcI.png[480,360]
 . Follow the Linux instructions below.
 
-.*Linux*
-. The full key (not short or long) is used to fully protect against collision attacks. +
+=== Linux
+. NOTE: The full key (not short or long) is used to fully protect against collision attacks. +
 `gpg --auto-key-locate clear,wkd -v --locate-external-key pierre@archlinux.org`
 
-. Check what the PGP fingerprint is, then download "PGP signature".
-image:arch_checksums.png[]
+. Download the "ISO PGP signature" from https://archlinux.org/download/[here].
 
 . `gpg --full-gen-key`
 ```
@@ -216,6 +217,8 @@ Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? O
 
 . Verify if the ISO is authentic, and its file integrity doesn't fail (indicates a broken download). +
 `gpg --verify /path/to/archkbd:[TAB].sig`
+
+- image:GPG/WindowsTerminal_RNqnz5MWaf.png[480,360]
 
 
 == 2. Format a USB with the Arch Linux ISO
@@ -300,7 +303,7 @@ ___
 *If you have issues, please read => link:potential_fixes.adoc[potential_fixes.adoc]*
 
 == How to help Dux out
+- Star this respository so more people see it, or other forms of publicity like YouTube videos.
 - Make an account on the Arch Linux user repository, and "Vote for this package" for the following:
 . https://aur.archlinux.org/packages/refind-btrfs
 . https://aur.archlinux.org/packages/btrfs-assistant
-. 
