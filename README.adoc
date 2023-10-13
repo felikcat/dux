@@ -269,7 +269,8 @@ ___
 
 .After the reboot:
 * Open "Konsole".
-. `# sudo bash ~/dux/scripts/05-booted.sh`
+. `$ bash ~/dux/scripts/05-booted.sh`
+- During this script, your account password will be asked for.
 
 . Configure `~/dux/configs/software_catalog.sh` with a text editor of your choice.
 ** After done configuring, run: +
