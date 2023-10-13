@@ -33,7 +33,7 @@ chmod +x -R "${GIT_DIR}"
 clear
 
 SetPasswordPrompt() {
-	read -rp "Enter a new password for the username \"${INITIAL_USER}\": " DESIREDPW
+	read -rp "Enter a new password for the username \"${YOUR_USER}\": " DESIREDPW
 	if [[ -z ${DESIREDPW} ]]; then
 		echo -e "\nNo password was entered, please try again.\n"
 		SetPasswordPrompt
@@ -65,7 +65,7 @@ _02() {
 _02
 
 _03() {
-	(arch-chroot /mnt sudo -u "${INITIAL_USER}" DENY_SUPERUSER=1 ${SYSTEMD_USER_ENV} bash "/home/${INITIAL_USER}/dux/scripts/03-post_chroot_user.sh") |& tee "${GIT_DIR}/logs/03-post_chroot_user.log" || return
+	(arch-chroot /mnt sudo -u "${YOUR_USER}" DENY_SUPERUSER=1 bash "/home/${YOUR_USER}/dux/scripts/03-post_chroot_user.sh") |& tee "${GIT_DIR}/logs/03-post_chroot_user.log" || return
 }
 _03
 
@@ -96,11 +96,11 @@ _04
 rm -rf "/mnt/root/dux/logs"
 \cp -f -R "${GIT_DIR}/logs" "/mnt/root/dux"
 
-rm -rf "/mnt/home/${INITIAL_USER:?}/dux/logs"
-\cp -f -R "${GIT_DIR}/logs" "/mnt/home/${INITIAL_USER}/dux"
+rm -rf "/mnt/home/${YOUR_USER:?}/dux/logs"
+\cp -f -R "${GIT_DIR}/logs" "/mnt/home/${YOUR_USER}/dux"
 
 SetCorrectPermissions() {
-	(arch-chroot /mnt "chown" -R "${INITIAL_USER}:${INITIAL_USER}" /home/"${INITIAL_USER}"/{dux,dux_backups})
+	(arch-chroot /mnt "chown" -R "${YOUR_USER}:${YOUR_USER}" /home/"${YOUR_USER}"/{dux,dux_backups})
 }
 SetCorrectPermissions
 

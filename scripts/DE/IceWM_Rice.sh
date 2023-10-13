@@ -13,9 +13,9 @@ _pkgs_aur_add
 echo "dbus-update-activation-environment --systemd --all
 xrdb -merge ~/.Xresources
 lxqt-policykit-agent &
-exec icewm-session" > ${INITIAL_USER}/.xinitrc
+exec icewm-session" > ${YOUR_USER}/.xinitrc
 
-mkdir -p ${INITIAL_USER}/.icewm/themes
-\cp ${cp_flags} "${GIT_DIR}"/files/THIRD-PARTY/Arc-Ice-1.3.tar.xz ${INITIAL_USER}/.icewm/themes
-tar xpvf ${INITIAL_USER}/.icewm/themes/Arc-Ice-1.3.tar.xz
-rm -f ${INITIAL_USER}/.icewm/themes/Arc-Ice-1.3.tar.xz
+mkdir -p ${YOUR_USER}/.icewm/themes
+\cp ${cp_flags} "${GIT_DIR}"/files/THIRD-PARTY/Arc-Ice-1.3.tar.xz ${YOUR_USER}/.icewm/themes
+tar xpvf ${YOUR_USER}/.icewm/themes/Arc-Ice-1.3.tar.xz
+rm -f ${YOUR_USER}/.icewm/themes/Arc-Ice-1.3.tar.xz

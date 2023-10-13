@@ -15,8 +15,8 @@ if [[ ${IS_CHROOT} -eq 1 ]]; then
 	exit 1
 fi
 
-mkdir "${mkdir_flags}" /home/"${INITIAL_USER}"/.config/systemd/user
-chown -R "${INITIAL_USER}:${INITIAL_USER}" "/home/${INITIAL_USER}/.config/systemd/user"
+mkdir "${mkdir_flags}" /home/"${YOUR_USER}"/.config/systemd/user
+chown -R "${YOUR_USER}:${YOUR_USER}" "/home/${YOUR_USER}/.config/systemd/user"
 
 chmod +x -R "${GIT_DIR}"
 
@@ -34,7 +34,7 @@ fi
 if [[ ${syncthing} -eq 1 ]]; then
 	PKGS+=(syncthing)
     _syncthing_autorun() {
-    	sudo -H -u "${INITIAL_USER}" bash -c "${SYSTEMD_USER_ENV} systemctl --user enable syncthing.service"
+    	sudo -H -u "${YOUR_USER}" bash -c "systemctl --user enable syncthing.service"
   }
 fi
 
@@ -43,17 +43,17 @@ if [[ ${dolphin} -eq 1 ]]; then
   # meld: "Compare files" support.
 	PKGS+=(kconfig ark dolphin kde-cli-tools kdegraphics-thumbnailers kimageformats qt5-imageformats ffmpegthumbs taglib openexr libjxl android-udev packagekit-qt5 packagekit-qt6 meld)
 	_config_dolphin() {
-		local CONF="/home/${INITIAL_USER}/.config/dolphinrc"
+		local CONF="/home/${YOUR_USER}/.config/dolphinrc"
 		kwriteconfig5 --file "${CONF}" --group "General" --key "ShowFullPath" "true"
 		kwriteconfig5 --file "${CONF}" --group "General" --key "ShowSpaceInfo" "false"
 		# Allow loading of larger images that are remotely located, such as on an SMB server.
-		kwriteconfig5 --file "/home/${INITIAL_USER}/.config/kdeglobals" --group "PreviewSettings" --key "MaximumRemoteSize" "10485760"
+		kwriteconfig5 --file "/home/${YOUR_USER}/.config/kdeglobals" --group "PreviewSettings" --key "MaximumRemoteSize" "10485760"
 	}
 fi
 
 if [[ ${mpv} -eq 1 ]]; then
 	PKGS+=(mpv)
-	trap 'sudo -H -u "${INITIAL_USER}" bash -c "${SYSTEMD_USER_ENV} DENY_SUPERUSER=1 /home/${INITIAL_USER}/dux/scripts/non-SU/software_catalog/mpv_config.sh"' EXIT
+	trap 'sudo -H -u "${YOUR_USER}" bash -c "DENY_SUPERUSER=1 /home/${YOUR_USER}/dux/scripts/non-SU/software_catalog/mpv_config.sh"' EXIT
 fi
 
 [[ ${onlyoffice} -eq 1 ]] &&
@@ -70,8 +70,8 @@ if [[ ${obs_studio} -eq 1 ]]; then
 	fi
 	# Autostart OBS to replicate NVIDIA ShadowPlay / AMD ReLive.
 	_obs_autorun() {
-		sudo -H -u "${INITIAL_USER}" bash -c "${SYSTEMD_USER_ENV} DENY_SUPERUSER=1 \cp ${cp_flags} ${GIT_DIR}/files/home/.config/systemd/user/obs-studio.service /home/${INITIAL_USER}/.config/systemd/user/"
-		sudo -H -u "${INITIAL_USER}" bash -c "${SYSTEMD_USER_ENV} systemctl --user enable obs-studio.service"
+		sudo -H -u "${YOUR_USER}" bash -c "DENY_SUPERUSER=1 \cp ${cp_flags} ${GIT_DIR}/files/home/.config/systemd/user/obs-studio.service /home/${YOUR_USER}/.config/systemd/user/"
+		sudo -H -u "${YOUR_USER}" bash -c "systemctl --user enable obs-studio.service"
 	}
 fi
 
@@ -110,7 +110,7 @@ if [[ ${virtual_machines} -eq 1 ]]; then
   # video: Virtio OpenGL acceleration.
   # kvm: Hypervisor hardware acceleration.
   # libvirt: Access to virtual machines made through libvirt.
-  usermod -a -G qemu,video,kvm,libvirt "${INITIAL_USER}"
+  usermod -a -G qemu,video,kvm,libvirt "${YOUR_USER}"
 
   KERNEL_PARAMS="intel_iommu=on iommu=pt"
   _modify_kernel_parameters
@@ -136,4 +136,4 @@ systemctl enable --now "${SERVICES[@]}"
 [[ ${obs_studio} -eq 1 ]] && _obs_autorun
 
 # Fix permission issues
-chown -R "${INITIAL_USER}:${INITIAL_USER}" /home/"${INITIAL_USER}"/.config
+chown -R "${YOUR_USER}:${YOUR_USER}" /home/"${YOUR_USER}"/.config

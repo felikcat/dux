@@ -10,7 +10,7 @@ source "${GIT_DIR}/configs/settings.sh"
 _pkgs_aur_add() {
 	[[ -n ${PKGS_AUR} ]] &&
 		# -Sdd bypasses a dependency cycle problem proprietary NVIDIA drivers have (only if a different proprietary version is installed such as 'nvidia-lts')
-		sudo -H -u "${INITIAL_USER}" bash -c "${SYSTEMD_USER_ENV} DENY_SUPERUSER=1 paru -Sdd --quiet --noconfirm --useask --needed --skipreview ${PKGS_AUR[*]}"
+		sudo -H -u "${YOUR_USER}" bash -c "DENY_SUPERUSER=1 paru -Sdd --quiet --noconfirm --useask --needed --skipreview ${PKGS_AUR[*]}"
 }
 
 NvidiaGPUSetup() {
@@ -42,8 +42,8 @@ NvidiaGPUSetup() {
 
 	NvidiaForceMaxSpeed() {
 		if [[ ${nvidia_force_max_performance} -eq 1 ]]; then
-			sudo -H -u "${INITIAL_USER}" bash -c "${SYSTEMD_USER_ENV} DENY_SUPERUSER=1 \cp ${cp_flags} ${GIT_DIR}/files/home/.config/systemd/user/nvidia-max-performance.service /home/${INITIAL_USER}/.config/systemd/user/"
-			sudo -H -u "${INITIAL_USER}" bash -c "${SYSTEMD_USER_ENV} systemctl --user enable nvidia-max-performance.service"
+			sudo -H -u "${YOUR_USER}" bash -c "DENY_SUPERUSER=1 \cp ${cp_flags} ${GIT_DIR}/files/home/.config/systemd/user/nvidia-max-performance.service /home/${YOUR_USER}/.config/systemd/user/"
+			sudo -H -u "${YOUR_USER}" bash -c "systemctl --user enable nvidia-max-performance.service"
 
 			# Allow the "Prefer Maximum Performance" PowerMizer setting on laptops
 			local KERNEL_PARAMS="nvidia.NVreg_RegistryDwords=OverrideMaxPerf=0x1"
@@ -66,11 +66,12 @@ _pkgs_aur_add
 
 systemctl enable nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service
 
-[[ ${REGENERATE_INITRAMFS} -eq 1 ]] &&
+if [[${IS_CHROOT} -eq 0 ]] && [[ ${REGENERATE_INITRAMFS} -eq 1 ]]; then
 	mkinitcpio -P
+fi
 
 cleanup() {
 	mkdir "${mkdir_flags}" "${BACKUPS}/etc/modprobe.d"
-	chown -R "${INITIAL_USER}:${INITIAL_USER}" "${BACKUPS}/etc/modprobe.d"
+	chown -R "${YOUR_USER}:${YOUR_USER}" "${BACKUPS}/etc/modprobe.d"
 }
 trap cleanup EXIT

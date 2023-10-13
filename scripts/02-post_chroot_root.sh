@@ -45,16 +45,16 @@ Preparation() {
 EOF
 
 	# Safe to do; if say /home/admin existed, it wouldn't also remove /home/admin.
-	if id -u "${INITIAL_USER}" >/dev/null 2>&1; then
-		userdel "${INITIAL_USER}"
+	if id -u "${YOUR_USER}" >/dev/null 2>&1; then
+		userdel "${YOUR_USER}"
 	fi
 
 	# gamemode: Allows for maximum performance while a specific program is running.
 	groupadd --force -g 385 gamemode
 
 	# Why 'video': https://github.com/Hummer12007/brightnessctl/issues/63
-	useradd -m -G users,wheel,video,gamemode -s /bin/zsh "${INITIAL_USER}" &&
-		echo "${INITIAL_USER}:${PWCODE}" | chpasswd
+	useradd -m -G users,wheel,video,gamemode -s /bin/zsh "${YOUR_USER}" &&
+		echo "${YOUR_USER}:${PWCODE}" | chpasswd
 	# Useful for the Trinity Control Center which isn't used; kept here for more programs to work correctly.
 	useradd -s /bin/zsh root || :
         echo "root:${PWCODE}" | chpasswd
@@ -64,10 +64,10 @@ EOF
 	echo "%wheel ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/custom_settings
 
 	# Ensure these directories exist.
-	mv -f "/home/${INITIAL_USER}/dux" "/home/${INITIAL_USER}/dux_backup_${DATE}" >&/dev/null || :
-	\cp "${cp_flags}" -R "${GIT_DIR}" "/home/${INITIAL_USER}/dux"
+	mv -f "/home/${YOUR_USER}/dux" "/home/${YOUR_USER}/dux_backup_${DATE}" >&/dev/null || :
+	\cp "${cp_flags}" -R "${GIT_DIR}" "/home/${YOUR_USER}/dux"
 
-	mkdir "${mkdir_flags}" {/etc/{modules-load.d,NetworkManager/conf.d,modprobe.d,tmpfiles.d,pacman.d/hooks,X11,fonts,systemd/coredump.conf.d,snapper/configs,conf.d},/boot,/home/"${INITIAL_USER}"/.config/{fontconfig/conf.d,systemd/user},/usr/share/libalpm/scripts}
+	mkdir "${mkdir_flags}" {/etc/{modules-load.d,NetworkManager/conf.d,modprobe.d,tmpfiles.d,pacman.d/hooks,X11,fonts,systemd/coredump.conf.d,snapper/configs,conf.d},/boot,/home/"${YOUR_USER}"/.config/{fontconfig/conf.d,systemd/user},/usr/share/libalpm/scripts}
 }
 Preparation
 
@@ -235,7 +235,7 @@ RefindBootloaderCFG
     sed -i "s/~02-post_chroot_root~/${reflector_countrylist}/" /etc/xdg/reflector/reflector.conf
 
 Prepare03() {
-	chmod +x -R {/home/"${INITIAL_USER}"/dux,/home/"${INITIAL_USER}"/dux_backup_"${DATE}"} >&/dev/null || :
-	chown -R "${INITIAL_USER}:${INITIAL_USER}" "/home/${INITIAL_USER}"
+	chmod +x -R {/home/"${YOUR_USER}"/dux,/home/"${YOUR_USER}"/dux_backup_"${DATE}"} >&/dev/null || :
+	chown -R "${YOUR_USER}:${YOUR_USER}" "/home/${YOUR_USER}"
 }
 trap Prepare03 EXIT

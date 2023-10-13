@@ -6,7 +6,7 @@ set -a
 use_luks2="1"
 
 # Do not use any of the following: symbols, spaces, upper-case letters.
-INITIAL_USER="admin"
+YOUR_USER="admin"
 
 # Do not use any of the following: symbols, spaces.
 system_hostname="arch"

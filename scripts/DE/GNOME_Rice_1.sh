@@ -25,4 +25,4 @@ _pkgs_aur_add
 
 papirus-folders -C brown --theme Papirus-Dark
 
-(sudo -H -u "${INITIAL_USER}" DENY_SUPERUSER=1 ${SYSTEMD_USER_ENV} bash "/home/${INITIAL_USER}/dux/scripts/DE/GNOME_Rice_2.sh") |& tee "${GIT_DIR}/logs/GNOME_Rice_2.log"
+(sudo -H -u "${YOUR_USER}" DENY_SUPERUSER=1 bash "/home/${YOUR_USER}/dux/scripts/DE/GNOME_Rice_2.sh") |& tee "${GIT_DIR}/logs/GNOME_Rice_2.log"

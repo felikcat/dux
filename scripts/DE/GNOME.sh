@@ -13,7 +13,7 @@ ConfigGDM() {
 	_move2bkup "${GDM_CONF}" &&
 		\cp "${cp_flags}" "${GIT_DIR}"/files/etc/gdm/custom.conf "/etc/gdm/"
 
-	sed -i "s/AutomaticLogin=~GNOME.sh~/AutomaticLogin=${INITIAL_USER}/" "${GDM_CONF}"
+	sed -i "s/AutomaticLogin=~GNOME.sh~/AutomaticLogin=${YOUR_USER}/" "${GDM_CONF}"
 
 	[[ ${gdm_auto_login} -eq 1 ]] &&
 		sed -i "s/AutomaticLoginEnable=.*/AutomaticLoginEnable=True/" "${GDM_CONF}"
