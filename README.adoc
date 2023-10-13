@@ -226,15 +226,12 @@ Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? O
 WARNING: This will destroy all previous data on the targeted device!
 
 === Windows
-Use https://github.com/balena-io/etcher/releases[balenaEtcher].
-
-.Rufus method (not recommended)
-[%collapsible]
-====
 . Download and install rufus-$version.exe +
 https://github.com/pbatard/rufus/releases
-. Add the Arch ISO through Select, click Start, then write in DD Image mode.
-====
+. Add the Arch ISO then copy the following settings: +
+image:rufus-4.2_NDydafPQE3.png[480,360]
+
+. Click Start, then write in DD Image mode.
 
 === macOS and Linux
 Use https://github.com/balena-io/etcher/releases[balenaEtcher].
