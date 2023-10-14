@@ -28,3 +28,6 @@ SetupOtherUserFiles() {
 PKGS_AUR+=(btrfs-assistant)
 _pkgs_aur_add
 SetupOtherUserFiles
+
+mkdir "${mkdir_flags}" /home/"${YOUR_USER}"/.config/environment.d
+\cp "${cp_flags}" "${GIT_DIR}"/files/home/.config/environment.d/dxvk.conf "/home/${YOUR_USER}/.config/environment.d/"

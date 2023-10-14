@@ -14,10 +14,6 @@ _pkgs_aur_add() {
 }
 
 NvidiaGPUSetup() {
-    # Works around boot failure on some CPUs, such as Intel Core 11/12/13th gen.
-    local KERNEL_PARAMS="ibt=off"
-    _modify_kernel_parameters
-
 	PKGS+=(xorg-server-devel nvidia-prime \
 	nvidia-dkms egl-wayland nvidia-utils opencl-nvidia libxnvctrl nvidia-settings \
   				lib32-nvidia-utils lib32-opencl-nvidia)
@@ -66,7 +62,7 @@ _pkgs_aur_add
 
 systemctl enable nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service
 
-if [[${IS_CHROOT} -eq 0 ]] && [[ ${REGENERATE_INITRAMFS} -eq 1 ]]; then
+if [[ ${IS_CHROOT} -eq 0 ]] && [[ ${REGENERATE_INITRAMFS} -eq 1 ]]; then
 	mkinitcpio -P
 fi
 

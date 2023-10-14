@@ -11,7 +11,8 @@ BOOT_DISK=$(blkid -s PARTLABEL -s PARTUUID | sed -n '/"BOOTEFI"/p' | cut -f1 -d'
 
 # loglevel=3: print only 3 (KERN_ERR) conditions during boot process.
 # acpi_osi=Linux: tell the motherboard's BIOS to load their ACPI tables for Linux.
-COMMON_PARAMS="loglevel=3 quiet add_efi_memmap acpi_osi=Linux skew_tick=1 mce=ignore_ce nowatchdog tsc=reliable no_timer_check ${MICROCODE:-}"
+# usbcore.autosuspend=-1: never auto-suspend USB devices, to prevent stuttering on wireless mice.
+COMMON_PARAMS="loglevel=3 quiet add_efi_memmap acpi_osi=Linux skew_tick=1 mce=ignore_ce nowatchdog tsc=reliable no_timer_check usbcore.autosuspend=-1 ${MICROCODE:-}"
 
 RefindBootloader() {
     # x86_64-efi: rEFInd overrides GRUB2 without issues.
