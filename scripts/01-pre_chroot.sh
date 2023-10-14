@@ -17,16 +17,12 @@ SUBVOL_LIST=(root btrfs srv snapshots pkg log home)
 
 clear
 
-if [[ ${use_luks2} -eq 1 ]]; then
-	if cryptsetup status "root" | grep -q "inactive"; then
-		echo -e "\nERROR: Forgot to mount the LUKS2 partition as the name 'root'?\n"
-		exit 1
-	fi
-	LOCATION="/dev/mapper/root"
-else
-	ROOT_DISK=$(blkid -s PARTLABEL -s PARTUUID | sed -n '/"ROOT"/p' | cut -f3 -d' ' | cut -d '"' -f2)
-	LOCATION="/dev/disk/by-partuuid/${ROOT_DISK}"
+if cryptsetup status "root" | grep -q "inactive"; then
+	echo -e "\nERROR: Forgot to mount the LUKS2 partition as the name 'root'?\n"
+	exit 1
 fi
+LOCATION="/dev/mapper/root"
+
 
 MakeDirs() {
 	mkdir "${mkdir_flags}" /mnt/{tmp,boot,btrfs,var/{log,cache/pacman/pkg},srv,root,home}
@@ -75,12 +71,6 @@ if [[ ${MOUNT_ONLY} -eq 1 ]]; then
 	exit 0
 else
 	MountPartitions
-fi
-
-if [[ ! -a "/mnt/tmp/SKIP_REFLECTOR" ]]; then
-	# Test the 10 most reliable mirrors, given their last full sync is at max 45 minutes delayed.
-	reflector --verbose -c ${reflector_countrylist} -p https --delay 0.75 --score 10 --fastest 6 --save /etc/pacman.d/mirrorlist
-	touch /mnt/tmp/SKIP_REFLECTOR
 fi
 
 # Account for Pacman suddenly exiting (due to the user sending SIGINT by pressing Ctrl + C).

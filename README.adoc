@@ -9,11 +9,14 @@ ifdef::env-github[]
 endif::[]
 :imagesdir: imgs/
 
-.*Dux* is simplistic installer for **pure** Arch Linux; no different release schedules and breakage that Manjaro inflicts, and no third-party repos.
-- It is also simple to modify for accomodating your own preferences, as it's programmed in Bash.
-- Uses tricks to speed up installation compared to alternatives, without causing issues.
+.*Dux* installs Arch Linux catered to my tastes; the primary benefits:
 - Has lots of desktop-specific optimizations that ArchInstall and ArchTitus fail to do themselves, the ladder two being optimized for servers instead (Linux defaults).
-- A focus on maintaining a stable OS, such as using Btrfs snapshots automatically.
+- Kept simple and programmed in Bash.
+- No third-party repos that break the OS, unlike Manjaro.
+- Uses tricks to speed up installation compared to alternatives, without causing issues.
+- Tunnel-visioned on maintaining a stable OS, such as using Btrfs snapshots automatically.
+- systemd services are avoided whenever possible, as they are lower-quality than alternatives.
+- What's there is what I use. If it's not, I archive it in my GitHub gists; such is the case for the https://gist.github.com/felikcat/ae4d80bd6af49f336b0bbd3bb15bc469[GNOME installer].
 
 .*In-depth overview of what Dux does and its intentions.*
 [%collapsible]
@@ -141,13 +144,17 @@ Every program installed is another developer or set of developers to trust; keep
 - If you have *16GB* of RAM, add on *16GB* more to this requirement, same applies to *32GB* of RAM for *32GB* of disk space.
 . *UEFI* must be enabled.
 ** If booting into the Arch Linux ISO fails on UEFI, a very rare IA32 UEFI BIOS is used. Follow link:https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface#Booting_64-bit_kernel_on_32-bit_UEFI[these instructions] to successfully boot the Arch Linux ISO.
-* link:https://archive.is/QwLMB[Disable UEFI Secure Boot]
+. link:https://archive.is/QwLMB[Disable UEFI Secure Boot]
 ** If convincing is needed, link:https://github.com/pbatard/rufus/wiki/FAQ#Why_do_I_need_to_disable_Secure_Boot_to_use_UEFINTFS[read this].
-* The latest link:https://archlinux.org/download/[Arch Linux ISO]; if you have no torrent client, use link:https://www.qbittorrent.org/download.php[qBittorrent].
 
 NOTE: Dual-booting is supported, given Windows is on a different disk (hard drive) than Arch Linux.
 
-== 1. [Optional / Security] Verify ISO authenticity
+
+
+== 1. Verify ISO authenticity
+
+.Download the latest link:https://archlinux.org/download/[Arch Linux ISO]; if you have no torrent client, use link:https://www.qbittorrent.org/download.php[qBittorrent].
+- Keep that tab open.
 
 === macOS
 . Install Homebrew from https://brew.sh/

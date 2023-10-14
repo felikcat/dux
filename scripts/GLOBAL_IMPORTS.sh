@@ -75,14 +75,11 @@ _pkgs_add() {
 	fi
 }
 
-if [[ ${bootloader_chosen} -eq 1 ]]; then
-	source "${GIT_DIR}/Bootloaders/Install_GRUB.sh"
-elif [[ ${bootloader_chosen} -eq 2 ]]; then
-	_modify_kernel_parameters() {
-		if ! grep -q "${KERNEL_PARAMS}" "${BOOT_CONF}"; then
-			sed -i -e "s/standard options\"[ ]*\"[^\"]*/& ${KERNEL_PARAMS}/" \
-				-e "s/user mode\"[ ]*\"[^\"]*/& ${KERNEL_PARAMS}/" "${BOOT_CONF}"
-		fi
-	}
-fi
+# Meant for rEFInd.
+_modify_kernel_parameters() {
+	if ! grep -q "${KERNEL_PARAMS}" "${BOOT_CONF}"; then
+		sed -i -e "s/standard options\"[ ]*\"[^\"]*/& ${KERNEL_PARAMS}/" \
+			-e "s/user mode\"[ ]*\"[^\"]*/& ${KERNEL_PARAMS}/" "${BOOT_CONF}"
+	fi
+}
 

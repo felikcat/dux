@@ -9,6 +9,13 @@ source "${GIT_DIR}/configs/settings.sh"
 
 BOOT_DISK=$(blkid -s PARTLABEL -s PARTUUID | sed -n '/"BOOTEFI"/p' | cut -f1 -d':')
 
+ROOT_DISK=$(blkid -s UUID -s TYPE | sed -n '/crypto_LUKS/p' | cut -f2 -d' ' | cut -d '=' -f2 | sed 's/\"//g')
+
+[[ ${no_mitigations} -eq 1 ]] &&
+	MITIGATIONS_OFF="mitigations=off"
+
+REQUIRED_PARAMS="rd.luks.name=${ROOT_DISK}=root rd.luks.options=discard root=/dev/mapper/root rootflags=subvol=@root rw"
+
 # loglevel=3: print only 3 (KERN_ERR) conditions during boot process.
 # acpi_osi=Linux: tell the motherboard's BIOS to load their ACPI tables for Linux.
 # usbcore.autosuspend=-1: never auto-suspend USB devices, to prevent stuttering on wireless mice.

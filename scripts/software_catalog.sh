@@ -20,11 +20,6 @@ chown -R "${YOUR_USER}:${YOUR_USER}" "/home/${YOUR_USER}/.config/systemd/user"
 
 chmod +x -R "${GIT_DIR}"
 
-if [[ ${gaming_setup} -eq 1 ]]; then
-	PKGS_AUR+=(protontricks)
-	FLATPAKS+=()
-fi
-
 [[ ${appimagelauncher} -eq 1 ]] &&
 	PKGS_AUR+=(appimagelauncher)
 

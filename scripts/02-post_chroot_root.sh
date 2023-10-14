@@ -15,12 +15,6 @@ MARCH=$(gcc -march=native -Q --help=target | grep -oP '(?<=-march=).*' -m1 | awk
 # Caches result of 'nproc'
 NPROC=$(nproc)
 
-if [[ ${use_luks2} -eq 1 ]]; then
-	ROOT_DISK=$(blkid -s UUID -s TYPE | sed -n '/crypto_LUKS/p' | cut -f2 -d' ' | cut -d '=' -f2 | sed 's/\"//g')
-else
-	ROOT_DISK=$(blkid -s PARTLABEL -s PARTUUID | sed -n '/"ROOT"/p' | cut -f3 -d' ' | cut -d '=' -f2 | sed 's/\"//g')
-fi
-
 Preparation() {
 	pacman -Sy --quiet --noconfirm --ask=4 archlinux-keyring && pacman -Su --quiet --noconfirm --ask=4
 
@@ -55,6 +49,7 @@ EOF
 	# Why 'video': https://github.com/Hummer12007/brightnessctl/issues/63
 	useradd -m -G users,wheel,video,gamemode -s /bin/zsh "${YOUR_USER}" &&
 		echo "${YOUR_USER}:${PWCODE}" | chpasswd
+
 	# Useful for the Trinity Control Center which isn't used; kept here for more programs to work correctly.
 	useradd -s /bin/zsh root || :
         echo "root:${PWCODE}" | chpasswd
@@ -184,20 +179,9 @@ systemctl enable "${SERVICES[@]}"
 # Technical opinions on systemd from reputable developers: https://skarnet.org/software/systemd.html
 systemctl mask lvm2-lvmpolld.socket lvm2-monitor.service systemd-resolved.service systemd-oomd.service systemd-timedated.service systemd-timesyncd.service systemd-networkd.service
 
-[[ ${no_mitigations} -eq 1 ]] &&
-	MITIGATIONS_OFF="mitigations=off"
-
-if [[ ${use_luks2} -eq 1 ]]; then
-	REQUIRED_PARAMS="rd.luks.name=${ROOT_DISK}=root rd.luks.options=discard root=/dev/mapper/root rootflags=subvol=@root rw"
-else
-	REQUIRED_PARAMS="root=/dev/disk/by-partuuid/${ROOT_DISK} rootflags=subvol=@root rw"
-fi
-
-if [[ ${bootloader_chosen} -eq 1 ]]; then
-	source "${GIT_DIR}/Bootloaders/Install_GRUB.sh"
-elif [[ ${bootloader_chosen} -eq 2 ]]; then
-	source "${GIT_DIR}/Bootloaders/Install_rEFInd.sh"
-fi
+# GRUB2 is replacing rEFInd later on.
+#source "${GIT_DIR}/Bootloaders/Install_GRUB.sh"
+source "${GIT_DIR}/Bootloaders/Install_rEFInd.sh"
 
 # Ensure "net.ipv4.tcp_congestion_control = bbr" is a valid option.
 \cp "${cp_flags}" "${GIT_DIR}"/files/etc/modules-load.d/tcp_bbr.conf "/etc/modules-load.d/"

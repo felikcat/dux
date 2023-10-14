@@ -11,9 +11,6 @@ discord="1"
 
 
 # === Open-Source Software ===
-# Installs: ProtonUp, Steam
-gaming_setup="1"
-
 # Adds full support for AppImages.
 appimagelauncher="0"
 
