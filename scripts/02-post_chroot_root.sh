@@ -87,7 +87,7 @@ sed -i -e "s/-march=x86-64 -mtune=generic/-march=${MARCH} -mtune=${MARCH}/" \
 # Ensure multi-threaded compiling outside of PKGBUILDs.
 echo "GNUMAKEFLAGS=-j${NPROC} -l${NPROC}
 MAKEFLAGS=-j${NPROC} -l${NPROC}
-" > {/home/${YOUR_USER}/.config/environment.d/10-compile_flags.conf,/etc/environment.d/10-compile_flags.conf}
+" | tee /home/${YOUR_USER}/.config/environment.d/10-compile_flags.conf /etc/environment.d/10-compile_flags.conf
 
 # Enable the 32-bit software repository.
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
