@@ -56,6 +56,7 @@ else
 fi
 
 RemovePartitions() {
+    swapoff "${PARTITION2}" # Ensure swap isn't used, otherwise it cannot be deleted
     wipefs -af ${DISK}* # Remove partition-table signatures on selected disk
     sgdisk -Z "${DISK}" # Remove GPT & MBR data structures on selected disk
 }
