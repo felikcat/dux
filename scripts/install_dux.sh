@@ -13,10 +13,6 @@ cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
 source "${GIT_DIR}/scripts/GLOBAL_IMPORTS.sh"
 source "${GIT_DIR}/configs/settings.sh"
 
-if ! grep -q "'archiso'" /etc/mkinitcpio.d/linux.preset; then
-	echo -e "\nERROR: Do not run this script outside of the Arch Linux ISO!\n"
-	exit 1
-fi
 if [[ ${use_luks2} -eq 1 ]]; then
 	if cryptsetup status "root" | grep -q "inactive"; then
 		echo -e "\nERROR: Forgot to mount the LUKS2 partition under the name 'root'?\n"
@@ -29,6 +25,8 @@ mkdir -p "${GIT_DIR}/logs"
 chmod +x -R "${GIT_DIR}"
 
 clear
+echo -e "Make sure to not run this script outside of the Artix Linux ISO!\n"
+
 
 SetPasswordPrompt() {
 	read -rp "Enter a new password for the username \"${YOUR_USER}\": " DESIREDPW
