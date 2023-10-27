@@ -113,6 +113,6 @@ SetLUKSPasswordPrompt() {
     fi
 }
 
-[[ ${use_luks2} -eq 1 ]] && SetLUKSPasswordPrompt
+SetLUKSPasswordPrompt
 echo -e "\n\e[1;32mDisk formatting successful!\e[0m\n"
 exit 0

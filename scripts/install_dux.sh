@@ -25,7 +25,7 @@ mkdir -p "${GIT_DIR}/logs"
 chmod +x -R "${GIT_DIR}"
 
 clear
-echo -e "Make sure to not run this script outside of the Artix Linux ISO!\n"
+echo -e "DO NOT CONTINUE IF running this script outside of the Artix Linux ISO!\n"
 
 
 SetPasswordPrompt() {
