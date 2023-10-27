@@ -62,7 +62,7 @@ MountPartitions() {
 if [[ ${MOUNT_ONLY} -eq 1 ]]; then
 	MountPartitions
 	echo -e "\nEntering chroot...\n"
-	arch-chroot /mnt /bin/zsh
+	artix-chroot /mnt /bin/zsh
 	exit 0
 else
 	MountPartitions
@@ -71,8 +71,8 @@ fi
 # Account for Pacman suddenly exiting (due to the user sending SIGINT by pressing Ctrl + C).
 rm -f /mnt/var/lib/pacman/db.lck &&
 	# Install packages later if possible; keep this list minimal.
-	pacstrap /mnt cryptsetup dosfstools btrfs-progs base base-devel git \
-		zsh grml-zsh-config --quiet --noconfirm --ask=4 --needed
+	basestrap /mnt cryptsetup dosfstools btrfs-progs base base-devel git \
+		zsh --quiet --noconfirm --ask=4 --needed
 
 cat <<'EOF' >/mnt/etc/fstab
 # Static information about the filesystems.
@@ -80,7 +80,7 @@ cat <<'EOF' >/mnt/etc/fstab
 
 # <file system> <dir> <type> <options> <dump> <pass>
 EOF
-genfstab -U /mnt >>/mnt/etc/fstab
+fstabgen -U /mnt >>/mnt/etc/fstab
 
 sed -i -e 's/^#Color/Color/' \
 	-e '/^#ParallelDownloads/s/^#//' /mnt/etc/pacman.conf

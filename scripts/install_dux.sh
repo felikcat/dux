@@ -56,36 +56,36 @@ _01
 \cp -f -R "${GIT_DIR}" "/mnt/root"
 
 _02() {
-	(arch-chroot /mnt "${GIT_DIR}/scripts/02-post_chroot_root.sh") |& tee "${GIT_DIR}/logs/02-post_chroot_root.log" || return
+	(artix-chroot /mnt "${GIT_DIR}/scripts/02-post_chroot_root.sh") |& tee "${GIT_DIR}/logs/02-post_chroot_root.log" || return
 }
 _02
 
 _03() {
-	(arch-chroot /mnt sudo -u "${YOUR_USER}" bash "/home/${YOUR_USER}/dux/scripts/03-post_chroot_user.sh") |& tee "${GIT_DIR}/logs/03-post_chroot_user.log" || return
+	(artix-chroot /mnt sudo -u "${YOUR_USER}" bash "/home/${YOUR_USER}/dux/scripts/03-post_chroot_user.sh") |& tee "${GIT_DIR}/logs/03-post_chroot_user.log" || return
 }
 _03
 
 _gpu() {
-    (arch-chroot /mnt "${GIT_DIR}/scripts/GPU.sh") |& tee "${GIT_DIR}/logs/GPU.log" || return
+    (artix-chroot /mnt "${GIT_DIR}/scripts/GPU.sh") |& tee "${GIT_DIR}/logs/GPU.log" || return
 }
 [[ ${disable_gpu} -ne 1 ]] && _gpu
 
 SetupAudio() {
-	(arch-chroot /mnt "${GIT_DIR}/scripts/Pipewire.sh") |& tee "${GIT_DIR}/logs/Pipewire.log" || return
+	(artix-chroot /mnt "${GIT_DIR}/scripts/Pipewire.sh") |& tee "${GIT_DIR}/logs/Pipewire.log" || return
 }
 SetupAudio
 
 SetupDesktopEnvironment() {
 	if [[ ${desktop_environment} -eq 1 ]]; then
-		(arch-chroot /mnt "${GIT_DIR}/scripts/DE/GNOME.sh") |& tee "${GIT_DIR}/logs/GNOME.log" || return
+		(artix-chroot /mnt "${GIT_DIR}/scripts/DE/GNOME.sh") |& tee "${GIT_DIR}/logs/GNOME.log" || return
 		elif [[ ${desktop_environment} -eq 2 ]]; then
-			(arch-chroot /mnt "${GIT_DIR}/scripts/DE/IceWM.sh") |& tee "${GIT_DIR}/logs/IceWM.log" || return
+			(artix-chroot /mnt "${GIT_DIR}/scripts/DE/IceWM.sh") |& tee "${GIT_DIR}/logs/IceWM.log" || return
 	fi
 }
 SetupDesktopEnvironment
 
 _04() {
-	(arch-chroot /mnt "${GIT_DIR}/scripts/04-finalize.sh") |& tee "${GIT_DIR}/logs/04-finalize.log" || return
+	(artix-chroot /mnt "${GIT_DIR}/scripts/04-finalize.sh") |& tee "${GIT_DIR}/logs/04-finalize.log" || return
 }
 _04
 
@@ -96,7 +96,7 @@ rm -rf "/mnt/home/${YOUR_USER:?}/dux/logs"
 \cp -f -R "${GIT_DIR}/logs" "/mnt/home/${YOUR_USER}/dux"
 
 SetCorrectPermissions() {
-	(arch-chroot /mnt "chown" -R "${YOUR_USER}:${YOUR_USER}" /home/"${YOUR_USER}"/{dux,dux_backups})
+	(artix-chroot /mnt "chown" -R "${YOUR_USER}:${YOUR_USER}" /home/"${YOUR_USER}"/{dux,dux_backups})
 }
 SetCorrectPermissions
 
