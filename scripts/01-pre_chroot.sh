@@ -2,11 +2,6 @@
 set +H
 set -e
 
-if ! grep -q "'archiso'" /etc/mkinitcpio.d/linux.preset; then
-	echo -e "\nERROR: Do not run this script outside of the Arch Linux ISO!\n"
-	exit 1
-fi
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
 source "${GIT_DIR}/scripts/GLOBAL_IMPORTS.sh"
