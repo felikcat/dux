@@ -13,11 +13,9 @@ cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
 source "${GIT_DIR}/scripts/GLOBAL_IMPORTS.sh"
 source "${GIT_DIR}/configs/settings.sh"
 
-if [[ ${use_luks2} -eq 1 ]]; then
-	if cryptsetup status "root" | grep -q "inactive"; then
-		echo -e "\nERROR: Forgot to mount the LUKS2 partition under the name 'root'?\n"
-		exit 1
-	fi
+if cryptsetup status "root" | grep -q "inactive"; then
+	echo -e "\nERROR: Forgot to mount the LUKS2 partition under the name 'root'?\n"
+	exit 1
 fi
 
 mkdir -p "${GIT_DIR}/logs"

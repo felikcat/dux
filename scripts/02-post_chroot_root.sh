@@ -23,7 +23,12 @@ Preparation() {
 
 	local TZ
 	TZ=$(curl -s http://ip-api.com/line?fields=timezone)
-	systemd-firstboot --keymap="${system_keymap}" --timezone="${TZ}" --locale="en_US.UTF-8" --hostname="${system_hostname}" --setup-machine-id --force || :
+	
+	echo "${TZ}" > /etc/timezone
+	echo "LANG=en_US.UTF-8" > /etc/locale.conf
+	echo "${system_hostname}" > /etc/hostname
+	echo "KEYMAP=${system_keymap}" > /etc/conf.d/keymaps
+
 	# Use the new locale.conf now to stop 'perl' from complaining about a broken locale.
 	unset LANG
 	source /etc/profile.d/locale.sh
@@ -122,8 +127,8 @@ chrony dnsmasq openresolv libnewt pigz pbzip2 strace usbutils linux-firmware gno
 man-db man-pages pacman-contrib mkinitcpio bat
 wget trash-cli reflector rebuild-detector vim)
 
-case $(systemd-detect-virt) in
-"none")
+case $(virt-what) in
+0)
 	if [[ ${CPU_VENDOR} = "AuthenticAMD" ]]; then
 		PKGS+=(amd-ucode)
 		MICROCODE="initrd=amd-ucode.img initrd=initramfs-%v.img"
@@ -140,11 +145,11 @@ case $(systemd-detect-virt) in
 	# Our vmware-user.service is created then enabled in 05-booted.sh
 	SERVICES+=(vmtoolsd.service vmware-vmblock-fuse.service)
 	;;
-"oracle")
+"virtualbox")
 	PKGS+=(virtualbox-guest-utils)
 	SERVICES+=(vboxservice.service)
 	;;
-"microsoft")
+"hyperv")
 	PKGS+=(hyperv)
 	SERVICES+=(hv_fcopy_daemon.service hv_kvp_daemon.service hv_vss_daemon.service)
 	;;
@@ -172,12 +177,7 @@ SERVICES+=(fstrim.timer btrfs-scrub@-.timer
 irqbalance.service dbus-broker.service power-profiles-daemon.service thermald.service avahi-daemon.service chronyd.service
 rfkill-unblock@all)
 
-systemctl enable "${SERVICES[@]}"
-
-# systemd devs make fixes to problems that don't matter to others, and half-ass their solutions due to maintaining everything under the sun; systemd suffers from insane levels of feature creep.
-# Less importantly, systemd is for corporate users, not you. Even then, s6 is suitable for server usage with some elbow grease put into it; runit is not suitable.
-# Technical opinions on systemd from reputable developers: https://skarnet.org/software/systemd.html
-systemctl mask lvm2-lvmpolld.socket lvm2-monitor.service systemd-resolved.service systemd-oomd.service systemd-timedated.service systemd-timesyncd.service systemd-networkd.service
+s6-rc -u change "${SERVICES[@]}"
 
 # GRUB2 is replacing rEFInd later on.
 #source "${GIT_DIR}/Bootloaders/Install_GRUB.sh"

@@ -59,4 +59,4 @@ ConfigKDE
 ConfigNetworkmanager
 ConfigFirewalls
 
-systemctl enable "${SERVICES[@]}"
+s6-rc -u change "${SERVICES[@]}"

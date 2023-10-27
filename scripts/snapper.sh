@@ -17,7 +17,7 @@ clear
     _pkgs_aur_add
 
     SERVICES+=(refind-btrfs.service snapper-boot.timer snapper-cleanup.timer snapper-timeline.timer)
-    systemctl enable "${SERVICES[@]}"
+    s6-rc -u change "${SERVICES[@]}"
 #fi
 
 # If /.snapshots already exists, snapper will fail to create its config.

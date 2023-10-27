@@ -72,7 +72,7 @@ fi
 rm -f /mnt/var/lib/pacman/db.lck &&
 	# Install packages later if possible; keep this list minimal.
 	basestrap /mnt cryptsetup dosfstools btrfs-progs base base-devel git \
-		zsh --quiet --noconfirm --ask=4 --needed
+		zsh virt-what s6-base elogind-s6 --quiet --noconfirm --ask=4 --needed
 
 cat <<'EOF' >/mnt/etc/fstab
 # Static information about the filesystems.
