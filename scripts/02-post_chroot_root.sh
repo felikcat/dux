@@ -67,7 +67,7 @@ EOF
 	mv -f "/home/${YOUR_USER}/dux" "/home/${YOUR_USER}/dux_backup_${DATE}" >&/dev/null || :
 	\cp "${cp_flags}" -R "${GIT_DIR}" "/home/${YOUR_USER}/dux"
 
-	mkdir "${mkdir_flags}" {/etc/{modules-load.d,NetworkManager/conf.d,modprobe.d,tmpfiles.d,pacman.d/hooks,X11,fonts,snapper/configs,conf.d},/boot,/home/"${YOUR_USER}"/.config/{fontconfig/conf.d,environment.d},/usr/share/libalpm/scripts}
+	mkdir "${mkdir_flags}" {/etc/{environment.d,modules-load.d,NetworkManager/conf.d,modprobe.d,tmpfiles.d,pacman.d/hooks,X11,fonts,snapper/configs,conf.d},/boot,/home/"${YOUR_USER}"/.config/{fontconfig/conf.d,environment.d},/usr/share/libalpm/scripts}
 }
 Preparation
 
@@ -91,6 +91,18 @@ MAKEFLAGS=-j${NPROC} -l${NPROC}
 
 # Enable the 32-bit software repository.
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+
+# Enable Arch Linux respositories.
+PKGS+=(artix-archlinux-support)
+_pkgs_add
+echo "
+# Arch
+ [extra]
+ Include = /etc/pacman.d/mirrorlist-arch
+
+ [multilib]
+ Include = /etc/pacman.d/mirrorlist-arch
+" >> /etc/pacman.conf
 
 Hardware() {
 	if [[ ${hardware_wifi_and_bluetooth} -eq 1 ]]; then
