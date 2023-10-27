@@ -67,7 +67,7 @@ EOF
 	mv -f "/home/${YOUR_USER}/dux" "/home/${YOUR_USER}/dux_backup_${DATE}" >&/dev/null || :
 	\cp "${cp_flags}" -R "${GIT_DIR}" "/home/${YOUR_USER}/dux"
 
-	mkdir "${mkdir_flags}" {/etc/{modules-load.d,NetworkManager/conf.d,modprobe.d,tmpfiles.d,pacman.d/hooks,X11,fonts,systemd/coredump.conf.d,snapper/configs,conf.d},/boot,/home/"${YOUR_USER}"/.config/{fontconfig/conf.d,systemd/user},/usr/share/libalpm/scripts}
+	mkdir "${mkdir_flags}" {/etc/{modules-load.d,NetworkManager/conf.d,modprobe.d,tmpfiles.d,pacman.d/hooks,X11,fonts,snapper/configs,conf.d},/boot,/home/"${YOUR_USER}"/.config/{fontconfig/conf.d,environment.d},/usr/share/libalpm/scripts}
 }
 Preparation
 
@@ -85,8 +85,9 @@ sed -i -e "s/-march=x86-64 -mtune=generic/-march=${MARCH} -mtune=${MARCH}/" \
 	-e "s/lrzip -q/lrzip -q -p ${NPROC}/" /etc/makepkg.conf
 
 # Ensure multi-threaded compiling outside of PKGBUILDs.
-sed -i "s/.DefaultEnvironment.*/DefaultEnvironment=\"GNUMAKEFLAGS=-j${NPROC} -l${NPROC}\" \"MAKEFLAGS=-j${NPROC} -l${NPROC}\"/" \
-	/etc/systemd/{system.conf,user.conf}
+echo "GNUMAKEFLAGS=-j${NPROC} -l${NPROC}
+MAKEFLAGS=-j${NPROC} -l${NPROC}
+" > {/home/${YOUR_USER}/.config/environment.d/10-compile_flags.conf,/etc/environment.d/10-compile_flags.conf}
 
 # Enable the 32-bit software repository.
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
