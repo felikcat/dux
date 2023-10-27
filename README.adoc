@@ -292,7 +292,10 @@ TIP: If "wlan0" is not the correct interface, use iwctl's `station list` to see 
 
 . `# pacman-key --init`
 
-. `# pacman -Syy git gptfdisk parted`
+. `# pacman -Syy git gptfdisk parted terminus-font`
+
+. `# setfont ter-122b`
+- If you want an even larger font, use for example: `ter-124b` or `ter-132b`.
 
 . `# git clone --depth=1 -b r1 https://github.com/felikcat/dux`
 
