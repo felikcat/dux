@@ -32,9 +32,8 @@ BOOT_CONF="/boot/refind_linux.conf" && export BOOT_CONF
 	SYSTEMD_USER_ENV="DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus XDG_RUNTIME_DIR=/run/user/1000" &&
 	export SYSTEMD_USER_ENV
 
-if systemd-detect-virt --chroot >&/dev/null; then
+[[ "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)" ]] &&
 	IS_CHROOT=1
-fi
 
 BACKUPS="/home/${YOUR_USER}/dux_backups" && export BACKUPS
 

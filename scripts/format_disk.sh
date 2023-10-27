@@ -66,7 +66,7 @@ WipeEntireDisk() {
     ["Secure"]*)
         RemovePartitions
         cryptsetup open --type plain -d /dev/urandom "${DISK}" cleanit
-        ddrescue --force /dev/zero /dev/mapper/cleanit
+        dd if=/dev/zero of=/dev/mapper/cleanit bs=4096 status=progress
         cryptsetup close cleanit
         ;;
     ["Normal"]*)
@@ -90,7 +90,8 @@ sgdisk -n 2::+"${TOTAL_RAM}"M --typecode=2:8200 "${DISK}"
 # Partition 3 ("/" or "root" directory)
 sgdisk -n 3::-0 --typecode=3:8300 --change-name=3:'ROOT' "${DISK}"
 
-partprobe "${DISK}" # Make the Linux kernel use the latest partition tables without rebooting
+# Make the Linux kernel use the latest partition tables without rebooting
+partprobe "${DISK}"
 
 mkfs.fat -F 32 "${PARTITION1}"
 mkswap "${PARTITION2}"

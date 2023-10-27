@@ -272,8 +272,13 @@ Once booted into the Arch Linux ISO, ensure an internet connection is establishe
 *For Wi-Fi:*
 
 . Run `# rfkill unblock all`
-. `# iwctl` -> `station wlan0 connect your_wifi_SSID` -> `exit`
-. `# systemctl restart systemd-networkd`
+. `# connmanctl`
+- `technologies`
+- `enable wifi`
+- `services`
+- `agent on`
+- `station wlan0 connect your_wifi_SSID`
+- `exit`
 
 TIP: If "wlan0" is not the correct interface, use iwctl's `station list` to see your wireless interface(s).
 
@@ -281,10 +286,13 @@ TIP: If "wlan0" is not the correct interface, use iwctl's `station list` to see 
 
 ====
 
+. Login with:
+- Username: `root`
+- Password: `artix`
 
 . `# pacman-key --init`
 
-. `# pacman -Syy git`
+. `# pacman -Syy git gptfdisk parted`
 
 . `# git clone --depth=1 -b r1 https://github.com/felikcat/dux`
 

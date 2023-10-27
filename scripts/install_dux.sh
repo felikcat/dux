@@ -5,9 +5,7 @@ set +H
 set -eo pipefail
 
 # Prevent installation issues arising from an inaccurate system time.
-timedatectl set-ntp true
-wait
-systemctl restart systemd-timesyncd.service
+s6-rc -u change ntpd
 wait
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
