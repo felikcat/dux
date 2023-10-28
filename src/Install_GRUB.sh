@@ -14,4 +14,21 @@ REQUIRED_PARAMS="rd.luks.name=${ROOT_DISK}=root rd.luks.options=discard root=/de
 COMMON_PARAMS="loglevel=3 quiet add_efi_memmap acpi_osi=Linux skew_tick=1 mce=ignore_ce nowatchdog tsc=reliable no_timer_check usbcore.autosuspend=-1 ${MICROCODE:-}"
 
 # --removable: Support for MSI motherboards.
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB --removable
+if [[ $(</sys/firmware/efi/fw_platform_size) -eq 64 ]]; then
+    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB --removable
+elif [[ $(</sys/firmware/efi/fw_platform_size) -eq 32 ]]; then
+    grub-install --target=i386-efi --efi-directory=/boot --bootloader-id=GRUB --removable
+fi
+
+ConfigGRUB() {
+    sed -i -e "s/.GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX/" \
+        -e "s/.GRUB_CMDLINE_LINUX_DEFAULT/GRUB_CMDLINE_LINUX_DEFAULT/" \
+        -e "s/.GRUB_DISABLE_OS_PROBER/GRUB_DISABLE_OS_PROBER/" \
+        "${BOOT_CONF}" # can't allow these to be commented out
+
+    sed -i -e "s|GRUB_CMDLINE_LINUX=.*|GRUB_CMDLINE_LINUX=\"${MITIGATIONS_OFF:-} ${REQUIRED_PARAMS}\"|" \
+        -e "s|GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT=\"${COMMON_PARAMS}\"|" \
+        -e "s|GRUB_DISABLE_OS_PROBER=.*|GRUB_DISABLE_OS_PROBER=false|" \
+        "${BOOT_CONF}"
+}
+ConfigGRUB

@@ -76,8 +76,8 @@ _pkgs_add() {
 # Meant for rEFInd.
 _modify_kernel_parameters() {
 	if ! grep -q "${KERNEL_PARAMS}" "${BOOT_CONF}"; then
-		sed -i -e "s/standard options\"[ ]*\"[^\"]*/& ${KERNEL_PARAMS}/" \
-			-e "s/user mode\"[ ]*\"[^\"]*/& ${KERNEL_PARAMS}/" "${BOOT_CONF}"
+		sed -i "s/GRUB_CMDLINE_LINUX_DEFAULT=\"[^\"]*/& ${PARAMS}/" "${BOOT_CONF}"
+				REGENERATE_GRUB2_CONFIG=1
 	fi
 }
 
