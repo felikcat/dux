@@ -9,8 +9,7 @@ ifdef::env-github[]
 endif::[]
 :imagesdir: imgs/
 
-WARNING: Do not use. I've switched to NixOS and this is as good as dead. +
-If you're interested in writing an Arch Linux installer in Bash however, this might be a good learning resource.
+WARNING: No stable releases at the moment. Do not use.
 
 .*Dux* is a pragmatic Arch Linux installer; the primary benefits:
 - Has some desktop & gaming optimizations that ArchInstall and ArchTitus fail to do themselves, the ladder two being optimized for servers instead (Linux defaults).
