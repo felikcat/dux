@@ -19,11 +19,10 @@ if ! grep -q "'archiso'" /etc/mkinitcpio.d/linux.preset; then
 	echo -e "\nERROR: Do not run this script outside of the Arch Linux ISO!\n"
 	exit 1
 fi
-if [[ ${use_luks2} -eq 1 ]]; then
-	if cryptsetup status "root" | grep -q "inactive"; then
-		echo -e "\nERROR: Forgot to mount the LUKS2 partition under the name 'root'?\n"
-		exit 1
-	fi
+
+if cryptsetup status "root" | grep -q "inactive"; then
+	echo -e "\nERROR: Forgot to mount the LUKS2 partition under the name 'root'?\n"
+	exit 1
 fi
 
 mkdir -p "${GIT_DIR}/logs"
@@ -31,6 +30,7 @@ mkdir -p "${GIT_DIR}/logs"
 chmod +x -R "${GIT_DIR}"
 
 clear
+
 
 SetPasswordPrompt() {
 	read -rp "Enter a new password for the username \"${YOUR_USER}\": " DESIREDPW

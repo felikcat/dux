@@ -58,10 +58,11 @@ EOF
 	# sudo: Allow users in group 'wheel' to elevate to superuser without prompting for a password (until 04-finalize.sh).
 	echo "%wheel ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/custom_settings
 
-	# Ensure these directories exist.
+	# Backup Dux before proceeding.
 	mv -f "/home/${YOUR_USER}/dux" "/home/${YOUR_USER}/dux_backup_${DATE}" >&/dev/null || :
 	\cp "${cp_flags}" -R "${GIT_DIR}" "/home/${YOUR_USER}/dux"
 
+	# Ensure these directories exist.
 	mkdir "${mkdir_flags}" {/etc/{modules-load.d,NetworkManager/conf.d,modprobe.d,tmpfiles.d,pacman.d/hooks,X11,fonts,systemd/coredump.conf.d,snapper/configs,conf.d},/boot,/home/"${YOUR_USER}"/.config/{fontconfig/conf.d,systemd/user},/usr/share/libalpm/scripts}
 }
 Preparation
@@ -174,9 +175,8 @@ rfkill-unblock@all)
 
 systemctl enable "${SERVICES[@]}"
 
-# systemd devs make fixes to problems that don't matter to others, and half-ass their solutions due to maintaining everything under the sun; systemd suffers from insane levels of feature creep.
-# Less importantly, systemd is for corporate users, not you. Even then, s6 is suitable for server usage with some elbow grease put into it; runit is not suitable.
-# Technical opinions on systemd from reputable developers: https://skarnet.org/software/systemd.html
+# systemd devs make fixes to problems that don't matter to others, and half-ass some of their solutions -- such as resolved.
+# Good arguments pointing out systemd's flaws: https://skarnet.org/software/systemd.html & https://forums.gentoo.org/viewtopic-t-1105854.html
 systemctl mask lvm2-lvmpolld.socket lvm2-monitor.service systemd-resolved.service systemd-oomd.service systemd-timedated.service systemd-timesyncd.service systemd-networkd.service
 
 # GRUB2 is replacing rEFInd later on.

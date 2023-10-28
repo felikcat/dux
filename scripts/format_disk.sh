@@ -56,8 +56,9 @@ else
 fi
 
 RemovePartitions() {
-    wipefs -af ${DISK}* # Remove partition-table signatures on selected disk
-    sgdisk -Z "${DISK}" # Remove GPT & MBR data structures on selected disk
+    swapoff "${PARTITION2}" || : # Ensure swap isn't used, otherwise it cannot be deleted
+    wipefs -af ${DISK}*          # Remove partition-table signatures on selected disk
+    sgdisk -Z "${DISK}"          # Remove GPT & MBR data structures on selected disk
 }
 
 WipeEntireDisk() {
@@ -90,7 +91,8 @@ sgdisk -n 2::+"${TOTAL_RAM}"M --typecode=2:8200 "${DISK}"
 # Partition 3 ("/" or "root" directory)
 sgdisk -n 3::-0 --typecode=3:8300 --change-name=3:'ROOT' "${DISK}"
 
-partprobe "${DISK}" # Make the Linux kernel use the latest partition tables without rebooting
+# Make the Linux kernel use the latest partition tables without rebooting
+partprobe "${DISK}"
 
 mkfs.fat -F 32 "${PARTITION1}"
 mkswap "${PARTITION2}"
@@ -112,6 +114,6 @@ SetLUKSPasswordPrompt() {
     fi
 }
 
-[[ ${use_luks2} -eq 1 ]] && SetLUKSPasswordPrompt
+SetLUKSPasswordPrompt
 echo -e "\n\e[1;32mDisk formatting successful!\e[0m\n"
 exit 0

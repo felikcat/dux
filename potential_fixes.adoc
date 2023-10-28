@@ -12,7 +12,7 @@ endif::[]
 == Mounting Dux installation from an Arch Linux ISO
 . `# pacman -Sy git`
 . `# git clone https://github.com/felikcat/dux`
-. If `use_luks2="1"` was used -> `# cryptsetup open /dev/EXAMPLE3 root`
+. `# cryptsetup open /dev/EXAMPLE3 root`
 . `# MOUNT_ONLY=1 bash ~/dux/scripts/01-pre_chroot.sh`
 
 == Pinpointing system problems
