@@ -2,7 +2,7 @@
 set +H
 set -e
 
-SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SRC_DIR="$(realpath .)"
 source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
 source "${SRC_DIR}/Configs/settings.sh"
 

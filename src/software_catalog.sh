@@ -2,7 +2,7 @@
 # shellcheck disable=SC2154
 set +H
 
-SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SRC_DIR="$(realpath .)"
 
 export KEEP_GOING=1
 source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
