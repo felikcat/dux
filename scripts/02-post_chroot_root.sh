@@ -137,7 +137,7 @@ case $(systemd-detect-virt) in
 	PKGS+=(qemu-guest-agent)
 	;;
 "vmware")
-	PKGS+=(open-vm-tools)
+	PKGS+=(open-vm-tools gtkmm3)
 	# Our vmware-user.service is created then enabled in 05-booted.sh
 	SERVICES+=(vmtoolsd.service vmware-vmblock-fuse.service)
 	;;
