@@ -49,7 +49,7 @@ SetPasswordPrompt() {
 SetPasswordPrompt
 
 _01() {
-	("${SRC_DIR}/src/01-pre_chroot.sh") |& tee "${SRC_DIR}/logs/01-pre_chroot.log" || return
+	("${SRC_DIR}/01-pre_chroot.sh") |& tee "${SRC_DIR}/logs/01-pre_chroot.log" || return
 }
 _01
 
@@ -59,7 +59,7 @@ _01
 \cp -f -R "${SRC_DIR}" "/mnt/root"
 
 _02() {
-	(arch-chroot /mnt "${SRC_DIR}/src/02-post_chroot_root.sh") |& tee "${SRC_DIR}/logs/02-post_chroot_root.log" || return
+	(arch-chroot /mnt "${SRC_DIR}/02-post_chroot_root.sh") |& tee "${SRC_DIR}/logs/02-post_chroot_root.log" || return
 }
 _02
 
@@ -69,22 +69,22 @@ _03() {
 _03
 
 _gpu() {
-    (arch-chroot /mnt "${SRC_DIR}/src/GPU.sh") |& tee "${SRC_DIR}/logs/GPU.log" || return
+    (arch-chroot /mnt "${SRC_DIR}/GPU.sh") |& tee "${SRC_DIR}/logs/GPU.log" || return
 }
 [[ ${disable_gpu} -ne 1 ]] && _gpu
 
 SetupAudio() {
-	(arch-chroot /mnt "${SRC_DIR}/src/Pipewire.sh") |& tee "${SRC_DIR}/logs/Pipewire.log" || return
+	(arch-chroot /mnt "${SRC_DIR}/Pipewire.sh") |& tee "${SRC_DIR}/logs/Pipewire.log" || return
 }
 SetupAudio
 
 SetupDesktopEnvironment() {
-	(arch-chroot /mnt "${SRC_DIR}/src/KDE.sh") |& tee "${SRC_DIR}/logs/KDE.log" || return
+	(arch-chroot /mnt "${SRC_DIR}/KDE.sh") |& tee "${SRC_DIR}/logs/KDE.log" || return
 }
 SetupDesktopEnvironment
 
 _04() {
-	(arch-chroot /mnt "${SRC_DIR}/src/04-finalize.sh") |& tee "${SRC_DIR}/logs/04-finalize.log" || return
+	(arch-chroot /mnt "${SRC_DIR}/04-finalize.sh") |& tee "${SRC_DIR}/logs/04-finalize.log" || return
 }
 _04
 
