@@ -6,6 +6,7 @@ SRC_DIR=$(dirname "$(realpath -s "${BASH_SOURCE[0]}")")
 source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
 source "${SRC_DIR}/Configs/settings.sh"
 
+ROOT_DISK=$(blkid -s UUID -s TYPE | sed -n '/crypto_LUKS/p' | cut -f2 -d' ' | cut -d '=' -f2 | sed 's/\"//g')
 REQUIRED_PARAMS="rd.luks.name=${ROOT_DISK}=root rd.luks.options=discard root=/dev/mapper/root rootflags=subvol=@root rw"
 
 # loglevel=3: print only 3 (KERN_ERR) conditions during boot process.
