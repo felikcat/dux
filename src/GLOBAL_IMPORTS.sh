@@ -24,7 +24,7 @@ fi
 [[ -z ${DATE:-} ]] &&
 	DATE=$(date +"%d-%m-%Y_%H-%M-%S") && export DATE
 
-BOOT_CONF="/boot/refind_linux.conf" && export BOOT_CONF
+BOOT_CONF="/etc/default/grub" && export BOOT_CONF
 
 [[ -z ${SYSTEMD_USER_ENV:-} ]] &&
 	SYSTEMD_USER_ENV="DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus XDG_RUNTIME_DIR=/run/user/1000" &&
