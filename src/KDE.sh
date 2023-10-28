@@ -58,10 +58,10 @@ ConfigFlatpak() {
 
     if [[ ${DEBUG} -eq 1 ]]; then
         # shellcheck disable=SC2086
-        sudo flatpak -vv override ${FLATPAK_PARAMS}
+        flatpak -vv override ${FLATPAK_PARAMS}
     else
         # shellcheck disable=SC2086
-        sudo flatpak override ${FLATPAK_PARAMS}
+        flatpak override ${FLATPAK_PARAMS}
     fi
 }
 
