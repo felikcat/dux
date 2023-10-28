@@ -48,12 +48,12 @@ SetPasswordPrompt() {
 }
 SetPasswordPrompt
 
+ROOT_DIR="/root/dux/src"
+
 _01() {
-	("${SRC_DIR}/01-pre_chroot.sh") |& tee "${SRC_DIR}/logs/01-pre_chroot.log" || return
+	("${ROOT_DIR}/01-pre_chroot.sh") |& tee "${ROOT_DIR}/logs/01-pre_chroot.log" || return
 }
 _01
-
-SRC_DIR="/root/dux/src"
 
 # /mnt needs access to Dux's contents.
 [[ -d "/mnt/root/dux" ]] &&
@@ -61,38 +61,40 @@ SRC_DIR="/root/dux/src"
 \cp -f -R "/root/dux" "/mnt/root"
 
 _02() {
-	(arch-chroot /mnt "${SRC_DIR}/02-post_chroot_root.sh") |& tee "${SRC_DIR}/logs/02-post_chroot_root.log" || return
+	(arch-chroot /mnt "${ROOT_DIR}/02-post_chroot_root.sh") |& tee "${ROOT_DIR}/logs/02-post_chroot_root.log" || return
 }
 _02
 
 _03() {
-	(arch-chroot /mnt sudo -u "${YOUR_USER}" bash "/home/${YOUR_USER}/dux/src/03-post_chroot_user.sh") |& tee "${SRC_DIR}/logs/03-post_chroot_user.log" || return
+	(arch-chroot /mnt sudo -u "${YOUR_USER}" bash "/home/${YOUR_USER}/dux/src/03-post_chroot_user.sh") |& tee "${ROOT_DIR}/logs/03-post_chroot_user.log" || return
 }
 _03
 
 _gpu() {
-    (arch-chroot /mnt "${SRC_DIR}/GPU.sh") |& tee "${SRC_DIR}/logs/GPU.log" || return
+    (arch-chroot /mnt "${ROOT_DIR}/GPU.sh") |& tee "${ROOT_DIR}/logs/GPU.log" || return
 }
 [[ ${disable_gpu} -ne 1 ]] && _gpu
 
 SetupAudio() {
-	(arch-chroot /mnt "${SRC_DIR}/Pipewire.sh") |& tee "${SRC_DIR}/logs/Pipewire.log" || return
+	(arch-chroot /mnt "${ROOT_DIR}/Pipewire.sh") |& tee "${ROOT_DIR}/logs/Pipewire.log" || return
 }
 SetupAudio
 
 SetupDesktopEnvironment() {
-	(arch-chroot /mnt "${SRC_DIR}/KDE.sh") |& tee "${SRC_DIR}/logs/KDE.log" || return
+	(arch-chroot /mnt "${ROOT_DIR}/KDE.sh") |& tee "${ROOT_DIR}/logs/KDE.log" || return
 }
 SetupDesktopEnvironment
 
 _04() {
-	(arch-chroot /mnt "${SRC_DIR}/04-finalize.sh") |& tee "${SRC_DIR}/logs/04-finalize.log" || return
+	(arch-chroot /mnt "${ROOT_DIR}/04-finalize.sh") |& tee "${ROOT_DIR}/logs/04-finalize.log" || return
 }
 _04
 
+# Remove prior logs.
 rm -rf "/mnt/root/dux/logs"
 rm -rf "/mnt/home/${YOUR_USER:?}/dux/logs"
 
+# Create new logs.
 \cp -f -R "${SRC_DIR}/logs" "/mnt/root/dux"
 \cp -f -R "${SRC_DIR}/logs" "/mnt/home/${YOUR_USER}/dux"
 
