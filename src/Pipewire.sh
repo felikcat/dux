@@ -2,7 +2,7 @@
 set +H
 set -e
 
-SRC_DIR="$(realpath .)"
+SRC_DIR=$(dirname "$(realpath -s "${BASH_SOURCE[0]}")")
 source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
 
 groupadd --force -g 509 pipewire
