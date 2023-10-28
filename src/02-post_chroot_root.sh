@@ -100,7 +100,7 @@ Hardware() {
 		SERVICES+=(cups.socket)
 		ConfigCUPS() {
 			chattr -f -i /etc/nsswitch.conf # Ensure file is writable.
-			sed -i "s/hosts:.*/hosts: files mymachines myhostname mdns_minimal [NOTFOUND=return] resolve/" /etc/nsswitch.conf
+			sed -i "s/hosts:.*/hosts: files mymachines myhostname mdns_minimal [NOTFOUND=return] resolve dns/" /etc/nsswitch.conf
 		}
 		trap ConfigCUPS EXIT
 	fi
