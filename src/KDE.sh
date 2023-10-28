@@ -77,7 +77,7 @@ SetupUserServices() {
 # spectacle: screenshot utility.
 # opensnitch: interactive firewall for programs you run.
 # ufw: firewall for hosting purposes.
-PKGS+=(plasma spectacle opensnitch ufw)
+PKGS+=(plasma spectacle opensnitch ufw konsole)
 PKGS_AUR+=(opensnitch-ebpf-module)
 _pkgs_add
 _pkgs_aur_add

@@ -19,7 +19,7 @@ pacman -S --quiet --noconfirm --ask=4 --overwrite="*" mkinitcpio
 \cp "${cp_flags}" "${SRC_DIR}/Files/etc/mkinitcpio.conf" "/etc/"
 
 # Installing these late sped up the install process prior.
-PKGS+=(linux linux-headers snapper snap-pac)
+PKGS+=(linux linux-headers)
 _pkgs_add
 
 if lspci | grep -P "VGA|3D|Display" | grep -q "NVIDIA"; then
