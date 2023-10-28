@@ -53,10 +53,12 @@ _01() {
 }
 _01
 
+SRC_DIR="/root/dux/src"
+
 # /mnt needs access to Dux's contents.
 [[ -d "/mnt/root/dux" ]] &&
 	rm -rf "/mnt/root/dux"
-\cp -f -R "${SRC_DIR}" "/mnt/root"
+\cp -f -R "/root/dux" "/mnt/root"
 
 _02() {
 	(arch-chroot /mnt "${SRC_DIR}/02-post_chroot_root.sh") |& tee "${SRC_DIR}/logs/02-post_chroot_root.log" || return
