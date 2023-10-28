@@ -184,16 +184,11 @@ TIP: If "wlan0" is not the correct interface, use iwctl's `station list` to see 
 . `# bash ~/dux/src/install_dux.sh`
 ** If there's issues: run with `DEBUG=1` (put before `bash`) for more verbose logs.
 
-___
-
 .After the reboot:
 * Connect to your Wi-Fi network again if needed.
 * Open "Konsole".
-. `$ bash ~/dux/src/05-booted.sh`
-- During this script, your account password will be asked for.
-
-. Configure `~/dux/configs/software_catalog.sh` with a text editor of your choice.
-** After done configuring, run: +
+. Configure `~/dux/src/Configs/software_catalog.sh` with a text editor of your choice.
+. After done configuring, run: +
 `# sudo bash ~/dux/src/software_catalog.sh`
 
 ___
@@ -202,5 +197,5 @@ ___
 == How to help Dux out
 - Star this respository so more people see it, or other forms of publicity like YouTube videos.
 - Make an account on the Arch Linux user repository, and "Vote for this package" for the following:
-. https://aur.archlinux.org/packages/refind-btrfs
 . https://aur.archlinux.org/packages/btrfs-assistant
+. https://aur.archlinux.org/packages/refind-btrfs
