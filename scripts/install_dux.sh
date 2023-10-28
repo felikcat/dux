@@ -6,7 +6,6 @@ set -eo pipefail
 
 # Prevent installation issues arising from an inaccurate system time.
 s6-rc -u change ntpd
-wait
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
@@ -22,6 +21,7 @@ mkdir -p "${GIT_DIR}/logs"
 # Makes scripts below executable.
 chmod +x -R "${GIT_DIR}"
 
+sleep 2
 clear
 echo -e "DO NOT CONTINUE IF running this script outside of the Artix Linux ISO!\n"
 

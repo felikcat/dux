@@ -16,6 +16,8 @@ MARCH=$(gcc -march=native -Q --help=target | grep -oP '(?<=-march=).*' -m1 | awk
 NPROC=$(nproc)
 
 Preparation() {
+	mkdir "${mkdir_flags}" {/etc/{environment.d,conf.d,modules-load.d,NetworkManager/conf.d,modprobe.d,tmpfiles.d,pacman.d/hooks,X11,fonts,snapper/configs},/boot,/home/"${YOUR_USER}"/.config/{fontconfig/conf.d,environment.d},/usr/share/libalpm/scripts}
+
 	pacman -Sy --quiet --noconfirm --ask=4 archlinux-keyring && pacman -Su --quiet --noconfirm --ask=4
 
 	sed -i '/^#en_US.UTF-8 UTF-8/s/^#//' /etc/locale.gen
@@ -25,7 +27,8 @@ Preparation() {
 	TZ=$(curl -s http://ip-api.com/line?fields=timezone)
 	
 	echo "${TZ}" > /etc/timezone
-	echo "LANG=en_US.UTF-8" > /etc/locale.conf
+	echo "LANG=en_US.UTF-8
+LC_COLLATE=C" > /etc/locale.conf
 	echo "${system_hostname}" > /etc/hostname
 	echo "KEYMAP=${system_keymap}" > /etc/conf.d/keymaps
 
@@ -63,11 +66,9 @@ EOF
 	# sudo: Allow users in group 'wheel' to elevate to superuser without prompting for a password (until 04-finalize.sh).
 	echo "%wheel ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/custom_settings
 
-	# Ensure these directories exist.
+	# Backup Dux before proceeding.
 	mv -f "/home/${YOUR_USER}/dux" "/home/${YOUR_USER}/dux_backup_${DATE}" >&/dev/null || :
 	\cp "${cp_flags}" -R "${GIT_DIR}" "/home/${YOUR_USER}/dux"
-
-	mkdir "${mkdir_flags}" {/etc/{environment.d,modules-load.d,NetworkManager/conf.d,modprobe.d,tmpfiles.d,pacman.d/hooks,X11,fonts,snapper/configs,conf.d},/boot,/home/"${YOUR_USER}"/.config/{fontconfig/conf.d,environment.d},/usr/share/libalpm/scripts}
 }
 Preparation
 
