@@ -177,7 +177,7 @@ systemctl enable "${SERVICES[@]}"
 
 # systemd devs make fixes to problems that don't matter to others, and half-ass some of their solutions -- such as resolved.
 # Good arguments pointing out systemd's flaws: https://skarnet.org/software/systemd.html & https://forums.gentoo.org/viewtopic-t-1105854.html
-systemctl mask lvm2-lvmpolld.socket lvm2-monitor.service systemd-resolved.service systemd-oomd.service systemd-timedated.service systemd-timesyncd.service systemd-networkd.service
+#systemctl mask lvm2-lvmpolld.socket lvm2-monitor.service systemd-resolved.service systemd-oomd.service systemd-timedated.service systemd-timesyncd.service systemd-networkd.service
 
 # GRUB2 is replacing rEFInd later on.
 #source "${SRC_DIR}/Install_GRUB.sh"
