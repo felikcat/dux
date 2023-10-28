@@ -13,4 +13,5 @@ REQUIRED_PARAMS="rd.luks.name=${ROOT_DISK}=root rd.luks.options=discard root=/de
 # usbcore.autosuspend=-1: never auto-suspend USB devices, to prevent stuttering on wireless mice.
 COMMON_PARAMS="loglevel=3 quiet add_efi_memmap acpi_osi=Linux skew_tick=1 mce=ignore_ce nowatchdog tsc=reliable no_timer_check usbcore.autosuspend=-1 ${MICROCODE:-}"
 
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+# --removable: Support for MSI motherboards.
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB --removable

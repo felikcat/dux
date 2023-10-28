@@ -117,7 +117,7 @@ if [[ ! -a "/tmp/UpdateDB.empty" ]]; then
 fi
 
 # Default packages, regardless of options selected.
-PKGS+=(refind
+PKGS+=(grub2
 irqbalance power-profiles-daemon thermald dbus-broker gamemode lib32-gamemode iptables-nft
 chrony dnsmasq openresolv libnewt pigz pbzip2 strace usbutils linux-firmware gnome-keyring avahi nss-mdns
 man-db man-pages pacman-contrib mkinitcpio bat
@@ -180,8 +180,7 @@ systemctl enable "${SERVICES[@]}"
 systemctl mask lvm2-lvmpolld.socket lvm2-monitor.service systemd-resolved.service systemd-oomd.service systemd-timedated.service systemd-timesyncd.service systemd-networkd.service
 
 # GRUB2 is replacing rEFInd later on.
-#source "${SRC_DIR}/Install_GRUB.sh"
-source "${SRC_DIR}/Install_rEFInd.sh"
+source "${SRC_DIR}/Install_GRUB.sh"
 
 # Ensure "net.ipv4.tcp_congestion_control = bbr" is a valid option.
 \cp "${cp_flags}" "${SRC_DIR}"/Files/etc/modules-load.d/tcp_bbr.conf "/etc/modules-load.d/"

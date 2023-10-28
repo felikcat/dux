@@ -8,16 +8,11 @@ source "${SRC_DIR}/Configs/settings.sh"
 
 clear
 
-# FOR REFIND -> if [[ ${bootloader_chosen} -eq 2 ]]; then
-    # The developer of python-pid might let their PGP key expire again.
-    gpg --recv-keys 13FFEEE3DF809D320053C587D6E95F20305701A1
+PKGS+=(grub-btrfs)
+_pkgs_add
 
-    PKGS_AUR+=(refind-btrfs)
-    _pkgs_aur_add
-
-    SERVICES+=(refind-btrfs.service snapper-boot.timer snapper-cleanup.timer snapper-timeline.timer)
-    systemctl enable "${SERVICES[@]}"
-#fi
+SERVICES+=(grub-btrfsd.service snapper-boot.timer snapper-cleanup.timer snapper-timeline.timer)
+systemctl enable "${SERVICES[@]}"
 
 # If /.snapshots already exists, snapper will fail to create its config.
 snapper --no-dbus create-config / || :
