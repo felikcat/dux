@@ -9,133 +9,18 @@ ifdef::env-github[]
 endif::[]
 :imagesdir: imgs/
 
-.*Dux* installs Arch Linux catered to my tastes; the primary benefits:
-- Has lots of desktop-specific optimizations that ArchInstall and ArchTitus fail to do themselves, the ladder two being optimized for servers instead (Linux defaults).
+.*Dux* is a pragmatic Arch Linux installer; the primary benefits:
+- Has some desktop & gaming optimizations that ArchInstall and ArchTitus fail to do themselves, the ladder two being optimized for servers instead (Linux defaults).
 - Kept simple and programmed in Bash.
+** There's customizability, but only if important.
+*** Chasing immense customizability will lead to many bugs, if you want that, use ArchInstall or Archboot instead.
+** It's one way or the highway intentionally. If you don't like parts of Dux, you can change that after the fact, as a regular Arch Linux user would.
 - No third-party repos that break the OS, unlike Manjaro.
-- Uses tricks to speed up installation compared to alternatives, without causing issues.
 - Tunnel-visioned on maintaining a stable OS, such as using Btrfs snapshots automatically.
 - systemd services are avoided whenever possible, as they are lower-quality than alternatives.
-- What's there is what I use. If it's not, I archive it in my GitHub gists; such is the case for the https://gist.github.com/felikcat/ae4d80bd6af49f336b0bbd3bb15bc469[GNOME installer].
+- What's used is what is the most pragmatic, which is currently KDE. Historically there was a https://gist.github.com/felikcat/ae4d80bd6af49f336b0bbd3bb15bc469[GNOME installer].
+- Uses tricks to speed up installation compared to alternatives, without causing issues.
 
-.*In-depth overview of what Dux does and its intentions.*
-[%collapsible]
-====
-
-[.lead]
-Goals:
-
-* Being easy to layer on your own additions to Dux to suit your specific needs, or to fork Dux into a custom spin.
-
-* The built-in ricing is ensured to not cause breakages in future updates for KDE.
-
-* No third-party Pacman (package) repositories are ever used.
-
-* The official Arch Linux ISO is used, as it's a solid foundation that also has an entire team to maintain it.
-
-* Dux doesn't provide its own repositories, so running Dux again is itself the updater. If your Arch Linux installed by Dux is not broken, do not run Dux again.
-
-* A unique take on "ricing" (customization) by avoiding the following:
-** Stringing together a bunch of different software by different developers, likely also dealing with conflicting opinions.
-
-
-[.lead]
-Actions taken by Dux:
-
-* Useful functionality and customization are present in GUIs.
-- Prevents resorting to manpages/manuals and configuration files, instead of trying out changes in a concise environment; example: KDE's System Settings.
-
-* Wary of scope creep, the complexity of Dux's code, and the complexity of what Dux has installed.
-- This makes it easy for someone to fork Dux and turn it into what they desire out of Arch Linux.
-
-* Single-user only
-- Linux is not meant as a multi-seat system. Projects such as systemd-homed are disabled or excluded from Dux to avoid their inherent security risks and additional complexity.
-
-* Virtual machine guest support
-** QEMU (multiple GPU drivers, such as QXL and Virtio), VMWare, Hyper-V, and VirtualBox.
-
-* Support for old to new NVIDIA and Intel GPUs.
-** Offloading tasks to a different GPU is also supported.
-
-* Inter fonts by default
-** Similar to macOS SF Pro fonts, but optimized for Linux. Great font rendering for low-DPI to high-DPI displays; increased readability and beautiful instead of (poorly) utilitarian.
-
-* `LUKS2`
-** Disk encryption to act as an anti-theft measure with minimal performance reduction.
-
-* Swap partition that's the same size as total RAM
-** Under high memory pressure situations this keeps Linux afloat in terms of performance; video games run smoother while this is happening.
-** Adds support for hibernation to disk, everything is kept as it were before hitting the hibernate button, allowing you to resume your work at a later date with 0 power usage until removed from hibernation.
-
-* `Gamemode`
-** Allows for a process to temporarily disable power-saving features for extra performance, mainly used by Lutris for video games.
-
-* `BBRv2`: A TCP congestion control for lower bufferbloat; read about its positive effects on download/upload speeds and latency link:https://archive.ph/l0zc8[here].
-** NOTE: qdisc is left at default, rather than the CAKE qdisc being used: +
-https://github.com/systemd/systemd/issues/9725#issuecomment-564872011
-
-* `Btrfs` is used to:
-** Compress data in real-time without noticeable performance impacts, reducing write amplification (increases longevity of disks by lowering disk usage), and increasing read speeds on slow disks.
-** Have high-performance and deduplicated "snapshots" (backups) of key areas, which turns Arch Linux updates breaking software into a small nuisance, as it's very quick and easy to restore to a previous snapshot.
-** Allow for an easier data recovery if a disk gets damaged and/or starts to have bad sectors.
-** To once a month automatically check (Scrub) over all filesystem data and metadata and verifying the checksums, repairing damage if present and possible.
-
-* `Snapper` instead of `Timeshift`
-** `Timeshift` is limited to taking snapshots of @ (root) and @home only.
-*** Taking snapshots encompassing all of @ (root) is wasteful; Dux specifically makes Btrfs subvolumes for these directories to exclude them from snapshots: `/srv, /var/cache/pacman/pkg, /var/log, /home`
-** `Snapper` makes read-only and replicable snapshots.
-
-* `GPT`
-** Compared to MBR, GPT supports disks above 2TB capacity, 128 primary partitions instead of 4, and protects against boot record corruption.
-
-* `I/O scheduling changes`
-** `mq-deadline` for SSDs and eMMCs (flash/USB disks/SD cards), `bfq` for spinning disks (HDDs). +
-This makes these types of disks highly responsive to your inputs.
-
-* `irqbalance`
-** Manages IRQ interrupts more efficiently by being more aware of the current environment. One example is offloading IRQ interrupts to CPU affinities which have the lowest load on them. Another example is respecting VMs having their CPU affinities isolated, meaning irqbalance will offload the IRQ interrupts to CPU affinities that aren't isolated.
-
-* `Flatpak`
-** Visual inconsistencies with Flatpaks are mostly fixed.
-
-* `thermald`
-** Provides a large performance boost for some Intel laptops, with no observable downsides for other hardware combinations.
-** https://www.phoronix.com/scan.php?page=article&item=intel-thermald-tgl&num=2
-
-* Disabled `Baloo` "full-text" indexer
-** It's preferred to load files on demand then cache their thumbnails; a simpler approach that works reliably and without performance issues.
-** `Baloo` has a link:https://bugs.kde.org/show_bug.cgi?id=402154[long-standing bug] related to usage of Btrfs subvolumes (which we use), that greatly impacts disk usage and overall system performance.
-*** Even without this bug, file indexers daemons like `Baloo` won't be used as their design is conceptually over-complicated, and will always be problematic.
-
-* No `systemd-oomd` and no `earlyoom`
-** Let the Linux kernel handle OOM (out of memory) situations, it's responsive enough since Linux kernel v6.1 added MGLRU.
-
-* `dnsmasq` and `openresolv`, instead of `systemd-resolved` and `systemd-resolvconf`
-** To support "network locking" on some VPN clients, and for more reliable DNS resolution.
-
-* `nftables`
-** https://firewalld.org/2018/07/nftables-backend
-
-* `NetworkManager` set to the `iwd` Wi-Fi backend for more network stability and performance.
-
-* `dbus-broker`
-** Replaces `dbus-daemon` for the system bus, as it's faster and more stable by being fully adapted for Linux only instead of trying to stay cross-platform.
-
-* `chrony`
-** High accuracy time sync that happens to be power efficient. Benchmarks and feature comparisons: https://chrony.tuxfamily.org/comparison.html
-** Also accounts for https://en.wikipedia.org/wiki/Leap_second[leap seconds] for additional system clock (time) accuracy. Its "leap smear" mode is used to avoid negative effects from jumping the system clock a sudden and large amount.
-
-* No graphical front-end for the "pacman" package manager
-** Do you on Windows, go onto the Microsoft Store to look through and pick out programs you never tried thinking you want to use that program? Likely not, you instead use a search engine to find the program you already knew you wanted, read through its homepage, then install it. +
-Search engines are better for finding the programs you need, instead of browsing through a shopping gallery (Windows Store) hoping to find another cool program to install that might be useful. +
-Every program installed is another developer or set of developers to trust; keep your program list minimal to keep your PC happy and to waste less of your personal time.
-
-* *Learning sources used:*
-. https://www.kernel.org/doc/Documentation/x86/x86_64/boot-options.txt
-. https://www.intel.com/content/www/us/en/developer/articles/technical/optimizing-computer-applications-for-latency-part-1-configuring-the-hardware.html
-. http://developer.amd.com/wp-content/resources/56263-Performance-Tuning-Guidelines-PUB.pdf
-
-====
 
 == Requirements
 . An Intel or AMD CPU newer than 2005.
@@ -260,7 +145,7 @@ Use https://github.com/balena-io/etcher/releases[balenaEtcher].
 `# dd bs=4M if=/path/to/archkbd:[TAB] of=/dev/EXAMPLE conv=sync`
 
 
-== Starting the Dux installer
+== 3. Starting the Dux installer
 
 Once booted into the Arch Linux ISO, ensure an internet connection is established. +
 `$ ping archlinux.org`
@@ -291,10 +176,10 @@ TIP: If "wlan0" is not the correct interface, use iwctl's `station list` to see 
 . Open `~/dux/configs/settings.sh` in your editor of choice, likely `vim` or `nano`
 ** Do not remove options in Dux's configs! Disable them.
 
-. `# bash ~/dux/scripts/format_disk.sh`
+. `# bash ~/dux/src/format_disk.sh`
 ** kbd:[Ctrl] + kbd:[C] to exit the disk formatter if you're not comfortable proceeding.
 
-. `# bash ~/dux/scripts/install_dux.sh`
+. `# bash ~/dux/src/install_dux.sh`
 ** If there's issues: run with `DEBUG=1` (put before `bash`) for more verbose logs.
 
 ___
@@ -302,12 +187,12 @@ ___
 .After the reboot:
 * Connect to your Wi-Fi network again if needed.
 * Open "Konsole".
-. `$ bash ~/dux/scripts/05-booted.sh`
+. `$ bash ~/dux/src/05-booted.sh`
 - During this script, your account password will be asked for.
 
 . Configure `~/dux/configs/software_catalog.sh` with a text editor of your choice.
 ** After done configuring, run: +
-`# sudo bash ~/dux/scripts/software_catalog.sh`
+`# sudo bash ~/dux/src/software_catalog.sh`
 
 ___
 *If you have issues, please read => link:potential_fixes.adoc[potential_fixes.adoc]*

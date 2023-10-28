@@ -2,10 +2,9 @@
 set +H
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
-source "${GIT_DIR}/scripts/GLOBAL_IMPORTS.sh"
-source "${GIT_DIR}/configs/settings.sh"
+SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
+source "${SRC_DIR}/Configs/settings.sh"
 
 clear
 
@@ -21,7 +20,7 @@ fi
 
 SetupOtherUserFiles() {
 	if ! grep -q 'add-zsh-hook' "/home/${YOUR_USER}/.zshrc" >&/dev/null; then
-		cat "${GIT_DIR}/files/home/.zshrc" >>"/home/${YOUR_USER}/.zshrc"
+		cat "${SRC_DIR}/Files/home/.zshrc" >>"/home/${YOUR_USER}/.zshrc"
 	fi
 }
 
@@ -29,5 +28,5 @@ PKGS_AUR+=(btrfs-assistant)
 _pkgs_aur_add
 SetupOtherUserFiles
 
-mkdir "${mkdir_flags}" /home/"${YOUR_USER}"/.config/environment.d
-\cp "${cp_flags}" "${GIT_DIR}"/files/home/.config/environment.d/dxvk.conf "/home/${YOUR_USER}/.config/environment.d/"
+mkdir "${mkdir_flags}" "/home/${YOUR_USER}/.config/environment.d"
+\cp "${cp_flags}" "${SRC_DIR}/Files/home/.config/environment.d/dxvk.conf" "/home/${YOUR_USER}/.config/environment.d/"

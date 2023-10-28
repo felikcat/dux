@@ -3,9 +3,8 @@
 set +H
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
-source "${GIT_DIR}/configs/settings.sh"
+SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SRC_DIR}/Configs/settings.sh"
 
 clear
 

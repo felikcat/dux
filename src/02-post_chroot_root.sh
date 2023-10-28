@@ -2,10 +2,9 @@
 set +H
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
-source "${GIT_DIR}/scripts/GLOBAL_IMPORTS.sh"
-source "${GIT_DIR}/configs/settings.sh"
+SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
+source "${SRC_DIR}/Configs/settings.sh"
 
 clear
 
@@ -24,6 +23,7 @@ Preparation() {
 	local TZ
 	TZ=$(curl -s http://ip-api.com/line?fields=timezone)
 	systemd-firstboot --keymap="${system_keymap}" --timezone="${TZ}" --locale="en_US.UTF-8" --hostname="${system_hostname}" --setup-machine-id --force || :
+
 	# Use the new locale.conf now to stop 'perl' from complaining about a broken locale.
 	unset LANG
 	source /etc/profile.d/locale.sh
@@ -60,7 +60,7 @@ EOF
 
 	# Backup Dux before proceeding.
 	mv -f "/home/${YOUR_USER}/dux" "/home/${YOUR_USER}/dux_backup_${DATE}" >&/dev/null || :
-	\cp "${cp_flags}" -R "${GIT_DIR}" "/home/${YOUR_USER}/dux"
+	\cp "${cp_flags}" -R "${SRC_DIR}" "/home/${YOUR_USER}/dux"
 
 	# Ensure these directories exist.
 	mkdir "${mkdir_flags}" {/etc/{modules-load.d,NetworkManager/conf.d,modprobe.d,tmpfiles.d,pacman.d/hooks,X11,fonts,systemd/coredump.conf.d,snapper/configs,conf.d},/boot,/home/"${YOUR_USER}"/.config/{fontconfig/conf.d,systemd/user},/usr/share/libalpm/scripts}
@@ -108,7 +108,7 @@ Hardware() {
 Hardware
 
 # Root-less Xorg to lower its memory usage and increase overall security.
-\cp "${cp_flags}" "${GIT_DIR}"/files/etc/X11/Xwrapper.config "/etc/X11/"
+\cp "${cp_flags}" "${SRC_DIR}"/Files/etc/X11/Xwrapper.config "/etc/X11/"
 
 # Tells mlocate to ignore Snapper's Btrfs snapshots; avoids slowdowns and excessive memory usage.
 if [[ ! -a "/tmp/UpdateDB.empty" ]]; then
@@ -180,26 +180,26 @@ systemctl enable "${SERVICES[@]}"
 systemctl mask lvm2-lvmpolld.socket lvm2-monitor.service systemd-resolved.service systemd-oomd.service systemd-timedated.service systemd-timesyncd.service systemd-networkd.service
 
 # GRUB2 is replacing rEFInd later on.
-#source "${GIT_DIR}/scripts/Bootloaders/Install_GRUB.sh"
-source "${GIT_DIR}/scripts/Bootloaders/Install_rEFInd.sh"
+#source "${SRC_DIR}/Install_GRUB.sh"
+source "${SRC_DIR}/Install_rEFInd.sh"
 
 # Ensure "net.ipv4.tcp_congestion_control = bbr" is a valid option.
-\cp "${cp_flags}" "${GIT_DIR}"/files/etc/modules-load.d/tcp_bbr.conf "/etc/modules-load.d/"
+\cp "${cp_flags}" "${SRC_DIR}"/Files/etc/modules-load.d/tcp_bbr.conf "/etc/modules-load.d/"
 
 # Configures various kernel parameters.
-\cp "${cp_flags}" "${GIT_DIR}/files/etc/sysctl.d/99-custom.conf"  "/etc/sysctl.d/"
-\cp "${cp_flags}" "${GIT_DIR}/files/etc/sysfs.conf" 			  "/etc/"
+\cp "${cp_flags}" "${SRC_DIR}/Files/etc/sysctl.d/99-custom.conf"  "/etc/sysctl.d/"
+\cp "${cp_flags}" "${SRC_DIR}/Files/etc/sysfs.conf" 			  "/etc/"
 
 # Use overall best I/O scheduler for each drive type (NVMe, SSD, HDD).
-\cp "${cp_flags}" "${GIT_DIR}"/files/etc/udev/rules.d/60-io-schedulers.rules "/etc/udev/rules.d/"
+\cp "${cp_flags}" "${SRC_DIR}/Files/etc/udev/rules.d/60-io-schedulers.rules" "/etc/udev/rules.d/"
 
 # https://wiki.archlinux.org/title/zsh#On-demand_rehash
-\cp "${cp_flags}" "${GIT_DIR}"/files/etc/pacman.d/hooks/zsh.hook "/etc/pacman.d/hooks/"
+\cp "${cp_flags}" "${SRC_DIR}/Files/etc/pacman.d/hooks/zsh.hook" "/etc/pacman.d/hooks/"
 
 # The kernel's core dump handling is disabled by our sysctl config, inform systemd of it as well.
-\cp "${cp_flags}" "${GIT_DIR}"/files/etc/systemd/coredump.conf.d/99-custom.conf "/etc/systemd/coredump.conf.d"
+\cp "${cp_flags}" "${SRC_DIR}/Files/etc/systemd/coredump.conf.d/99-custom.conf" "/etc/systemd/coredump.conf.d"
 
-\cp "${cp_flags}" "${GIT_DIR}"/files/etc/xdg/reflector/reflector.conf "/etc/xdg/reflector/" &&
+\cp "${cp_flags}" "${SRC_DIR}/Files/etc/xdg/reflector/reflector.conf" "/etc/xdg/reflector/" &&
     sed -i "s/~02-post_chroot_root~/${reflector_countrylist}/" /etc/xdg/reflector/reflector.conf
 
 Prepare03() {

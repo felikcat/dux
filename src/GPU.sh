@@ -2,15 +2,14 @@
 set +H
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
-source "${GIT_DIR}/scripts/GLOBAL_IMPORTS.sh"
-source "${GIT_DIR}/configs/settings.sh"
+SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
+source "${SRC_DIR}/Configs/settings.sh"
 
 PKGS+=(lib32-mesa lib32-ocl-icd lib32-vulkan-icd-loader mesa ocl-icd vulkan-icd-loader)
 
 NvidiaGPUSetup() {
-	(bash "${GIT_DIR}/scripts/_NVIDIA.sh") |& tee "${GIT_DIR}/logs/_NVIDIA.log" || return
+	(bash "${SRC_DIR}/_NVIDIA.sh") |& tee "${SRC_DIR}/logs/_NVIDIA.log" || return
 }
 
 IntelGPUSetup() {

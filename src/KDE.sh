@@ -2,10 +2,9 @@
 set +H
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
-source "${GIT_DIR}/scripts/GLOBAL_IMPORTS.sh"
-source "${GIT_DIR}/configs/settings.sh"
+SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
+source "${SRC_DIR}/Configs/settings.sh"
 
 ConfigSDDM() {
     systemctl disable entrance.service lightdm.service lxdm.service xdm.service tdm.service gdm.service >&/dev/null || :
@@ -21,17 +20,17 @@ ConfigSDDM() {
 
 ConfigKDE(){
     rm "/home/${YOUR_USER}/.config/environment.d/gnome.conf"
-    \cp "${cp_flags}" "${GIT_DIR}"/files/home/.config/environment.d/kde.conf "/home/${YOUR_USER}/.config/environment.d/"
+    \cp "${cp_flags}" "${SRC_DIR}/Files/home/.config/environment.d/kde.conf" "/home/${YOUR_USER}/.config/environment.d/"
 }
 
 ConfigNetworkmanager() {
 	local DIR="etc/NetworkManager/conf.d"
 	# Use openresolv instead of systemd-resolvconf.
-	\cp "${cp_flags}" "${GIT_DIR}"/files/"${DIR}"/rc-manager.conf "/${DIR}/"
+	\cp "${cp_flags}" "${SRC_DIR}/Files/${DIR}/rc-manager.conf" "/${DIR}/"
 	# Use dnsmasq instead of systemd-resolved.
-	\cp "${cp_flags}" "${GIT_DIR}"/files/"${DIR}"/dns.conf "/${DIR}/"
+	\cp "${cp_flags}" "${SRC_DIR}/Files/${DIR}/dns.conf" "/${DIR}/"
 	# Tell NetworkManager to use iwd by default for increased WiFi reliability and speed.
-    \cp "${cp_flags}" "${GIT_DIR}/files/etc/NetworkManager/conf.d/wifi_backend.conf" "/${DIR}/"
+    \cp "${cp_flags}" "${SRC_DIR}/Files/etc/NetworkManager/conf.d/wifi_backend.conf" "/${DIR}/"
 
     SERVICES+=(NetworkManager.service)
     # These conflict with NetworkManager.

@@ -2,10 +2,9 @@
 set +H
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
-source "${GIT_DIR}/scripts/GLOBAL_IMPORTS.sh"
-source "${GIT_DIR}/configs/settings.sh"
+SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
+source "${SRC_DIR}/Configs/settings.sh"
 
 _pkgs_aur_add() {
 	[[ -n ${PKGS_AUR} ]] &&
@@ -21,7 +20,7 @@ NvidiaGPUSetup() {
   	PKGS_AUR+=(libva-nvidia-driver)
 
 	_move2bkup "/etc/modprobe.d/nvidia.conf" &&
-		\cp "${cp_flags}" "${GIT_DIR}"/files/etc/modprobe.d/nvidia.conf "/etc/modprobe.d/"
+		\cp "${cp_flags}" "${SRC_DIR}/Files/etc/modprobe.d/nvidia.conf" "/etc/modprobe.d/"
 
 	[[ ${nvidia_stream_memory_operations} -eq 1 ]] &&
 		sed -i "s/NVreg_EnableStreamMemOPs=0/NVreg_EnableStreamMemOPs=1/" /etc/modprobe.d/nvidia.conf
@@ -35,18 +34,6 @@ NvidiaGPUSetup() {
 		fi
 	}
 	NvidiaEnableDRM
-
-	NvidiaForceMaxSpeed() {
-		if [[ ${nvidia_force_max_performance} -eq 1 ]]; then
-			sudo -H -u "${YOUR_USER}" bash -c "\cp ${cp_flags} ${GIT_DIR}/files/home/.config/systemd/user/nvidia-max-performance.service /home/${YOUR_USER}/.config/systemd/user/"
-			sudo -H -u "${YOUR_USER}" bash -c "systemctl --user enable nvidia-max-performance.service"
-
-			# Allow the "Prefer Maximum Performance" PowerMizer setting on laptops
-			local KERNEL_PARAMS="nvidia.NVreg_RegistryDwords=OverrideMaxPerf=0x1"
-			_modify_kernel_parameters
-		fi
-	}
-	NvidiaForceMaxSpeed
 
 	NvidiaAfterInstall() {
 		# Allow adjusting: clock speed, power, and fan control.

@@ -6,12 +6,10 @@ set -e
 [[ ${KEEP_GOING} -eq 1 ]] &&
 	set +e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# SCRIPT_DIR is used to make GIT_DIR reliable
-cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
-source "${GIT_DIR}/configs/settings.sh"
+SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SRC_DIR}/Configs/settings.sh"
 
-# DEBUG=1 bash ~/dux/scripts/example.sh
+# DEBUG=1 bash ~/dux/src/example.sh
 if [[ ${DEBUG} -eq 1 ]]; then
 	set -x
 	cp_flags="-fv"

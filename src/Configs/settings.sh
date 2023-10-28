@@ -22,17 +22,10 @@ hardware_printers_and_scanners="1"
 # 1: Disables all CPU security mitigations.
 no_mitigations="0"
 
-# 0:  No desktop environment; Do It Yourself.
-# 1:  KDE -> https://kde.org/products/
-desktop_environment="1"
-
 
 # === Graphics Card options ===
 # 1: Skip installing GPU software.
 disable_gpu="0"
-
-# Enforce "Prefer Maximum Performance" (some GPUs lag hard without this).
-nvidia_force_max_performance="0"
 
 # https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__MEMOP.html#group__CUDA__MEMOP
 nvidia_stream_memory_operations="0"

@@ -2,23 +2,25 @@
 # shellcheck disable=SC2154
 set +H
 
+SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 export KEEP_GOING=1
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
-source "${GIT_DIR}/scripts/GLOBAL_IMPORTS.sh"
+source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
 unset KEEP_GOING
-source "${GIT_DIR}/configs/settings.sh"
-source "${GIT_DIR}/configs/software_catalog.sh"
+
+source "${SRC_DIR}/Configs/settings.sh"
+source "${SRC_DIR}/Configs/software_catalog.sh"
+
 
 if [[ ${IS_CHROOT} -eq 1 ]]; then
 	echo -e "\nERROR: Do not run this script inside a chroot!\n"
 	exit 1
 fi
 
-mkdir "${mkdir_flags}" /home/"${YOUR_USER}"/.config/systemd/user
+mkdir "${mkdir_flags}" "/home/${YOUR_USER}/.config/systemd/user"
 chown -R "${YOUR_USER}:${YOUR_USER}" "/home/${YOUR_USER}/.config/systemd/user"
 
-chmod +x -R "${GIT_DIR}"
+chmod +x -R "${SRC_DIR}"
 
 [[ ${appimagelauncher} -eq 1 ]] &&
 	PKGS_AUR+=(appimagelauncher)
@@ -33,7 +35,7 @@ fi
 
 if [[ ${syncthing} -eq 1 ]]; then
 	PKGS+=(syncthing)
-    _syncthing_autorun() {
+    AutorunSyncthing() {
     	sudo -H -u "${YOUR_USER}" bash -c "systemctl --user enable syncthing.service"
   }
 fi
@@ -42,7 +44,7 @@ if [[ ${dolphin} -eq 1 ]]; then
   # packagekit-qt5: Required for "Configure > Configure Dolphin > Context Menu > Download New Services".
   # meld: "Compare files" support.
 	PKGS+=(kconfig ark dolphin kde-cli-tools kdegraphics-thumbnailers kimageformats qt5-imageformats ffmpegthumbs taglib openexr libjxl android-udev packagekit-qt5 packagekit-qt6 meld)
-	_config_dolphin() {
+	ConfigDolphin() {
 		local CONF="/home/${YOUR_USER}/.config/dolphinrc"
 		kwriteconfig5 --file "${CONF}" --group "General" --key "ShowFullPath" "true"
 		kwriteconfig5 --file "${CONF}" --group "General" --key "ShowSpaceInfo" "false"
@@ -53,7 +55,11 @@ fi
 
 if [[ ${mpv} -eq 1 ]]; then
 	PKGS+=(mpv)
-	trap 'sudo -H -u "${YOUR_USER}" bash -c "/home/${YOUR_USER}/dux/scripts/non-SU/software_catalog/mpv_config.sh"' EXIT
+	ConfigMPV() {
+		_move2bkup "/home/${YOUR_USER}/.config/mpv/mpv.conf"
+		mkdir -p "/home/${YOUR_USER}/.config/mpv/"
+		\cp "${cp_flags}" "${SRC_DIR}/Files/home/.config/mpv/mpv.conf" "/home/${YOUR_USER}/.config/mpv/"
+	}
 fi
 
 [[ ${onlyoffice} -eq 1 ]] &&
@@ -69,8 +75,8 @@ if [[ ${obs_studio} -eq 1 ]]; then
 		PKGS+=(pipewire-v4l2 lib32-pipewire-v4l2)
 	fi
 	# Autostart OBS to replicate NVIDIA ShadowPlay / AMD ReLive.
-	_obs_autorun() {
-		sudo -H -u "${YOUR_USER}" bash -c "\cp ${cp_flags} ${GIT_DIR}/files/home/.config/systemd/user/obs-studio.service /home/${YOUR_USER}/.config/systemd/user/"
+	AutorunOBS() {
+		sudo -H -u "${YOUR_USER}" bash -c "\cp ${cp_flags} ${SRC_DIR}/Files/home/.config/systemd/user/obs-studio.service /home/${YOUR_USER}/.config/systemd/user/"
 		sudo -H -u "${YOUR_USER}" bash -c "systemctl --user enable obs-studio.service"
 	}
 fi
@@ -118,8 +124,8 @@ if [[ ${virtual_machines} -eq 1 ]]; then
   # Do not use Copy-on-Write (CoW) for virtual machine disks.
   chattr +C -R "/var/lib/libvirt/images"
 
-  \cp "${cp_flags}" "${GIT_DIR}"/files/etc/modprobe.d/custom_kvm.conf "/etc/modprobe.d/"
-  \cp "${cp_flags}" "${GIT_DIR}"/files/etc/udev/rules.d/99-qemu.rules "/etc/udev/rules.d/"
+  \cp "${cp_flags}" "${SRC_DIR}/Files/etc/modprobe.d/custom_kvm.conf" "/etc/modprobe.d/"
+  \cp "${cp_flags}" "${SRC_DIR}/Files/etc/udev/rules.d/99-qemu.rules" "/etc/udev/rules.d/"
 fi
 
 # Control Flatpak settings per application
@@ -131,9 +137,10 @@ _flatpaks_add
 
 systemctl enable --now "${SERVICES[@]}"
 
-[[ ${nomacs} -eq 1 ]] && _config_nomacs
-[[ ${dolphin} -eq 1 ]] && _config_dolphin
-[[ ${obs_studio} -eq 1 ]] && _obs_autorun
+[[ ${syncthing} -eq 1 ]] && AutorunSyncthing
+[[ ${dolphin} -eq 1 ]] && ConfigDolphin
+[[ ${obs_studio} -eq 1 ]] && AutorunOBS
+[[ ${mpv} -eq 1 ]] && ConfigMPV
 
 # Fix permission issues
-chown -R "${YOUR_USER}:${YOUR_USER}" /home/"${YOUR_USER}"/.config
+chown -R "${YOUR_USER}:${YOUR_USER}" "/home/${YOUR_USER}/.config"

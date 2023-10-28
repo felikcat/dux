@@ -2,10 +2,9 @@
 set +H
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
-source "${GIT_DIR}/scripts/GLOBAL_IMPORTS.sh"
-source "${GIT_DIR}/configs/settings.sh"
+SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
+source "${SRC_DIR}/Configs/settings.sh"
 
 clear
 
@@ -22,4 +21,4 @@ clear
 
 # If /.snapshots already exists, snapper will fail to create its config.
 snapper --no-dbus create-config / || :
-\cp "${cp_flags}" "${GIT_DIR}"/files/etc/snapper/configs/root "/etc/snapper/configs/"
+\cp "${cp_flags}" "${SRC_DIR}"/Files/etc/snapper/configs/root "/etc/snapper/configs/"

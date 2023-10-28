@@ -13,7 +13,7 @@ endif::[]
 . `# pacman -Sy git`
 . `# git clone https://github.com/felikcat/dux`
 . `# cryptsetup open /dev/EXAMPLE3 root`
-. `# MOUNT_ONLY=1 bash ~/dux/scripts/01-pre_chroot.sh`
+. `# MOUNT_ONLY=1 bash ~/dux/src/01-pre_chroot.sh`
 
 == Pinpointing system problems
 * `# dmesg -H`

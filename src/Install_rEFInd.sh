@@ -3,9 +3,9 @@ set +H
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "${SCRIPT_DIR}" && GIT_DIR=$(git rev-parse --show-toplevel)
-source "${GIT_DIR}/scripts/GLOBAL_IMPORTS.sh"
-source "${GIT_DIR}/configs/settings.sh"
+cd "${SCRIPT_DIR}" && SRC_DIR=$(git rev-parse --show-toplevel)
+source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
+source "${SRC_DIR}/Configs/settings.sh"
 
 BOOT_DISK=$(blkid -s PARTLABEL -s PARTUUID | sed -n '/"BOOTEFI"/p' | cut -f1 -d':')
 
@@ -35,7 +35,7 @@ timeout -1' >> /boot/EFI/refind/refind.conf
         touch /tmp/RefindBootloader.empty
     fi
 
-    \cp "${cp_flags}" "${GIT_DIR}"/files/etc/pacman.d/hooks/refind.hook "/etc/pacman.d/hooks/"
+    \cp "${cp_flags}" "${SRC_DIR}/Files/etc/pacman.d/hooks/refind.hook" "/etc/pacman.d/hooks/"
 	refind-mkdefault
 }
 
