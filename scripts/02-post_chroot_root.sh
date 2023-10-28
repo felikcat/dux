@@ -180,8 +180,8 @@ systemctl enable "${SERVICES[@]}"
 systemctl mask lvm2-lvmpolld.socket lvm2-monitor.service systemd-resolved.service systemd-oomd.service systemd-timedated.service systemd-timesyncd.service systemd-networkd.service
 
 # GRUB2 is replacing rEFInd later on.
-#source "${GIT_DIR}/Bootloaders/Install_GRUB.sh"
-source "${GIT_DIR}/Bootloaders/Install_rEFInd.sh"
+#source "${GIT_DIR}/scripts/Bootloaders/Install_GRUB.sh"
+source "${GIT_DIR}/scripts/Bootloaders/Install_rEFInd.sh"
 
 # Ensure "net.ipv4.tcp_congestion_control = bbr" is a valid option.
 \cp "${cp_flags}" "${GIT_DIR}"/files/etc/modules-load.d/tcp_bbr.conf "/etc/modules-load.d/"

@@ -98,7 +98,7 @@ mkfs.fat -F 32 "${PARTITION1}"
 mkswap "${PARTITION2}"
 
 SetLUKSPasswordPrompt() {
-    read -rp $'\nEnter a new password for the LUKS2 container: ' DESIREDPW
+    read -rp $'\n\e[1;35mEnter a new password for the LUKS2 container:\e[0m ' DESIREDPW
     if [[ -z ${DESIREDPW} ]]; then
         echo -e "\nNo password was entered, please try again.\n"
         SetLUKSPasswordPrompt
