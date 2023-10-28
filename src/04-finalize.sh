@@ -26,6 +26,8 @@ SetupSnapper() {
 }
 SetupSnapper
 
+grub-mkconfig -o /boot/grub/grub.cfg
+
 Cleanup() {
 	# Permit users in group 'wheel' to request privilege escalation through sudo.
     echo "%wheel ALL=(ALL) ALL" >/etc/sudoers.d/custom_settings

@@ -66,7 +66,7 @@ _02() {
 _02
 
 _03() {
-	(arch-chroot /mnt sudo -u "${YOUR_USER}" bash "/home/${YOUR_USER}/dux/src/03-post_chroot_user.sh") |& tee "${ROOT_DIR}/logs/03-post_chroot_user.log" || return
+	(arch-chroot /mnt sudo -u "${YOUR_USER}" bash "${ROOT_DIR}/03-post_chroot_user.sh") |& tee "${ROOT_DIR}/logs/03-post_chroot_user.log" || return
 }
 _03
 

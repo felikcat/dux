@@ -19,7 +19,6 @@ ConfigSDDM() {
 }
 
 ConfigKDE(){
-    rm "/home/${YOUR_USER}/.config/environment.d/gnome.conf"
     \cp "${cp_flags}" "${SRC_DIR}/Files/home/.config/environment.d/kde.conf" "/home/${YOUR_USER}/.config/environment.d/"
 }
 
