@@ -73,7 +73,6 @@ SetupUserServices() {
 
     sudo -H -u "${YOUR_USER}" bash -c "systemctl --user enable dbus-broker.service"
 }
-SetupUserServices
 
 # spectacle: screenshot utility.
 # opensnitch: interactive firewall for programs you run.
