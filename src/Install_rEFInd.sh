@@ -13,12 +13,7 @@ ROOT_DISK=$(blkid -s UUID -s TYPE | sed -n '/crypto_LUKS/p' | cut -f2 -d' ' | cu
 [[ ${no_mitigations} -eq 1 ]] &&
 	MITIGATIONS_OFF="mitigations=off"
 
-REQUIRED_PARAMS="rd.luks.name=${ROOT_DISK}=root rd.luks.options=discard root=/dev/mapper/root rootflags=subvol=@root rw"
 
-# loglevel=3: print only 3 (KERN_ERR) conditions during boot process.
-# acpi_osi=Linux: tell the motherboard's BIOS to load their ACPI tables for Linux.
-# usbcore.autosuspend=-1: never auto-suspend USB devices, to prevent stuttering on wireless mice.
-COMMON_PARAMS="loglevel=3 quiet add_efi_memmap acpi_osi=Linux skew_tick=1 mce=ignore_ce nowatchdog tsc=reliable no_timer_check usbcore.autosuspend=-1 ${MICROCODE:-}"
 
 RefindBootloader() {
     # x86_64-efi: rEFInd overrides GRUB2 without issues.

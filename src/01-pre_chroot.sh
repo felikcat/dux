@@ -22,6 +22,10 @@ if cryptsetup status "root" | grep -q "inactive"; then
 fi
 LOCATION="/dev/mapper/root"
 
+# Keep DNS resolving functional if the installer was ran more than once.
+ln -sf ../run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+mount -o bind /run /mnt/run/
+
 
 MakeDirs() {
 	mkdir "${mkdir_flags}" /mnt/{tmp,boot,btrfs,var/{log,cache/pacman/pkg},srv,root,home}
@@ -88,6 +92,3 @@ genfstab -U /mnt >>/mnt/etc/fstab
 
 sed -i -e 's/^#Color/Color/' \
 	-e '/^#ParallelDownloads/s/^#//' /mnt/etc/pacman.conf
-
-# Keep DNS resolving functional if the installer was ran more than once.
-ln -sf ../run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
