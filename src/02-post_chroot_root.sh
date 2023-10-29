@@ -64,6 +64,9 @@ EOF
 
 	# Ensure these directories exist.
 	mkdir "${mkdir_flags}" {/etc/{modules-load.d,NetworkManager/conf.d,modprobe.d,tmpfiles.d,pacman.d/hooks,X11,fonts,systemd/coredump.conf.d,snapper/configs,conf.d},/boot,/home/"${YOUR_USER}"/.config/{fontconfig/conf.d,systemd/user},/usr/share/libalpm/scripts}
+
+	# Prevents DKMS module installation failures.
+	mkdir "${mkdir_flags}" /usr/lib/modules
 }
 Preparation
 

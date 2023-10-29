@@ -74,11 +74,27 @@ SetupUserServices() {
     sudo -H -u "${YOUR_USER}" bash -c "systemctl --user enable dbus-broker.service"
 }
 
+ConfigDolphin() {
+    local CONF="/home/${YOUR_USER}/.config/dolphinrc"
+    kwriteconfig5 --file "${CONF}" --group "General" --key "ShowFullPath" "true"
+    kwriteconfig5 --file "${CONF}" --group "General" --key "ShowSpaceInfo" "false"
+    # Allow loading of larger images that are remotely located, such as on an SMB server.
+    kwriteconfig5 --file "/home/${YOUR_USER}/.config/kdeglobals" --group "PreviewSettings" --key "MaximumRemoteSize" "10485760"
+}
+
 # spectacle: Screenshot Utility.
 # opensnitch: Interactive Firewall for programs you run.
 # ufw: Firewall for hosting purposes.
 # konsole: Terminal Emulator.
-PKGS+=(plasma plasma-wayland-session spectacle opensnitch ufw konsole)
+# xdg-desktop-portal-gnome: Required to launch some Flatpaks, such as Telegram Desktop.
+#
+# dolphin: File browser.
+# -> ark: File archive support, such as Zip and 7z.
+# -> packagekit-qt5: Required for "Configure > Configure Dolphin > Context Menu > Download New Services".
+# -> meld: "Compare files" support.
+PKGS+=(plasma plasma-wayland-session spectacle opensnitch ufw konsole xdg-desktop-portal-gnome
+dolphin ark kconfig5 kde-cli-tools kdegraphics-thumbnailers kimageformats5 qt5-imageformats ffmpegthumbs taglib openexr libjxl android-udev packagekit-qt5 packagekit-qt6 meld
+)
 PKGS_AUR+=(opensnitch-ebpf-module)
 _pkgs_add
 _pkgs_aur_add
@@ -88,6 +104,7 @@ ConfigKDE
 ConfigNetworkmanager
 ConfigFirewalls
 ConfigFlatpak
+ConfigDolphin
 SetupUserServices
 
 systemctl enable "${SERVICES[@]}"

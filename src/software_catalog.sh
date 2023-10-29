@@ -28,29 +28,11 @@ chmod +x -R "${SRC_DIR}"
 [[ ${qpwgraph} -eq 1 ]] &&
 	PKGS+=(qpwgraph)
 
-if [[ ${opensnitch} -eq 1 ]]; then
-	PKGS+=(opensnitch)
-	SERVICES+=(opensnitchd.service)
-fi
-
 if [[ ${syncthing} -eq 1 ]]; then
 	PKGS+=(syncthing)
     AutorunSyncthing() {
     	sudo -H -u "${YOUR_USER}" bash -c "systemctl --user enable syncthing.service"
   }
-fi
-
-if [[ ${dolphin} -eq 1 ]]; then
-  # packagekit-qt5: Required for "Configure > Configure Dolphin > Context Menu > Download New Services".
-  # meld: "Compare files" support.
-	PKGS+=(kconfig ark dolphin kde-cli-tools kdegraphics-thumbnailers kimageformats qt5-imageformats ffmpegthumbs taglib openexr libjxl android-udev packagekit-qt5 packagekit-qt6 meld)
-	ConfigDolphin() {
-		local CONF="/home/${YOUR_USER}/.config/dolphinrc"
-		kwriteconfig5 --file "${CONF}" --group "General" --key "ShowFullPath" "true"
-		kwriteconfig5 --file "${CONF}" --group "General" --key "ShowSpaceInfo" "false"
-		# Allow loading of larger images that are remotely located, such as on an SMB server.
-		kwriteconfig5 --file "/home/${YOUR_USER}/.config/kdeglobals" --group "PreviewSettings" --key "MaximumRemoteSize" "10485760"
-	}
 fi
 
 if [[ ${mpv} -eq 1 ]]; then
@@ -61,12 +43,6 @@ if [[ ${mpv} -eq 1 ]]; then
 		\cp "${cp_flags}" "${SRC_DIR}/Files/home/.config/mpv/mpv.conf" "/home/${YOUR_USER}/.config/mpv/"
 	}
 fi
-
-[[ ${onlyoffice} -eq 1 ]] &&
-	FLATPAKS+=(org.onlyoffice.desktopeditors)
-
-[[ ${evince} -eq 1 ]] &&
-	PKGS+=(evince)
 
 if [[ ${obs_studio} -eq 1 ]]; then
 	# v4l2loopback = for Virtual Camera; a good universal way to screenshare.
@@ -98,12 +74,6 @@ fi
 
 [[ ${evolution} -eq 1 ]] &&
 	PKGS+=(evolution)
-
-[[ ${discord} -eq 1 ]] &&
-	FLATPAKS+=(com.discordapp.Discord)
-
-[[ ${telegram} -eq 1 ]] &&
-	FLATPAKS+=(org.telegram.desktop)
 
 [[ ${task_manager} -eq 1 ]] &&
 	PKGS+=(gnome-system-monitor)
@@ -138,7 +108,6 @@ _flatpaks_add
 systemctl enable --now "${SERVICES[@]}"
 
 [[ ${syncthing} -eq 1 ]] && AutorunSyncthing
-[[ ${dolphin} -eq 1 ]] && ConfigDolphin
 [[ ${obs_studio} -eq 1 ]] && AutorunOBS
 [[ ${mpv} -eq 1 ]] && ConfigMPV
 

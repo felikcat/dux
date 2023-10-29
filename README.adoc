@@ -184,14 +184,23 @@ TIP: If "wlan0" is not the correct interface, use iwctl's `station list` to see 
 . `# bash ~/dux/src/install_dux.sh`
 ** If there's issues: run with `DEBUG=1` (put before `bash`) for more verbose logs.
 
-.After the reboot:
-* Connect to your Wi-Fi network again if needed.
-* Open "Konsole".
-. Configure `~/dux/src/Configs/software_catalog.sh` with a text editor of your choice.
-. After done configuring, run: +
-`# sudo bash ~/dux/src/software_catalog.sh`
+== 4. Software catalog
 
-___
+
+.The following can be installed through KDE's "Discover".
+[cols="3,2,3"]
+|===
+^| image:logos/onlyoffice.svg[100,100] +
+https://www.onlyoffice.com/[OnlyOffice] +
+A Microsoft Office compatible replacement suite.
+^| image:logos/evince.png[100,100] +
+https://wiki.gnome.org/Apps/Evince[Evince] +
+Document viewer for PDF and other formats; see the full list https://wiki.gnome.org/Apps/Evince/SupportedDocumentFormats[here].
+^| image:logos/evolution.png[100,100] +
+https://wiki.gnome.org/Apps/Evolution[Evolution] +
+A mail client and calendar, with address book functionality.
+|===
+
 *If you have issues, please read => link:potential_fixes.adoc[potential_fixes.adoc]*
 
 == How to help Dux out
