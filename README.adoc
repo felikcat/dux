@@ -188,17 +188,41 @@ TIP: If "wlan0" is not the correct interface, use iwctl's `station list` to see 
 
 
 .The following can be installed through KDE's "Discover".
-[cols="3,2,3"]
+[cols="3,3,3"]
 |===
 ^| image:logos/onlyoffice.svg[100,100] +
 https://www.onlyoffice.com/[OnlyOffice] +
 A Microsoft Office compatible replacement suite.
 ^| image:logos/evince.png[100,100] +
 https://wiki.gnome.org/Apps/Evince[Evince] +
-Document viewer for PDF and other formats; see the full list https://wiki.gnome.org/Apps/Evince/SupportedDocumentFormats[here].
+A document viewer for PDFs and other formats; the https://wiki.gnome.org/Apps/Evince/SupportedDocumentFormats[full list of file formats supported].
 ^| image:logos/evolution.png[100,100] +
 https://wiki.gnome.org/Apps/Evolution[Evolution] +
 A mail client and calendar, with address book functionality.
+|===
+[cols="3,3,3"]
+|===
+^| image:logos/Firefox_brand_logo_2019.svg[100,100] +
+https://www.mozilla.org/en-US/firefox/features/[Firefox] +
+The best feeling Web Browser for Linux. Be sure to disable its telemetry and auto-recommendations!
+^| image:logos/feh_93650.png[100,100] +
+https://github.com/derf/feh[Feh] +
+An Image Viewer with a similar interface to the mpv Video Player.
+^| image:logos/Unofficial_Mpv_logo_(with_gradients).svg[100,100] +
+https://mpv.io/[mpv] +
+A Video and Audio Player with the best performance, and most capability in terms of video processing such as high-quality upscaling. It's recommended to view https://iamscum.wordpress.com/guides/videoplayback-guide/mpv-conf/[I am Scum's guide].
+|===
+[cols="3,3,3"]
+|===
+^| image:logos/org.rncbc.qpwgraph.png[100,100] +
+https://gitlab.freedesktop.org/rncbc/qpwgraph[qpwgraph] +
+An Audio Patchbay. If you used QjackCtl prior, this is what you want.
+^| image:logos/foliate_logo.svg[100,100] +
+https://johnfactotum.github.io/foliate/[Foliate] +
+An eBook viewer. Has some overlap with Evince, but supports some file formats it doesn't and has features that closer emulate a physical book.
+^| image:logos/Syncthing_Logo.svg[100,100] +
+https://syncthing.net/[Syncthing] +
+A continuous file synchronization program. It synchronizes files between two or more computers in real time, safely protected from prying eyes.
 |===
 
 *If you have issues, please read => link:potential_fixes.adoc[potential_fixes.adoc]*

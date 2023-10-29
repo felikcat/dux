@@ -90,12 +90,14 @@ ConfigDolphin() {
 # ufw: Firewall for hosting purposes.
 # konsole: Terminal Emulator.
 # xdg-desktop-portal-gnome: Required to launch some Flatpaks, such as Telegram Desktop.
+# libgnome-keyring, libnotify: Firefox (non Flatpak version) requires this for keyring support.
 #
 # dolphin: File browser.
 # -> ark: File archive support, such as Zip and 7z.
 # -> packagekit-qt5: Required for "Configure > Configure Dolphin > Context Menu > Download New Services".
 # -> meld: "Compare files" support.
-PKGS+=(plasma plasma-wayland-session spectacle opensnitch ufw konsole xdg-desktop-portal-gnome
+PKGS+=(plasma plasma-wayland-session spectacle opensnitch ufw konsole
+xdg-desktop-portal-gnome libgnome-keyring libnotify
 dolphin ark kconfig5 kde-cli-tools kdegraphics-thumbnailers kimageformats5 qt5-imageformats ffmpegthumbs taglib openexr libjxl android-udev packagekit-qt5 packagekit-qt6 meld
 )
 PKGS_AUR+=(opensnitch-ebpf-module)

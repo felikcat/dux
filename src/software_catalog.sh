@@ -25,9 +25,6 @@ chmod +x -R "${SRC_DIR}"
 [[ ${appimagelauncher} -eq 1 ]] &&
 	PKGS_AUR+=(appimagelauncher)
 
-[[ ${qpwgraph} -eq 1 ]] &&
-	PKGS+=(qpwgraph)
-
 if [[ ${syncthing} -eq 1 ]]; then
 	PKGS+=(syncthing)
     AutorunSyncthing() {
@@ -57,23 +54,11 @@ if [[ ${obs_studio} -eq 1 ]]; then
 	}
 fi
 
-[[ ${firefox_dev} -eq 1 ]] &&
-	PKGS+=(libgnome-keyring libnotify firefox-developer-edition)
-
-[[ ${foliate} -eq 1 ]] &&
-	PKGS+=(foliate)
-
 [[ ${qbittorrent_enhanced} -eq 1 ]] &&
 	PKGS_AUR+=(qbittorrent-enhanced)
 
-[[ ${feh} -eq 1 ]] &&
-	PKGS+=(feh)
-
 [[ ${yt_dlp} -eq 1 ]] &&
 	PKGS+=(aria2 atomicparsley ffmpeg rtmpdump yt-dlp)
-
-[[ ${evolution} -eq 1 ]] &&
-	PKGS+=(evolution)
 
 [[ ${task_manager} -eq 1 ]] &&
 	PKGS+=(gnome-system-monitor)
