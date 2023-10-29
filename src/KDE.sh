@@ -74,10 +74,11 @@ SetupUserServices() {
     sudo -H -u "${YOUR_USER}" bash -c "systemctl --user enable dbus-broker.service"
 }
 
-# spectacle: screenshot utility.
-# opensnitch: interactive firewall for programs you run.
-# ufw: firewall for hosting purposes.
-PKGS+=(plasma spectacle opensnitch ufw konsole)
+# spectacle: Screenshot Utility.
+# opensnitch: Interactive Firewall for programs you run.
+# ufw: Firewall for hosting purposes.
+# konsole: Terminal Emulator.
+PKGS+=(plasma plasma-wayland-session spectacle opensnitch ufw konsole)
 PKGS_AUR+=(opensnitch-ebpf-module)
 _pkgs_add
 _pkgs_aur_add
