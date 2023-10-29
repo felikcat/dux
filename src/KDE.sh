@@ -37,11 +37,14 @@ ConfigNetworkmanager() {
 }
 
 ConfigFirewalls(){
+    # For OpenSnitch support.
     echo "
 debugfs    /sys/kernel/debug      debugfs  defaults  0 0" >> /etc/fstab
+
     # Block incoming traffic by default; force hosting to be intentional.
     ufw default deny
-    SERVICES+=(ufw.service)
+    ufw enable
+    SERVICES+=(opensnitchd.service ufw.service)
 }
 
 # Makes our font and cursor settings work inside Flatpak.
