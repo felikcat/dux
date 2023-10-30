@@ -75,7 +75,7 @@ fi
 # Account for Pacman suddenly exiting (due to the user sending SIGINT by pressing Ctrl + C).
 rm -f /mnt/var/lib/pacman/db.lck &&
 	# Install packages later if possible; keep this list minimal.
-	pacstrap /mnt cryptsetup dosfstools btrfs-progs base base-devel git \
+	pacstrap -K /mnt cryptsetup dosfstools btrfs-progs base base-devel git \
 		zsh grml-zsh-config --quiet --noconfirm --ask=4 --needed
 
 cat <<'EOF' >/mnt/etc/fstab

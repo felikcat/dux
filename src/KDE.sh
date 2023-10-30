@@ -45,6 +45,14 @@ debugfs    /sys/kernel/debug      debugfs  defaults  0 0" >> /etc/fstab
     ufw default deny
     ufw enable
     SERVICES+=(opensnitchd.service ufw.service)
+
+    mkdir -p /home/${YOUR_USER}/.config/{autostart,opensnitch}
+
+    \cp "${cp_flags}" "/usr/share/applications/opensnitch_ui.desktop" "/home/${YOUR_USER}/.config/autostart"
+
+    local CONF="/home/${YOUR_USER}/.config/opensnitch/settings.conf"
+    # Preferences -> Pop-ups -> Duration: forever
+    kwriteconfig5 --file "${CONF}" --group "global" --key "default_duration" "7"
 }
 
 # Makes our font and cursor settings work inside Flatpak.
@@ -57,14 +65,14 @@ ConfigFlatpak() {
         \cp "${cp_flags}" /etc/fonts/local.conf "/home/${YOUR_USER}/.config/fontconfig/conf.d/" &&
             chown -R "${YOUR_USER}:${YOUR_USER}" "/home/${YOUR_USER}/.config/fontconfig/conf.d/"
 
-    FLATPAK_PARAMS="--filesystem=xdg-config/fontconfig:ro --filesystem=/home/${YOUR_USER}/.icons/:ro --filesystem=/home/${YOUR_USER}/.local/share/icons/:ro --filesystem=/usr/share/icons/:ro"
+    FLATPAK_PARAMS="--filesystem=xdg-config/fontconfig:ro --filesystem=/home/${YOUR_USER}/.icons/:ro --filesystem=/home/${YOUR_USER}/.local/share/icons/:ro --filesystem=/usr/share/icons/:ro --filesystem=xdg-config/gtk-3.0:ro"
 
     if [[ ${DEBUG} -eq 1 ]]; then
         # shellcheck disable=SC2086
-        flatpak -vv override ${FLATPAK_PARAMS}
+        flatpak -vv override --system ${FLATPAK_PARAMS}
     else
         # shellcheck disable=SC2086
-        flatpak override ${FLATPAK_PARAMS}
+        flatpak override --system ${FLATPAK_PARAMS}
     fi
 }
 
@@ -113,3 +121,9 @@ ConfigDolphin
 SetupUserServices
 
 systemctl enable "${SERVICES[@]}"
+
+SetCorrectPermissions() {
+	chown -R "${YOUR_USER}:${YOUR_USER}" "/home/${YOUR_USER}/.config/autostart"
+    chown -R "${YOUR_USER}:${YOUR_USER}" "/home/${YOUR_USER}/.config/opensnitch"
+}
+SetCorrectPermissions

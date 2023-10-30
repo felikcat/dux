@@ -186,7 +186,6 @@ TIP: If "wlan0" is not the correct interface, use iwctl's `station list` to see 
 
 == 4. Software catalog
 
-
 .The following can be installed through KDE's "Discover".
 [cols="3,3,3"]
 |===
@@ -205,9 +204,10 @@ A mail client and calendar, with address book functionality.
 ^| image:logos/Firefox_brand_logo_2019.svg[100,100] +
 https://www.mozilla.org/en-US/firefox/features/[Firefox] +
 The best feeling Web Browser for Linux. Be sure to disable its telemetry and auto-recommendations!
-^| image:logos/feh_93650.png[100,100] +
-https://github.com/derf/feh[Feh] +
-An Image Viewer with a similar interface to the mpv Video Player.
+^| image:logos/utilities-system-monitor.png[100,100] +
+https://gitlab.gnome.org/GNOME/gnome-system-monitor[GNOME System Monitor] +
+An alternative Task Manager / Activity Monitor.
+
 ^| image:logos/Unofficial_Mpv_logo_(with_gradients).svg[100,100] +
 https://mpv.io/[mpv] +
 A Video and Audio Player with the best performance, and most capability in terms of video processing such as high-quality upscaling. It's recommended to view https://iamscum.wordpress.com/guides/videoplayback-guide/mpv-conf/[I am Scum's guide].
@@ -221,9 +221,11 @@ An Audio Patchbay. If you used QjackCtl prior, this is what you want.
 https://johnfactotum.github.io/foliate/[Foliate] +
 An eBook viewer. Has some overlap with Evince, but supports some file formats it doesn't and has features that closer emulate a physical book.
 ^| image:logos/Syncthing_Logo.svg[100,100] +
-https://syncthing.net/[Syncthing] +
-A continuous file synchronization program. It synchronizes files between two or more computers in real time, safely protected from prying eyes.
+https://github.com/zocker-160/SyncThingy[SyncThingy] +
+A tray indicator for the continuous file synchronization program, Syncthing. It synchronizes files between two or more computers in real time, safely protected from prying eyes.
 |===
+
+TIP: For other software, use a search engine like so: "feh arch linux". Doing that links to https://wiki.archlinux.org/title/feh[this wiki page], showing how to install and configure feh, and explains what it is (an Image Viewer).
 
 *If you have issues, please read => link:potential_fixes.adoc[potential_fixes.adoc]*
 

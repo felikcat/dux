@@ -46,14 +46,13 @@ EOF
 	# gamemode: Allows for maximum performance while a specific program is running.
 	groupadd --force -g 385 gamemode
 
+	# Create our user account that can also elevate permissions to 'root'.
 	# Why 'video': https://github.com/Hummer12007/brightnessctl/issues/63
 	useradd -m -G users,wheel,video,gamemode -s /bin/zsh "${YOUR_USER}" &&
 		echo "${YOUR_USER}:${PWCODE}" | chpasswd
 
-	# Useful for the Trinity Control Center which isn't used; kept here for more programs to work correctly.
-	useradd -s /bin/zsh root || :
-        echo "root:${PWCODE}" | chpasswd
-	unset PWCODE
+	# The 'root' user account is no longer useful, disable it.
+	passwd --lock root
 
 	# sudo: Allow users in group 'wheel' to elevate to superuser without prompting for a password (until 04-finalize.sh).
 	echo "%wheel ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/custom_settings
@@ -110,7 +109,7 @@ Hardware() {
 }
 Hardware
 
-# Root-less Xorg to lower its memory usage and increase overall security.
+# Root-less Xorg; lowers its memory usage and increases overall security.
 \cp "${cp_flags}" "${SRC_DIR}"/Files/etc/X11/Xwrapper.config "/etc/X11/"
 
 # Tells mlocate to ignore Snapper's Btrfs snapshots; avoids slowdowns and excessive memory usage.
