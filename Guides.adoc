@@ -1,0 +1,46 @@
+:experimental:
+ifdef::env-github[]
+:icons:
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+:imagesdir: imgs/
+
+.Using only an AMD GPU in a AMD + NVIDIA system
+[%collapsible]
+====
+
+. TODO -> vfio-pci arch wiki
+
+. Remove `/etc/X11/xorg.conf`; this can contain a hardcoded dependence on NVIDIA's drivers.
+
+. `# pacman -S --overwrite='*' xorg-server xf86-video-amdgpu`
+
+. `# systemctl restart sddm.service` or whatever else login manager you use.
+
+====
+
+
+.Virtual machine setup
+[%collapsible]
+====
+
+.General rules of thumb
+* Anytime files under `/etc/modprobe.d` are created or modified, run `mkinitcpio -P` after done.
+* If you want to share a mouse, keyboard, clipboard, and use the same display, use https://looking-glass.io/docs/B6/install
+
+
+.What I do in my VM config
+* Increasing performance, meant only for single VM use cases:
+- Memory locking, and CPU Power Management increase performance; these are set via `qemu:commandline`.
+- Turning off CPU migratable: `<cpu mode="host-passthrough" check="none" migratable="off">`
+- Turning off Memory Ballooning: `<memballoon model="none"/>` -> inside `<devices>` block.
+- Enabling hyper-threading: `<feature policy="require" name="topoext"/>` -> `<cpu>` block
+- `<nosharepages/>` and `<locked/>` -> `<memoryBacking>` block.
+
+* Workarounds:
+- `<maxphysaddr mode="passthrough" limit="39"/>`: the VM will crash without this on an Intel 12700k CPU, given a Looking Glass 'shmem' device is used.
+====

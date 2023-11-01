@@ -11,7 +11,9 @@ endif::[]
 
 WARNING: No stable releases at the moment. Do not use.
 
-.*Dux* is a pragmatic Arch Linux installer; the primary benefits:
+== Dux is a pragmatic Arch Linux installer; the primary benefits.
+[%collapsible]
+====
 - Has some desktop & gaming optimizations that ArchInstall and ArchTitus fail to do themselves, the ladder two being optimized for servers instead (Linux defaults).
 - Kept simple and programmed in Bash.
 ** There's customizability, but only if important.
@@ -22,9 +24,12 @@ WARNING: No stable releases at the moment. Do not use.
 - systemd services are avoided whenever possible, as they are lower-quality than alternatives.
 - What's used is what is the most pragmatic, which is currently KDE. Historically there was a https://gist.github.com/felikcat/ae4d80bd6af49f336b0bbd3bb15bc469[GNOME installer].
 - Uses tricks to speed up installation compared to alternatives, without causing issues.
+====
 
 
 == Requirements
+[%collapsible]
+====
 . An Intel or AMD CPU newer than 2005.
 . *1.5GB* of RAM; 4GB recommended.
 . *16GB* of disk space; *128GB* recommended.
@@ -36,6 +41,7 @@ WARNING: No stable releases at the moment. Do not use.
 
 NOTE: Dual-booting is supported, given Windows is on a different disk (hard drive) than Arch Linux.
 
+====
 
 
 == 1. Verify ISO authenticity
@@ -228,6 +234,8 @@ A tray indicator for the continuous file synchronization program, Syncthing. It 
 TIP: For other software, use a search engine like so: "feh arch linux". Doing that links to https://wiki.archlinux.org/title/feh[this wiki page], showing how to install and configure feh, and explains what it is (an Image Viewer).
 
 *If you have issues, please read => link:potential_fixes.adoc[potential_fixes.adoc]*
+
+*For how-tos on certain things, like using only an AMD GPU in a AMD + NVIDIA GPU system, read => link:Guides.adoc[Guides.adoc]*
 
 == How to help Dux out
 - Star this respository so more people see it, or other forms of publicity like YouTube videos.
