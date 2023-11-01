@@ -3,8 +3,9 @@ set +H
 set -e
 
 SRC_DIR=$(dirname "$(realpath -s "${BASH_SOURCE[0]}")")
-source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
-source "${SRC_DIR}/Configs/settings.sh"
+cd ${SRC_DIR}; cd ..
+source "GLOBAL_IMPORTS.sh"
+source "Configs/settings.sh"
 
 # v4l2loopback = for Virtual Camera; a good universal way to screenshare.
 PKGS+=(obs-studio v4l2loopback-dkms)

@@ -7,7 +7,9 @@ cd ${SRC_DIR}; cd ..
 source "GLOBAL_IMPORTS.sh"
 source "Configs/settings.sh"
 
-PKGS+=(qemu-desktop libvirt virt-manager edk2-ovmf iptables-nft dnsmasq virglrenderer hwloc dmidecode usbutils swtpm)
+# samba = Linux <---> Windows 10/11 file sharing
+PKGS+=(qemu-desktop libvirt virt-manager edk2-ovmf iptables-nft dnsmasq virglrenderer hwloc dmidecode usbutils swtpm samba
+qemu-audio-jack pipewire-jack)
 SERVICES+=(libvirtd.service)
 _pkgs_add
 

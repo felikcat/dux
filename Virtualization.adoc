@@ -1,0 +1,42 @@
+.General rules of thumb
+[%collapsible]
+====
+. Anytime files under `/etc/modprobe.d` are created or modified, run `mkinitcpio -P` after done.
+. If you want to share a mouse, keyboard, clipboard, and use the same display, use https://looking-glass.io/docs/B6/install
+====
+
+.Mouse and Keyboard ultra low-latency, with a virtual KVM switch (evdev method)
+[%collapsible]
+====
+
+. Get what will be your input device, for example: `# cat /dev/input/by-id/usb-IDOBAO_ID87-event-kbd`
+- `event-kbd` for Keyboards, `event-mouse` for Mice.
+- You want to see output when you interact with that keyboard or mice, that's how you tell it is the correct choice.
+
+. Put it into your libvirt XML, such as: +
+[source,xml]
+----
+<qemu:commandline>
+    <qemu:arg value='-object'/>
+    <qemu:arg value='input-linux,id=mouse1,evdev=/dev/input/by-id/usb-Xtrfy_Xtrfy_Wireless_Receiver-event-mouse'/>
+    <qemu:arg value='-object'/>
+    <qemu:arg value='input-linux,id=kbd1,evdev=/dev/input/by-id/usb-IDOBAO_ID87-event-kbd,grab_all=on,repeat=on'/>
+</qemu:commandline>
+----
+
+. Run `gpasswd -a libvirt-qemu input` to give the required 'input' permissions.
+====
+
+.What I do in my VM config
+[%collapsible]
+====
+. Increasing performance, meant only for single VM use cases:
+- Memory locking, and CPU Power Management increase performance; these are set via `qemu:commandline`.
+- Turning off CPU migratable: `<cpu mode="host-passthrough" check="none" migratable="off">`
+- Turning off Memory Ballooning: `<memballoon model="none"/>` -> inside `<devices>` block.
+- Enabling hyper-threading: `<feature policy="require" name="topoext"/>` -> `<cpu>` block
+- `<nosharepages/>` and `<locked/>` -> `<memoryBacking>` block.
+
+. Workarounds:
+- `<maxphysaddr mode="passthrough" limit="39"/>`: the VM will crash without this on an Intel 12700k CPU, given a Looking Glass 'shmem' device is used.
+====

@@ -102,9 +102,11 @@ ConfigDolphin() {
 # -> ark: File archive support, such as Zip and 7z.
 # -> packagekit-qt5: Required for "Configure > Configure Dolphin > Context Menu > Download New Services".
 # -> meld: "Compare files" support.
+# noto-fonts-*: The best supported fonts for making sure characters don't display as blank boxes.
 PKGS+=(plasma plasma-wayland-session spectacle opensnitch ufw konsole
 xdg-desktop-portal-gnome libgnome-keyring libnotify
 dolphin ark kconfig5 kde-cli-tools kdegraphics-thumbnailers kimageformats5 qt5-imageformats ffmpegthumbs taglib openexr libjxl android-udev packagekit-qt5 packagekit-qt6 meld
+noto-fonts-emoji noto-fonts-cjk
 )
 PKGS_AUR+=(opensnitch-ebpf-module)
 _pkgs_add

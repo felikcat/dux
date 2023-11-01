@@ -237,6 +237,8 @@ TIP: For other software, use a search engine like so: "feh arch linux". Doing th
 
 *For how-tos on certain things, like using only an AMD GPU in a AMD + NVIDIA GPU system, read => link:Guides.adoc[Guides.adoc]*
 
+*If you plan to virtualize Windows or Linux in QEMU => link:Virtualization.adoc[Virtualization.adoc] is your friend.*
+
 == How to help Dux out
 - Star this respository so more people see it, or other forms of publicity like YouTube videos.
 - Make an account on the Arch Linux user repository, and "Vote for this package" for the following:
