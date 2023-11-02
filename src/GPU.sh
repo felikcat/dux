@@ -8,6 +8,17 @@ source "${SRC_DIR}/Configs/settings.sh"
 
 PKGS+=(lib32-mesa lib32-ocl-icd lib32-vulkan-icd-loader mesa ocl-icd vulkan-icd-loader)
 
+AMDGPUSetup() {
+	PKGS+=(vulkan-radeon lib32-vulkan-radeon
+	libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau)
+
+	# Early load KMS driver
+	if [[ ! -a "/tmp/amdgpu_early_kms.empty" ]]; then
+		echo -e "\nMODULES+=(amdgpu)" >>/etc/mkinitcpio.conf
+		touch "/tmp/amdgpu_early_kms.empty"
+	fi
+}
+
 NvidiaGPUSetup() {
 	(bash "${SRC_DIR}/_NVIDIA.sh") |& tee "${SRC_DIR}/logs/_NVIDIA.log" || return
 }
@@ -21,8 +32,9 @@ IntelGPUSetup() {
 		PKGS+=(intel-media-driver intel-media-sdk)
 
 	# Early load KMS driver
-	if ! grep -q "i915" /etc/mkinitcpio.conf; then
+	if [[ ! -a "/tmp/intel_early_kms.empty" ]]; then
 		echo -e "\nMODULES+=(i915)" >>/etc/mkinitcpio.conf
+		touch "/tmp/intel_early_kms.empty"
 	fi
 
 	REGENERATE_INITRAMFS=1
@@ -30,7 +42,10 @@ IntelGPUSetup() {
 
 # grep: -P/--perl-regexp benched faster than -E/--extended-regexp
 # shellcheck disable=SC2249
-case $(lspci | grep -P "VGA|3D|Display" | grep -Po "NVIDIA|Intel|VMware SVGA|Red Hat") in
+case $(lspci | grep -P "VGA|3D|Display" | grep -Po "AMD|NVIDIA|Intel|VMware SVGA|Red Hat") in
+*"AMD"*)
+	AMDGPUSetup
+	;;&
 *"NVIDIA"*)
 	NvidiaGPUSetup
 	;;&

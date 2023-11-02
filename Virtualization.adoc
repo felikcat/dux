@@ -40,3 +40,11 @@
 . Workarounds:
 - `<maxphysaddr mode="passthrough" limit="39"/>`: the VM will crash without this on an Intel 12700k CPU, given a Looking Glass 'shmem' device is used.
 ====
+
+.CPU core/thread automatic isolation, for performance stability
+[%collapsible]
+====
+
+. Open `lstopo` to verify that the cores on the host are now locked to what you set.
+
+====
