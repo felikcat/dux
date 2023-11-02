@@ -21,7 +21,7 @@ mkdir -p /etc/{modprobe.d,udev/rules.d}
 # libvirt-qemu: Access to what QEMU created, such as a KVMFR device (for Looking Glass).
 usermod -a -G qemu,video,kvm,libvirt,libvirt-qemu "${YOUR_USER}"
 
-KERNEL_PARAMS="intel_iommu=on iommu=pt"
+KERNEL_PARAMS="intel_iommu=on iommu=pt tsc=reliable no_timer_check"
 _modify_kernel_parameters
 
 # Do not use Copy-on-Write (CoW) for virtual machine disks.

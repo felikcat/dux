@@ -32,18 +32,18 @@ I try to test once a week with default settings.
 
 == 1. Requirements
 
-. An Intel or AMD CPU newer than 2005.
 . If you do not meet the GPU requirements, use `disable_gpu="1"` to manually install and configure yourself:
 - For AMD: Radeon RX 460 or newer.
 - For NVIDIA: GeForce GTX 745 or newer.
 - For Intel: HD 3000 or newer.
-. *1.5GB* of RAM; 4GB recommended.
-. *16GB* of disk space; *128GB* recommended.
-- If you have *16GB* of RAM, add on *16GB* more to this requirement, same applies to *32GB* of RAM for *32GB* of disk space.
+
 . *UEFI* must be enabled.
 ** If booting into the Arch Linux ISO fails on UEFI, a very rare IA32 UEFI BIOS is used. Follow link:https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface#Booting_64-bit_kernel_on_32-bit_UEFI[these instructions] to successfully boot the Arch Linux ISO.
 . link:https://archive.is/QwLMB[Disable UEFI Secure Boot]
 ** If convincing is needed, link:https://github.com/pbatard/rufus/wiki/FAQ#Why_do_I_need_to_disable_Secure_Boot_to_use_UEFINTFS[read this].
+
+. *2GB* of RAM; 4GB recommended.
+. If you have *16GB* of RAM, *32GB* of storage is required; *32GB* RAM would require *48GB* of storage.
 
 NOTE: Dual-booting is supported, given Windows is on a different disk (hard drive) than Arch Linux.
 

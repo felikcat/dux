@@ -163,12 +163,6 @@ pacman -Syuu --quiet --noconfirm --ask=4 --needed "${PKGS[@]}"
 ln -sf /dev/null /usr/share/libalpm/hooks/60-mkinitcpio-remove.hook
 ln -sf /dev/null /usr/share/libalpm/hooks/90-mkinitcpio-install.hook
 
-# Prevent instability if any program attempts to bruteforce your login's password.
-if [[ ! -a "/tmp/FailLock.empty" ]]; then
-	echo 'deny = 0' >> /etc/security/faillock.conf
-	touch /tmp/FailLock.empty
-fi
-
 # Default services, regardless of options selected.
 # rfkill-unblock@all: Ensure Wi-Fi & Bluetooth aren't soft blocked on startup.
 SERVICES+=(fstrim.timer btrfs-scrub@-.timer
@@ -181,7 +175,7 @@ systemctl enable "${SERVICES[@]}"
 # Good arguments pointing out systemd's flaws: https://skarnet.org/software/systemd.html & https://forums.gentoo.org/viewtopic-t-1105854.html
 systemctl mask lvm2-lvmpolld.socket lvm2-monitor.service systemd-resolved.service systemd-oomd.service systemd-timedated.service systemd-timesyncd.service systemd-networkd.service
 
-# GRUB2 is replacing rEFInd later on.
+# Install the bootloader.
 source "${SRC_DIR}/Install_GRUB.sh"
 
 # Ensure "net.ipv4.tcp_congestion_control = bbr" is a valid option.
@@ -199,9 +193,6 @@ source "${SRC_DIR}/Install_GRUB.sh"
 
 # The kernel's core dump handling is disabled by our sysctl config, inform systemd of it as well.
 \cp "${cp_flags}" "${SRC_DIR}/Files/etc/systemd/coredump.conf.d/99-custom.conf" "/etc/systemd/coredump.conf.d"
-
-\cp "${cp_flags}" "${SRC_DIR}/Files/etc/xdg/reflector/reflector.conf" "/etc/xdg/reflector/" &&
-    sed -i "s/~02-post_chroot_root~/${reflector_countrylist}/" /etc/xdg/reflector/reflector.conf
 
 Prepare03() {
 	chmod +x -R {/home/"${YOUR_USER}"/dux,/home/"${YOUR_USER}"/dux_backup_"${DATE}"} >&/dev/null || :
