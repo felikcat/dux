@@ -12,8 +12,11 @@ ConfigSDDM() {
     
     local CONF="/etc/sddm.conf.d/kde_settings.conf"
     kwriteconfig5 --file "${CONF}" --group "Autologin" --key "User" "${YOUR_USER}"
-    kwriteconfig5 --file "${CONF}" --group "Autologin" --key "Session" "plasma"
+    kwriteconfig5 --file "${CONF}" --group "Autologin" --key "Session" "plasmawayland"
     kwriteconfig5 --file "${CONF}" --group "Theme" --key "Current" "breeze"
+
+    local CONF="/etc/sddm.conf.d/10-sddm_wayland.conf"
+    kwriteconfig5 --file "${CONF}" --group "General" --key "DisplayServer" "wayland"
 }
 
 ConfigKDE(){
@@ -91,6 +94,8 @@ ConfigDolphin() {
     kwriteconfig5 --file "/home/${YOUR_USER}/.config/kdeglobals" --group "PreviewSettings" --key "MaximumRemoteSize" "10485760"
 }
 
+# sddm: Login manager, and its depedency for Wayland (weston).
+# libdecor, qt5/6-wayland: Run more programs in Wayland instead of Xorg.
 # spectacle: Screenshot Utility.
 # opensnitch: Interactive Firewall for programs you run.
 # ufw: Firewall for hosting purposes.
@@ -103,7 +108,9 @@ ConfigDolphin() {
 # -> packagekit-qt5: Required for "Configure > Configure Dolphin > Context Menu > Download New Services".
 # -> meld: "Compare files" support.
 # noto-fonts-*: The best supported fonts for making sure characters don't display as blank boxes.
-PKGS+=(plasma plasma-wayland-session spectacle opensnitch ufw konsole
+PKGS+=(sddm weston
+libdecor qt5-wayland qt6-wayland
+plasma plasma-wayland-session spectacle opensnitch ufw konsole
 xdg-desktop-portal-gnome libgnome-keyring libnotify
 dolphin ark kconfig5 kde-cli-tools kdegraphics-thumbnailers kimageformats5 qt5-imageformats ffmpegthumbs taglib openexr libjxl android-udev packagekit-qt5 packagekit-qt6 meld
 noto-fonts-emoji noto-fonts-cjk

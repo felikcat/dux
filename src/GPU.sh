@@ -42,7 +42,7 @@ IntelGPUSetup() {
 
 # grep: -P/--perl-regexp benched faster than -E/--extended-regexp
 # shellcheck disable=SC2249
-case $(lspci | grep -P "VGA|3D|Display" | grep -Po "AMD|NVIDIA|Intel|VMware SVGA|Red Hat") in
+case $(lspci | grep -P "VGA|3D|Display" | grep -Po "AMD|NVIDIA|Intel") in
 *"AMD"*)
 	AMDGPUSetup
 	;;&
@@ -51,12 +51,6 @@ case $(lspci | grep -P "VGA|3D|Display" | grep -Po "AMD|NVIDIA|Intel|VMware SVGA
 	;;&
 *"Intel"*)
 	IntelGPUSetup
-	;;&
-*"VMware"*)
-	PKGS+=(xf86-video-vmware)
-	;;&
-*"Red Hat"*)
-	PKGS+=(xf86-video-qxl spice-vdagent qemu-guest-agent)
 	;;
 esac
 

@@ -136,7 +136,7 @@ case $(systemd-detect-virt) in
 	fi
 	;;
 "kvm")
-	PKGS+=(qemu-guest-agent)
+	PKGS+=(spice-vdagent qemu-guest-agent)
 	;;
 "vmware")
 	PKGS+=(open-vm-tools gtkmm3)

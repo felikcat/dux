@@ -9,6 +9,11 @@ ifdef::env-github[]
 endif::[]
 :imagesdir: imgs/
 
+.If you're going to use Dux, one rule to keep in mind:
+. It will break overtime, likely due to Arch maintainers renaming a package. You are expected to fix issues if I don't get around to it quickly enough. +
+I try to test once a week with default settings.
+- This installer is a way to install Arch Linux faster, and in a higher-quality way than the majority of tinkerers can achieve.
+
 == Dux is a pragmatic Arch Linux installer; the primary benefits.
 [%collapsible]
 ====

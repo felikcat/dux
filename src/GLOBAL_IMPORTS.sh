@@ -21,10 +21,10 @@ else
 	mv_flags="-f"
 fi
 
+BOOT_CONF="/etc/default/grub" && export BOOT_CONF
+
 [[ -z ${DATE:-} ]] &&
 	DATE=$(date +"%d-%m-%Y_%H-%M-%S") && export DATE
-
-BOOT_CONF="/etc/default/grub" && export BOOT_CONF
 
 [[ -z ${SYSTEMD_USER_ENV:-} ]] &&
 	SYSTEMD_USER_ENV="DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus XDG_RUNTIME_DIR=/run/user/1000" &&
@@ -79,4 +79,3 @@ _modify_kernel_parameters() {
 				REGENERATE_GRUB2_CONFIG=1
 	fi
 }
-

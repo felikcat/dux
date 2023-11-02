@@ -23,9 +23,6 @@ SetupOtherUserFiles() {
 		cat "${SRC_DIR}/Files/home/.zshrc" >>"/home/${YOUR_USER}/.zshrc"
 	fi
 }
-
-PKGS_AUR+=(btrfs-assistant)
-_pkgs_aur_add
 SetupOtherUserFiles
 
 mkdir "${mkdir_flags}" "/home/${YOUR_USER}/.config/environment.d"
