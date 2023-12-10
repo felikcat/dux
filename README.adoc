@@ -9,18 +9,14 @@ ifdef::env-github[]
 endif::[]
 :imagesdir: imgs/
 
-.If you're going to use Dux, one rule to keep in mind:
-. It will break overtime, likely due to Arch maintainers renaming a package. You are expected to fix issues if I don't get around to it quickly enough. +
-I try to test once a week with default settings.
-- This installer is a way to install Arch Linux faster, and in a higher-quality way than the majority of tinkerers can achieve.
-
-== Dux is a pragmatic Arch Linux installer; the primary benefits.
+== About
+.This Arch Linux installer's primary goals.
 [%collapsible]
 ====
 - Has some desktop & gaming optimizations that ArchInstall and ArchTitus fail to do themselves, the ladder two being optimized for servers instead (Linux defaults).
 - Kept simple and programmed in Bash.
 ** There's customizability, but only if important.
-*** Chasing immense customizability will lead to many bugs, if you want that, use ArchInstall or Archboot instead.
+*** Chasing immense customizability will lead to bugs and user error. If you want that, use ArchInstall or Archboot instead.
 ** It's one way or the highway intentionally. If you don't like parts of Dux, you can change that after the fact, as a regular Arch Linux user would.
 - No third-party repos that break the OS, unlike Manjaro.
 - Tunnel-visioned on maintaining a stable OS, such as using Btrfs snapshots automatically.
@@ -28,6 +24,11 @@ I try to test once a week with default settings.
 - What's used is what is the most pragmatic, which is currently KDE. Historically there was a https://gist.github.com/felikcat/ae4d80bd6af49f336b0bbd3bb15bc469[GNOME installer].
 - Uses tricks to speed up installation compared to alternatives, without causing issues.
 ====
+
+.If you're going to use Dux, two rules to keep in mind:
+. It will break overtime, likely due to Arch maintainers renaming a package. You are expected to fix issues if I don't get around to it quickly enough.
+
+. This installer is a way to setup Arch Linux faster, and in a high-quality manner.
 
 
 == 1. Requirements
@@ -180,10 +181,8 @@ TIP: If "wlan0" is not the correct interface, use iwctl's `station list` to see 
 
 
 . `# pacman-key --init`
-
 . `# pacman -Syy git`
-
-. `# git clone --depth=1 -b r1 https://github.com/felikcat/dux`
+. `# git clone https://github.com/felikcat/dux`
 
 . Open `~/dux/src/Configs/settings.sh` in your editor of choice, likely `vim` or `nano`
 ** Do not remove options in Dux's configs! Disable them.
@@ -242,9 +241,3 @@ TIP: For other software, use a search engine like so: "feh arch linux". Doing th
 *For how-tos on certain things, like using only an AMD GPU in a AMD + NVIDIA GPU system, read => link:Guides.adoc[Guides.adoc]*
 
 *If you plan to virtualize Windows or Linux in QEMU => link:Virtualization.adoc[Virtualization.adoc] is your friend.*
-
-== How to help Dux out
-- Star this respository so more people see it, or other forms of publicity like YouTube videos.
-- Make an account on the Arch Linux user repository, and "Vote for this package" for the following:
-. https://aur.archlinux.org/packages/btrfs-assistant
-. https://aur.archlinux.org/packages/refind-btrfs
