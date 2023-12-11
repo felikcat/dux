@@ -14,9 +14,6 @@ ConfigSDDM() {
     kwriteconfig5 --file "${CONF}" --group "Autologin" --key "User" "${YOUR_USER}"
     kwriteconfig5 --file "${CONF}" --group "Autologin" --key "Session" "plasmawayland"
     kwriteconfig5 --file "${CONF}" --group "Theme" --key "Current" "breeze"
-
-    local CONF="/etc/sddm.conf.d/10-sddm_wayland.conf"
-    kwriteconfig5 --file "${CONF}" --group "General" --key "DisplayServer" "wayland"
 }
 
 ConfigKDE(){
@@ -37,7 +34,7 @@ ConfigNetworkmanager() {
     systemctl disable connman.service systemd-networkd.service iwd.service >&/dev/null || :
 }
 
-ConfigFirewalls(){
+ConfigFirewalls_Part1(){
     # For OpenSnitch support.
     echo "
 debugfs    /sys/kernel/debug      debugfs  defaults  0 0" >> /etc/fstab
@@ -46,27 +43,17 @@ debugfs    /sys/kernel/debug      debugfs  defaults  0 0" >> /etc/fstab
     ufw default deny
     ufw enable
     SERVICES+=(opensnitchd.service ufw.service)
-
-    mkdir -p /home/${YOUR_USER}/.config/{autostart,opensnitch}
-
-    \cp "${cp_flags}" "/usr/share/applications/opensnitch_ui.desktop" "/home/${YOUR_USER}/.config/autostart"
-
-    local CONF="/home/${YOUR_USER}/.config/opensnitch/settings.conf"
-    # Preferences -> Pop-ups -> Duration: forever
-    kwriteconfig5 --file "${CONF}" --group "global" --key "default_duration" "7"
 }
 
 # Makes our font and cursor settings work inside Flatpak.
-ConfigFlatpak() {
+ConfigFlatpak_Part1() {
     # Flatpak requires this for "--filesystem=xdg-config/fontconfig:ro"
     _move2bkup "/etc/fonts/local.conf" &&
     	\cp "${cp_flags}" "${SRC_DIR}/Files/etc/fonts/local.conf" "/etc/fonts/"
 
-    _move2bkup "/home/${YOUR_USER}/.config/fontconfig/conf.d/99-custom.conf" &&
-        \cp "${cp_flags}" /etc/fonts/local.conf "/home/${YOUR_USER}/.config/fontconfig/conf.d/" &&
-            chown -R "${YOUR_USER}:${YOUR_USER}" "/home/${YOUR_USER}/.config/fontconfig/conf.d/"
-
-    FLATPAK_PARAMS="--filesystem=xdg-config/fontconfig:ro --filesystem=/home/${YOUR_USER}/.icons/:ro --filesystem=/home/${YOUR_USER}/.local/share/icons/:ro --filesystem=/usr/share/icons/:ro --filesystem=xdg-config/gtk-3.0:ro"
+    FLATPAK_PARAMS="--filesystem=xdg-config/fontconfig:ro \
+    --filesystem=/home/${YOUR_USER}/.icons/:ro --filesystem=/home/${YOUR_USER}/.local/share/icons/:ro \
+    --filesystem=/usr/share/icons/:ro --filesystem=xdg-config/gtk-3.0:ro"
 
     if [[ ${DEBUG} -eq 1 ]]; then
         # shellcheck disable=SC2086
@@ -77,24 +64,7 @@ ConfigFlatpak() {
     fi
 }
 
-SetupUserServices() {
-    if [[ $(systemd-detect-virt) = "vmware" ]]; then
-        \cp ${cp_flags} "${SRC_DIR}/Files/home/.config/systemd/user/vmware-user.service" "/home/${YOUR_USER}/.config/systemd/user/"
-        sudo -H -u "${YOUR_USER}" bash -c "systemctl --user enable vmware-user.service"
-    fi
-
-    sudo -H -u "${YOUR_USER}" bash -c "systemctl --user enable dbus-broker.service"
-}
-
-ConfigDolphin() {
-    local CONF="/home/${YOUR_USER}/.config/dolphinrc"
-    kwriteconfig5 --file "${CONF}" --group "General" --key "ShowFullPath" "true"
-    kwriteconfig5 --file "${CONF}" --group "General" --key "ShowSpaceInfo" "false"
-    # Allow loading of larger images that are remotely located, such as on an SMB server.
-    kwriteconfig5 --file "/home/${YOUR_USER}/.config/kdeglobals" --group "PreviewSettings" --key "MaximumRemoteSize" "10485760"
-}
-
-# sddm: Login manager, and its depedency for Wayland (weston).
+# sddm: KDE's default login manager.
 # libdecor, qt5/6-wayland: Run more programs in Wayland instead of Xorg.
 # spectacle: Screenshot Utility.
 # opensnitch: Interactive Firewall for programs you run.
@@ -108,7 +78,7 @@ ConfigDolphin() {
 # -> packagekit-qt5: Required for "Configure > Configure Dolphin > Context Menu > Download New Services".
 # -> meld: "Compare files" support.
 # noto-fonts-*: The best supported fonts for making sure characters don't display as blank boxes.
-PKGS+=(sddm weston
+PKGS+=(sddm
 libdecor qt5-wayland qt6-wayland
 plasma plasma-wayland-session spectacle opensnitch ufw konsole
 xdg-desktop-portal-gnome libgnome-keyring libnotify
@@ -122,15 +92,10 @@ _pkgs_aur_add
 ConfigSDDM
 ConfigKDE
 ConfigNetworkmanager
-ConfigFirewalls
-ConfigFlatpak
-ConfigDolphin
-SetupUserServices
+ConfigFirewalls_Part1
+ConfigFlatpak_Part1
+
+chmod +x "${SRC_DIR}/KDE_user.sh"
+sudo -H -u "${YOUR_USER}" bash -c "${SRC_DIR}/KDE_user.sh"
 
 systemctl enable "${SERVICES[@]}"
-
-SetCorrectPermissions() {
-	chown -R "${YOUR_USER}:${YOUR_USER}" "/home/${YOUR_USER}/.config/autostart"
-    chown -R "${YOUR_USER}:${YOUR_USER}" "/home/${YOUR_USER}/.config/opensnitch"
-}
-SetCorrectPermissions

@@ -41,7 +41,6 @@ NvidiaGPUSetup() {
 	NvidiaAfterInstall() {
 		# Allow adjusting: clock speed, power, and fan control.
 		nvidia-xconfig --cool-bits=28
-		REGENERATE_INITRAMFS=1
 	}
 	trap NvidiaAfterInstall EXIT
 }
@@ -51,10 +50,6 @@ _pkgs_add
 _pkgs_aur_add
 
 systemctl enable nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service
-
-if [[ ${IS_CHROOT} -eq 0 ]] && [[ ${REGENERATE_INITRAMFS} -eq 1 ]]; then
-	mkinitcpio -P
-fi
 
 cleanup() {
 	mkdir "${mkdir_flags}" "${BACKUPS}/etc/modprobe.d"

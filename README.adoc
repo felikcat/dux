@@ -13,22 +13,27 @@ endif::[]
 .This Arch Linux installer's primary goals.
 [%collapsible]
 ====
-- Has some desktop & gaming optimizations that ArchInstall and ArchTitus fail to do themselves, the ladder two being optimized for servers instead (Linux defaults).
-- Kept simple and programmed in Bash.
-** There's customizability, but only if important.
-*** Chasing immense customizability will lead to bugs and user error. If you want that, use ArchInstall or Archboot instead.
-** It's one way or the highway intentionally. If you don't like parts of Dux, you can change that after the fact, as a regular Arch Linux user would.
-- No third-party repos that break the OS, unlike Manjaro.
 - Tunnel-visioned on maintaining a stable OS, such as using Btrfs snapshots automatically.
+
+- Has some desktop & gaming optimizations that ArchInstall and ArchTitus fail to do themselves, the ladder two being optimized for servers instead (Linux defaults).
+
+- Kept simple and programmed in Bash.
+
+- There's customizability, but only if important.
+** It's one way or the highway intentionally. If you don't like parts of Dux, you can change that after the fact, as a regular Arch Linux user would.
+*** Chasing immense customizability will lead to bugs and user error. If you want that, use ArchInstall or Archboot instead.
+
+- No third-party repos that break the OS, unlike Manjaro.
+
 - systemd services are avoided whenever possible, as they are lower-quality than alternatives.
+
 - What's used is what is the most pragmatic, which is currently KDE. Historically there was a https://gist.github.com/felikcat/ae4d80bd6af49f336b0bbd3bb15bc469[GNOME installer].
-- Uses tricks to speed up installation compared to alternatives, without causing issues.
 ====
 
 .If you're going to use Dux, two rules to keep in mind:
 . It will break overtime, likely due to Arch maintainers renaming a package. You are expected to fix issues if I don't get around to it quickly enough.
 
-. This installer is a way to setup Arch Linux faster, and in a high-quality manner.
+. This installer is a way to setup Arch Linux faster, in a high-quality manner, and is resilient against breakage from updates; given you know how to use Btrfs snapshots.
 
 
 == 1. Requirements

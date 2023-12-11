@@ -159,10 +159,6 @@ esac
 # -Syuu (double -u) to start using the multilib repo now.
 pacman -Syuu --quiet --noconfirm --ask=4 --needed "${PKGS[@]}"
 
-# Prevents many unnecessary initramfs generations to speed up the install process drastically.
-ln -sf /dev/null /usr/share/libalpm/hooks/60-mkinitcpio-remove.hook
-ln -sf /dev/null /usr/share/libalpm/hooks/90-mkinitcpio-install.hook
-
 # Default services, regardless of options selected.
 # rfkill-unblock@all: Ensure Wi-Fi & Bluetooth aren't soft blocked on startup.
 SERVICES+=(fstrim.timer btrfs-scrub@-.timer
@@ -177,6 +173,9 @@ systemctl mask lvm2-lvmpolld.socket lvm2-monitor.service systemd-resolved.servic
 
 # Install the bootloader.
 source "${SRC_DIR}/Install_GRUB.sh"
+
+# Our initramfs generator settings.
+\cp "${cp_flags}" "${SRC_DIR}/Files/etc/mkinitcpio.conf" "/etc/"
 
 # Ensure "net.ipv4.tcp_congestion_control = bbr" is a valid option.
 \cp "${cp_flags}" "${SRC_DIR}"/Files/etc/modules-load.d/tcp_bbr.conf "/etc/modules-load.d/"

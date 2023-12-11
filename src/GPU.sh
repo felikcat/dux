@@ -36,8 +36,6 @@ IntelGPUSetup() {
 		echo -e "\nMODULES+=(i915)" >>/etc/mkinitcpio.conf
 		touch "/tmp/intel_early_kms.empty"
 	fi
-
-	REGENERATE_INITRAMFS=1
 }
 
 # grep: -P/--perl-regexp benched faster than -E/--extended-regexp
@@ -57,10 +55,6 @@ esac
 _pkgs_add
 _pkgs_aur_add
 _flatpaks_add
-
-if [[ ${IS_CHROOT} -eq 0 ]] && [[ ${REGENERATE_INITRAMFS} -eq 1 ]]; then
-    mkinitcpio -P
-fi
 
 cleanup() {
 	mkdir "${mkdir_flags}" "${BACKUPS}/etc/modprobe.d"

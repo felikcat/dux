@@ -14,10 +14,6 @@ SetupSnapper() {
 }
 SetupSnapper
 
-# Now is the right time to generate a initramfs.
-pacman -S --quiet --noconfirm --ask=4 --overwrite="*" mkinitcpio
-\cp "${cp_flags}" "${SRC_DIR}/Files/etc/mkinitcpio.conf" "/etc/"
-
 # Installing these late sped up the install process prior.
 PKGS+=(linux linux-headers)
 _pkgs_add
