@@ -35,7 +35,7 @@ endif::[]
 
 . This installer is a way to setup Arch Linux faster, in a high-quality manner, and is resilient against breakage from updates; given you know how to use Btrfs snapshots.
 
-. Dual-booting is supported, but only if that OS (likely Windows) is on a separate disk/drive.
+. Dual-booting is not supported, run Windows or whatever else through a QEMU virtual machine -- which helpers and instructions are provided for this.
 
 
 == 1. Requirements
@@ -52,8 +52,6 @@ endif::[]
 
 . *2GB* of RAM; 4GB recommended.
 . If you have *16GB* of RAM, *32GB* of storage is required; *32GB* RAM would require *48GB* of storage.
-
-NOTE: Dual-booting is not supported, run Windows or whatever else through a QEMU virtual machine -- which helpers and instructions are provided for this.
 
 
 == 2. Verify ISO authenticity
