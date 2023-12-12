@@ -72,6 +72,7 @@ ConfigFlatpak_Part1() {
 # konsole: Terminal Emulator.
 # xdg-desktop-portal-gnome: Required to launch some Flatpaks, such as Telegram Desktop.
 # libgnome-keyring, libnotify: Firefox (non Flatpak version) requires this for keyring support.
+# libappindicator-gtk3: Tray icon support for a few programs.
 #
 # dolphin: File browser.
 # -> ark: File archive support, such as Zip and 7z.
@@ -81,7 +82,7 @@ ConfigFlatpak_Part1() {
 PKGS+=(sddm
 libdecor qt5-wayland qt6-wayland
 plasma plasma-wayland-session spectacle opensnitch ufw konsole
-xdg-desktop-portal-gnome libgnome-keyring libnotify
+xdg-desktop-portal-gnome libgnome-keyring libnotify libappindicator-gtk3
 dolphin ark kconfig5 kde-cli-tools kdegraphics-thumbnailers kimageformats5 qt5-imageformats ffmpegthumbs taglib openexr libjxl android-udev packagekit-qt5 packagekit-qt6 meld
 noto-fonts-emoji noto-fonts-cjk
 )
