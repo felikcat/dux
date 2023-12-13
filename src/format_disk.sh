@@ -23,7 +23,7 @@ cryptsetup close root >&/dev/null || :
 lsblk -o PATH,MODEL,PARTLABEL,FSTYPE,FSVER,SIZE,FSUSE%,FSAVAIL,MOUNTPOINTS
 
 SelectDiskPrompt() {
-    read -rep $'\nDisk examples: /dev/sda or /dev/nvme0n1; don\'t use partition numbers like: /dev/sda1 or /dev/nvme0n1p1.\nInput your desired disk, then press ENTER: ' -i "/dev/" DISK
+    read -rep $'\nDisk examples: /dev/sda or /dev/nvme0n1. Don\'t use partition numbers like: /dev/sda1 or /dev/nvme0n1p1.\nInput your desired disk, then press ENTER: ' -i "/dev/" DISK
     WhichDiskSelected() {
         echo -e "\n\e[1;35mSelected disk: ${DISK}\e[0m\n"
         read -p "Is this correct? [Y/N]: " choice

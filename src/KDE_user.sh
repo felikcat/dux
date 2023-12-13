@@ -39,7 +39,18 @@ ConfigFirewalls_Part2(){
     kwriteconfig5 --file "${CONF}" --group "global" --key "default_duration" "7"
 }
 
+ConfigKDE() {
+   \cp "${cp_flags}" "${SRC_DIR}/Files/home/.config/environment.d/kde.conf" "/home/${YOUR_USER}/.config/environment.d/"
+    
+    local CONF="/home/${YOUR_USER}/.config/kwinrc"
+    kwriteconfig5 --file "${CONF}" --group "TabBox" --key "LayoutName" "thumbnail_grid"
+
+    local CONF="/home/${YOUR_USER}/.config/breezerc"
+    kwriteconfig5 --file "${CONF}" --group "Common" --key "ShadowSize" "ShadowNone"
+}
+
 ConfigDolphin
 SetupUserServices
 ConfigFlatpak_Part2
 ConfigFirewalls_Part2
+ConfigKDE

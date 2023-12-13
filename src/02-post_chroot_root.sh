@@ -45,6 +45,9 @@ EOF
 
 	# gamemode: Allows for maximum performance while a specific program is running.
 	groupadd --force -g 385 gamemode
+	
+	# Allow viewing AppArmor audit logs with administrative users.
+	sed -i "s/log_group = root/log_group = wheel/" /etc/audit/auditd.conf
 
 	# Create our user account that can also elevate permissions to 'root'.
 	# Why 'video': https://github.com/Hummer12007/brightnessctl/issues/63
@@ -121,6 +124,7 @@ fi
 # Default packages, regardless of options selected.
 PKGS+=(grub
 irqbalance power-profiles-daemon thermald dbus-broker gamemode lib32-gamemode iptables-nft
+audit apparmor python-notify2 python-psutil
 chrony dnsmasq openresolv libnewt pigz pbzip2 strace usbutils linux-firmware gnome-keyring avahi nss-mdns
 man-db man-pages pacman-contrib mkinitcpio bat
 wget trash-cli reflector rebuild-detector vim)
@@ -162,8 +166,9 @@ pacman -Syuu --quiet --noconfirm --ask=4 --needed "${PKGS[@]}"
 # Default services, regardless of options selected.
 # rfkill-unblock@all: Ensure Wi-Fi & Bluetooth aren't soft blocked on startup.
 SERVICES+=(fstrim.timer btrfs-scrub@-.timer
-irqbalance.service dbus-broker.service power-profiles-daemon.service thermald.service avahi-daemon.service chronyd.service
-rfkill-unblock@all)
+irqbalance.service dbus-broker.service power-profiles-daemon.service thermald.service
+avahi-daemon.service chronyd.service
+rfkill-unblock@all apparmor.service)
 
 systemctl enable "${SERVICES[@]}"
 

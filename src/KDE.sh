@@ -16,10 +16,6 @@ ConfigSDDM() {
     kwriteconfig5 --file "${CONF}" --group "Theme" --key "Current" "breeze"
 }
 
-ConfigKDE(){
-    \cp "${cp_flags}" "${SRC_DIR}/Files/home/.config/environment.d/kde.conf" "/home/${YOUR_USER}/.config/environment.d/"
-}
-
 ConfigNetworkmanager() {
 	local DIR="etc/NetworkManager/conf.d"
 	# Use openresolv instead of systemd-resolvconf.
@@ -76,6 +72,7 @@ ConfigFlatpak_Part1() {
 #
 # dolphin: File browser.
 # -> ark: File archive support, such as Zip and 7z.
+#    -> unrar: Unarchiving .rar file support.
 # -> packagekit-qt5: Required for "Configure > Configure Dolphin > Context Menu > Download New Services".
 # -> meld: "Compare files" support.
 # noto-fonts-*: The best supported fonts for making sure characters don't display as blank boxes.
@@ -83,7 +80,8 @@ PKGS+=(sddm
 libdecor qt5-wayland qt6-wayland
 plasma plasma-wayland-session spectacle opensnitch ufw konsole
 xdg-desktop-portal-gnome libgnome-keyring libnotify libappindicator-gtk3
-dolphin ark kconfig5 kde-cli-tools kdegraphics-thumbnailers kimageformats5 qt5-imageformats ffmpegthumbs taglib openexr libjxl android-udev packagekit-qt5 packagekit-qt6 meld
+dolphin kconfig5 kde-cli-tools kdegraphics-thumbnailers kimageformats5 qt5-imageformats ffmpegthumbs taglib openexr libjxl android-udev packagekit-qt5 packagekit-qt6 meld
+ark unrar
 noto-fonts-emoji noto-fonts-cjk
 )
 PKGS_AUR+=(opensnitch-ebpf-module)
@@ -91,7 +89,6 @@ _pkgs_add
 _pkgs_aur_add
 
 ConfigSDDM
-ConfigKDE
 ConfigNetworkmanager
 ConfigFirewalls_Part1
 ConfigFlatpak_Part1
