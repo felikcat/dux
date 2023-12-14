@@ -26,7 +26,7 @@ SetupUserServices() {
 
 ConfigFlatpak_Part2() {
     _move2bkup "/home/${YOUR_USER}/.config/fontconfig/conf.d/99-custom.conf" &&
-    \cp "${cp_flags}" /etc/fonts/local.conf "/home/${YOUR_USER}/.config/fontconfig/conf.d/" &&
+    \cp "${cp_flags}" /etc/fonts/local.conf "/home/${YOUR_USER}/.config/fontconfig/conf.d/"
 }
 
 ConfigFirewalls_Part2(){

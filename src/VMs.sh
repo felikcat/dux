@@ -3,9 +3,8 @@ set +H
 set -e
 
 SRC_DIR=$(dirname "$(realpath -s "${BASH_SOURCE[0]}")")
-cd ${SRC_DIR}; cd ..
-source "GLOBAL_IMPORTS.sh"
-source "Configs/settings.sh"
+source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
+source "${SRC_DIR}/Configs/settings.sh"
 
 # samba = Linux <---> Windows 10/11 file sharing
 PKGS+=(qemu-desktop libvirt virt-manager edk2-ovmf iptables-nft dnsmasq virglrenderer hwloc dmidecode usbutils swtpm samba

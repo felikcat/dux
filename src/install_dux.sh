@@ -85,6 +85,11 @@ SetupDesktopEnvironment() {
 }
 SetupDesktopEnvironment
 
+SetupVirtualMachines(){
+	(arch-chroot /mnt "${ROOT_DIR}/VMs.sh") |& tee "${ROOT_DIR}/logs/VMs.log" || return
+}
+SetupVirtualMachines
+
 _04() {
 	(arch-chroot /mnt "${ROOT_DIR}/04-finalize.sh") |& tee "${ROOT_DIR}/logs/04-finalize.log" || return
 }
