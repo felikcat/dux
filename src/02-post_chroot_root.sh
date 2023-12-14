@@ -122,7 +122,7 @@ if [[ ! -a "/tmp/UpdateDB.empty" ]]; then
 fi
 
 # Default packages, regardless of options selected.
-PKGS+=(grub
+PKGS+=(grub plymouth
 irqbalance power-profiles-daemon thermald dbus-broker gamemode lib32-gamemode iptables-nft
 audit apparmor python-notify2 python-psutil
 chrony dnsmasq openresolv libnewt pigz pbzip2 strace usbutils linux-firmware gnome-keyring avahi nss-mdns
@@ -182,8 +182,11 @@ source "${SRC_DIR}/Install_GRUB.sh"
 # Our initramfs generator settings.
 \cp "${cp_flags}" "${SRC_DIR}/Files/etc/mkinitcpio.conf" "/etc/"
 
+# Configure the graphical boot process to our preferences.
+\cp "${cp_flags}" "${SRC_DIR}/Files/etc/plymouth/plymouthd.conf" "/etc/plymouth/"
+
 # Ensure "net.ipv4.tcp_congestion_control = bbr" is a valid option.
-\cp "${cp_flags}" "${SRC_DIR}"/Files/etc/modules-load.d/tcp_bbr.conf "/etc/modules-load.d/"
+\cp "${cp_flags}" "${SRC_DIR}/Files/etc/modules-load.d/tcp_bbr.conf" "/etc/modules-load.d/"
 
 # Configures various kernel parameters.
 \cp "${cp_flags}" "${SRC_DIR}/Files/etc/sysctl.d/99-custom.conf"  "/etc/sysctl.d/"
