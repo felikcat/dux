@@ -124,7 +124,7 @@ fi
 # Default packages, regardless of options selected.
 PKGS+=(grub plymouth
 irqbalance power-profiles-daemon thermald dbus-broker gamemode lib32-gamemode iptables-nft
-audit apparmor python-notify2 python-psutil
+audit apparmor python-notify2 python-psutil bubblewrap-suid
 chrony dnsmasq openresolv libnewt pigz pbzip2 strace usbutils linux-firmware gnome-keyring avahi nss-mdns
 man-db man-pages pacman-contrib mkinitcpio bat
 wget trash-cli reflector rebuild-detector vim)
