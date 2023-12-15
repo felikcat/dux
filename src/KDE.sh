@@ -76,6 +76,7 @@ ConfigFlatpak_Part1() {
 # -> packagekit-qt5: Required for "Configure > Configure Dolphin > Context Menu > Download New Services".
 # -> meld: "Compare files" support.
 # noto-fonts-*: The best supported fonts for making sure characters don't display as blank boxes.
+# gnome-logs: To better your ability to tell what's going on with your Linux PC.
 PKGS+=(sddm
 libdecor qt5-wayland qt6-wayland
 plasma plasma-wayland-session spectacle opensnitch ufw konsole
@@ -83,6 +84,7 @@ xdg-desktop-portal-gnome libgnome-keyring libnotify libappindicator-gtk3
 dolphin kconfig5 kde-cli-tools kdegraphics-thumbnailers kimageformats5 qt5-imageformats ffmpegthumbs taglib openexr libjxl android-udev packagekit-qt5 packagekit-qt6 meld
 ark unrar
 noto-fonts-emoji noto-fonts-cjk
+gnome-logs
 )
 PKGS_AUR+=(opensnitch-ebpf-module)
 _pkgs_add

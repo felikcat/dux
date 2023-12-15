@@ -48,6 +48,8 @@ EOF
 	
 	# Allow viewing AppArmor audit logs with administrative users.
 	sed -i "s/log_group = root/log_group = wheel/" /etc/audit/auditd.conf
+	# HACK: I'm assuming a separate 'audit' user would be a better idea.
+	chown -R "${YOUR_USER}":wheel /var/log/audit
 
 	# Create our user account that can also elevate permissions to 'root'.
 	# Why 'video': https://github.com/Hummer12007/brightnessctl/issues/63
