@@ -124,7 +124,7 @@ if [[ ! -a "/tmp/UpdateDB.empty" ]]; then
 fi
 
 # Default packages, regardless of options selected.
-PKGS+=(grub os-prober plymouth opendoas
+PKGS+=(grub os-prober plymouth opendoas docker docker-compose
 irqbalance power-profiles-daemon thermald dbus-broker gamemode lib32-gamemode iptables-nft
 audit apparmor python-notify2 python-psutil bubblewrap-suid
 chrony dnsmasq openresolv libnewt pigz pbzip2 strace usbutils linux-firmware gnome-keyring avahi nss-mdns
@@ -170,7 +170,7 @@ pacman -Syuu --quiet --noconfirm --ask=4 --needed "${PKGS[@]}"
 SERVICES+=(fstrim.timer btrfs-scrub@-.timer
 irqbalance.service dbus-broker.service power-profiles-daemon.service thermald.service
 avahi-daemon.service chronyd.service
-rfkill-unblock@all apparmor.service)
+rfkill-unblock@all apparmor.service docker.service)
 
 systemctl enable "${SERVICES[@]}"
 
