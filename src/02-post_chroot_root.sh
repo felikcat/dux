@@ -124,7 +124,7 @@ if [[ ! -a "/tmp/UpdateDB.empty" ]]; then
 fi
 
 # Default packages, regardless of options selected.
-PKGS+=(grub plymouth
+PKGS+=(grub os-prober plymouth opendoas
 irqbalance power-profiles-daemon thermald dbus-broker gamemode lib32-gamemode iptables-nft
 audit apparmor python-notify2 python-psutil bubblewrap-suid
 chrony dnsmasq openresolv libnewt pigz pbzip2 strace usbutils linux-firmware gnome-keyring avahi nss-mdns

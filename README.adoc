@@ -35,8 +35,7 @@ endif::[]
 
 . This installer is a way to setup Arch Linux faster, in a high-quality manner, and is resilient against breakage from updates; given you know how to use Btrfs snapshots.
 
-. Dual-booting is not supported, run Windows or whatever else through a QEMU virtual machine -- which helpers and instructions are provided for this.
-
+. Dual-booting is supported, but only if on a separate disk/drive from the Arch Linux install.
 
 == 1. Requirements
 

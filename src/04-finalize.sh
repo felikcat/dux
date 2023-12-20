@@ -27,6 +27,11 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 Cleanup() {
 	# Permit users in group 'wheel' to request privilege escalation through sudo.
-    echo "%wheel ALL=(ALL) ALL" >/etc/sudoers.d/custom_settings
+    rm /etc/sudoers.d/custom_settings
+
+	\cp "${cp_flags}" "${SRC_DIR}/Files/etc/doas.conf" "/etc/"
+	chmod -c 0400 /etc/doas.conf
+	pacman -Rdd --quiet --noconfirm --ask=4 sudo
+	ln -sf $(which doas) /usr/bin/sudo
 }
 trap Cleanup EXIT

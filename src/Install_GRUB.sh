@@ -16,9 +16,9 @@ COMMON_PARAMS="loglevel=3 quiet add_efi_memmap acpi_osi=Linux skew_tick=1 mce=ig
 
 # --removable: would support more devices, but ruins dual-booting.
 if [[ $(</sys/firmware/efi/fw_platform_size) -eq 64 ]]; then
-    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB --removable
+    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 elif [[ $(</sys/firmware/efi/fw_platform_size) -eq 32 ]]; then
-    grub-install --target=i386-efi --efi-directory=/boot --bootloader-id=GRUB --removable
+    grub-install --target=i386-efi --efi-directory=/boot --bootloader-id=GRUB
 fi
 
 ConfigGRUB() {
