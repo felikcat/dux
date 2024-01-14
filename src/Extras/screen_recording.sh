@@ -2,7 +2,7 @@
 set +H
 set -e
 
-SRC_DIR=$(dirname "$(realpath -s "$(dirname "$0")")")
+SRC_DIR=$(dirname "$(realpath -s "${BASH_SOURCE[0]}")")
 cd ${SRC_DIR}; cd ..
 source "GLOBAL_IMPORTS.sh"
 source "Configs/settings.sh"

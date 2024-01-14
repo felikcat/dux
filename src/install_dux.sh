@@ -10,7 +10,7 @@ wait
 systemctl restart systemd-timesyncd.service
 wait
 
-SRC_DIR=$(dirname "$(realpath -s "$(dirname "$0")")")
+SRC_DIR=$(dirname "$(realpath -s "${BASH_SOURCE[0]}")")
 source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
 source "${SRC_DIR}/Configs/settings.sh"
 
