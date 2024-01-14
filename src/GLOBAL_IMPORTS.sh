@@ -6,7 +6,7 @@ set -e
 [[ ${KEEP_GOING} -eq 1 ]] &&
 	set +e
 
-SRC_DIR=$(dirname "$(realpath -s "${BASH_SOURCE[0]}")")
+SRC_DIR=$(dirname "$(realpath -s "$(dirname "$0")")")
 source "${SRC_DIR}/Configs/settings.sh"
 
 # DEBUG=1 bash ~/dux/src/example.sh

@@ -7,7 +7,7 @@ if ! grep -q "'archiso'" /etc/mkinitcpio.d/linux.preset; then
 	exit 1
 fi
 
-SRC_DIR=$(dirname "$(realpath -s "${BASH_SOURCE[0]}")")
+SRC_DIR=$(dirname "$(realpath -s "$(dirname "$0")")")
 source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
 source "${SRC_DIR}/Configs/settings.sh"
 
@@ -75,7 +75,7 @@ fi
 # Account for Pacman suddenly exiting (due to the user sending SIGINT by pressing Ctrl + C).
 rm -f /mnt/var/lib/pacman/db.lck &&
 	# Install packages later if possible; keep this list minimal.
-	pacstrap -K /mnt cryptsetup dosfstools btrfs-progs base git \
+	pacstrap -K /mnt cryptsetup dosfstools btrfs-progs base base-devel git \
 		zsh grml-zsh-config --quiet --noconfirm --ask=4 --needed
 
 cat <<'EOF' >/mnt/etc/fstab

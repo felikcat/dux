@@ -10,7 +10,7 @@ wait
 systemctl restart systemd-timesyncd.service
 wait
 
-SRC_DIR=$(dirname "$(realpath -s "${BASH_SOURCE[0]}")")
+SRC_DIR=$(dirname "$(realpath -s "$(dirname "$0")")")
 source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
 source "${SRC_DIR}/Configs/settings.sh"
 
@@ -84,11 +84,6 @@ SetupDesktopEnvironment() {
 	(arch-chroot /mnt "${ROOT_DIR}/KDE.sh") |& tee "${ROOT_DIR}/logs/KDE.log" || return
 }
 SetupDesktopEnvironment
-
-SetupVirtualMachines(){
-	(arch-chroot /mnt "${ROOT_DIR}/VMs.sh") |& tee "${ROOT_DIR}/logs/VMs.log" || return
-}
-SetupVirtualMachines
 
 _04() {
 	(arch-chroot /mnt "${ROOT_DIR}/04-finalize.sh") |& tee "${ROOT_DIR}/logs/04-finalize.log" || return

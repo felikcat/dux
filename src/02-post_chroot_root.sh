@@ -2,7 +2,7 @@
 set +H
 set -e
 
-SRC_DIR=$(dirname "$(realpath -s "${BASH_SOURCE[0]}")")
+SRC_DIR=$(dirname "$(realpath -s "$(dirname "$0")")")
 source "${SRC_DIR}/GLOBAL_IMPORTS.sh"
 source "${SRC_DIR}/Configs/settings.sh"
 
@@ -45,11 +45,6 @@ EOF
 
 	# gamemode: Allows for maximum performance while a specific program is running.
 	groupadd --force -g 385 gamemode
-	
-	# Allow viewing AppArmor audit logs with administrative users.
-	sed -i "s/log_group = root/log_group = wheel/" /etc/audit/auditd.conf
-	# HACK: I'm assuming a separate 'audit' user would be a better idea.
-	chown -R "${YOUR_USER}":wheel /var/log/audit
 
 	# Create our user account that can also elevate permissions to 'root'.
 	# Why 'video': https://github.com/Hummer12007/brightnessctl/issues/63
@@ -58,6 +53,11 @@ EOF
 
 	# The 'root' user account is no longer useful, disable it.
 	passwd --lock root
+
+  # Allow viewing AppArmor audit logs with administrative users.
+  sed -i "s/log_group = root/log_group = wheel/" /etc/audit/auditd.conf
+  # HACK: I'm assuming a separate 'audit' user would be a better idea.
+  chown -R "${YOUR_USER}":wheel /var/log/audit
 
 	# sudo: Allow users in group 'wheel' to elevate to superuser without prompting for a password (until 04-finalize.sh).
 	echo "%wheel ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/custom_settings
@@ -124,7 +124,7 @@ if [[ ! -a "/tmp/UpdateDB.empty" ]]; then
 fi
 
 # Default packages, regardless of options selected.
-PKGS+=(grub os-prober plymouth opendoas docker docker-compose
+PKGS+=(grub os-prober plymouth
 irqbalance power-profiles-daemon thermald dbus-broker gamemode lib32-gamemode iptables-nft
 audit apparmor python-notify2 python-psutil bubblewrap-suid
 chrony dnsmasq openresolv libnewt pigz pbzip2 strace usbutils linux-firmware gnome-keyring avahi nss-mdns
@@ -170,7 +170,7 @@ pacman -Syuu --quiet --noconfirm --ask=4 --needed "${PKGS[@]}"
 SERVICES+=(fstrim.timer btrfs-scrub@-.timer
 irqbalance.service dbus-broker.service power-profiles-daemon.service thermald.service
 avahi-daemon.service chronyd.service
-rfkill-unblock@all apparmor.service docker.service)
+rfkill-unblock@all apparmor.service)
 
 systemctl enable "${SERVICES[@]}"
 
