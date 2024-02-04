@@ -42,13 +42,16 @@ IntelGPUSetup() {
 # shellcheck disable=SC2249
 case $(lspci | grep -P "VGA|3D|Display" | grep -Po "AMD|NVIDIA|Intel") in
 *"AMD"*)
-	AMDGPUSetup
+	[[ ${gpu_selected} -eq 1 ]] &&
+		AMDGPUSetup
 	;;&
 *"NVIDIA"*)
-	NvidiaGPUSetup
+	[[ ${gpu_selected} -eq 2 ]] &&
+		NvidiaGPUSetup
 	;;&
 *"Intel"*)
-	IntelGPUSetup
+	[[ ${gpu_selected} -eq 3 ]] &&
+		IntelGPUSetup
 	;;
 esac
 

@@ -10,9 +10,8 @@ ConfigSDDM() {
     systemctl disable entrance.service lightdm.service lxdm.service xdm.service tdm.service gdm.service >&/dev/null || :
 	SERVICES+=(sddm.service)
     
+    # Automatic login is not done here, as unlocking the keyring multiple times is more annoying.
     local CONF="/etc/sddm.conf.d/kde_settings.conf"
-    kwriteconfig5 --file "${CONF}" --group "Autologin" --key "User" "${YOUR_USER}"
-    kwriteconfig5 --file "${CONF}" --group "Autologin" --key "Session" "plasmawayland"
     kwriteconfig5 --file "${CONF}" --group "Theme" --key "Current" "breeze"
 }
 

@@ -20,7 +20,7 @@ endif::[]
 - Kept simple and programmed in Bash.
 
 - There's customizability, but only if important.
-** It's one way or the highway intentionally. If you don't like parts of Dux, you can change that after the fact, as a regular Arch Linux user would.
+** If you don't like parts of Dux, you can change that after the fact, as a regular Arch Linux user would.
 *** Chasing immense customizability will lead to bugs and user error. If you want that, use ArchInstall or Archboot instead.
 
 - No third-party repos that break the OS, unlike Manjaro.
@@ -39,7 +39,7 @@ endif::[]
 
 == 1. Requirements
 
-. If you do not meet the GPU requirements, use `disable_gpu="1"` to manually install and configure yourself:
+. If you do not meet the GPU requirements, use `gpu_selected="0"` to manually install and configure yourself:
 - For AMD: Radeon RX 460 or newer.
 - For NVIDIA: GeForce GTX 745 or newer.
 - For Intel: HD 3000 or newer.
@@ -53,7 +53,7 @@ endif::[]
 . If you have *16GB* of RAM, *32GB* of storage is required; *32GB* RAM would require *48GB* of storage.
 
 
-== 2. Verify ISO authenticity
+== 2. [OPTIONAL] Verify ISO authenticity
 
 .Download the latest link:https://archlinux.org/download/[Arch Linux ISO]; if you have no torrent client, use link:https://www.qbittorrent.org/download.php[qBittorrent].
 - Keep that tab open.
@@ -249,7 +249,5 @@ A tray indicator for the continuous file synchronization program, Syncthing. It 
 TIP: For other software, use a search engine like so: "feh arch linux". Doing that links to https://wiki.archlinux.org/title/feh[this wiki page], showing how to install and configure feh, and explains what it is (an Image Viewer).
 
 *If you have issues, please read => link:potential_fixes.adoc[potential_fixes.adoc]*
-
-*For how-tos on certain things, like using only an AMD GPU in a AMD + NVIDIA GPU system, read => link:Guides.adoc[Guides.adoc]*
 
 *If you plan to virtualize Windows or Linux in QEMU => link:Virtualization.adoc[Virtualization.adoc] is your friend.*

@@ -24,13 +24,15 @@ no_mitigations="0"
 
 
 # === Graphics Card options ===
-# 1: Skip installing GPU software.
-disable_gpu="0"
+# 0: Skip installing GPU software.
+# 1: AMD, 2: NVIDIA, 3: Intel
+# Dual-GPU setups are not supported; read the Arch Linux wiki for Hybrid graphics instructions.
+gpu_selected="0"
 
 # https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__MEMOP.html#group__CUDA__MEMOP
 nvidia_stream_memory_operations="0"
 
 # Enables hardware video acceleration; use 2 if possible.
-# 1: GMA 4500 (2008) up to Coffee Lake's (2017) HD Graphics.
-# 2: HD Graphics series starting from Broadwell (2014) and newer.
+# 1: Intel GMA 4500 (2008) up to Coffee Lake's (2017) HD Graphics.
+# 2: Intel HD Graphics series starting from Broadwell (2014) and newer.
 intel_video_accel="2"

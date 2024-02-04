@@ -73,7 +73,7 @@ _03
 _gpu() {
     (arch-chroot /mnt "${ROOT_DIR}/GPU.sh") |& tee "${ROOT_DIR}/logs/GPU.log" || return
 }
-[[ ${disable_gpu} -ne 1 ]] && _gpu
+[[ ${gpu_selected} -ne 0 ]] && _gpu
 
 SetupAudio() {
 	(arch-chroot /mnt "${ROOT_DIR}/Pipewire.sh") |& tee "${ROOT_DIR}/logs/Pipewire.log" || return

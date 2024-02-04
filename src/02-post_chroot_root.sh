@@ -51,13 +51,13 @@ EOF
 	useradd -m -G users,wheel,video,gamemode -s /bin/zsh "${YOUR_USER}" &&
 		echo "${YOUR_USER}:${PWCODE}" | chpasswd
 
-	# The 'root' user account is no longer useful, disable it.
-	passwd --lock root
+	# Allow 'su' as an emergency backup; also required for the Trinity Desktop Environment's polkit.
+	echo "root:${PWCODE}" | chpasswd
 
-  # Allow viewing AppArmor audit logs with administrative users.
-  sed -i "s/log_group = root/log_group = wheel/" /etc/audit/auditd.conf
-  # HACK: I'm assuming a separate 'audit' user would be a better idea.
-  chown -R "${YOUR_USER}":wheel /var/log/audit
+	# Allow viewing AppArmor audit logs with administrative users.
+	sed -i "s/log_group = root/log_group = wheel/" /etc/audit/auditd.conf
+	# HACK: I'm assuming a separate 'audit' user would be a better idea.
+	chown -R "${YOUR_USER}":wheel /var/log/audit
 
 	# sudo: Allow users in group 'wheel' to elevate to superuser without prompting for a password (until 04-finalize.sh).
 	echo "%wheel ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/custom_settings
