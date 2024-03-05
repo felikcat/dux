@@ -8,8 +8,6 @@ source "${SRC_DIR}/Configs/settings.sh"
 
 clear
 
-TOTAL_RAM=$(($(getconf _PHYS_PAGES) * $(getconf PAGE_SIZE) / (1024 * 1024)))
-
 [[ ${DEBUG} -eq 1 ]] &&
     set -x
 
@@ -86,7 +84,12 @@ sgdisk -a 2048 -o "${DISK}"
 # Partition 1 (UEFI boot)
 sgdisk -n 1::+1024M --typecode=1:ef00 --change-name=1:'BOOTEFI' "${DISK}"
 # Partition 2 (swap)
-sgdisk -n 2::+"${TOTAL_RAM}"M --typecode=2:8200 "${DISK}"
+if [[ ${swap_size} = "default" ]]; then
+    TOTAL_RAM=$(($(getconf _PHYS_PAGES) * $(getconf PAGE_SIZE) / (1024 * 1024)))
+    sgdisk -n 2::+"${TOTAL_RAM}"M --typecode=2:8200 "${DISK}"
+else
+    sgdisk -n 2::+"${swap_size}"M --typecode=2:8200 "${DISK}"
+fi
 # Partition 3 ("/" or "root" directory)
 sgdisk -n 3::-0 --typecode=3:8300 --change-name=3:'ROOT' "${DISK}"
 

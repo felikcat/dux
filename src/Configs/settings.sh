@@ -2,6 +2,11 @@
 # shellcheck disable=SC2034,SC2249
 set -a
 
+# Counted in MiB; use "free -m" in the Terminal to show the amount of RAM in MiB.
+# Default = the total amount of MiB of your RAM.
+swap_size="default"
+#swap_size="7721" # 8GB swap
+
 # Do not use any of the following: symbols, spaces, upper-case letters.
 YOUR_USER="admin"
 
