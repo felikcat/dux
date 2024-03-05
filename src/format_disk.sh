@@ -22,21 +22,19 @@ lsblk -o PATH,MODEL,PARTLABEL,FSTYPE,FSVER,SIZE,FSUSE%,FSAVAIL,MOUNTPOINTS
 
 SelectDiskPrompt() {
     read -rep $'\nDisk examples: /dev/sda or /dev/nvme0n1. Don\'t use partition numbers like: /dev/sda1 or /dev/nvme0n1p1.\nInput your desired disk, then press ENTER: ' -i "/dev/" DISK
-    WhichDiskSelected() {
-        echo -e "\n\e[1;35mSelected disk: ${DISK}\e[0m\n"
-        read -p "Is this correct? [Y/N]: " choice
-    }
-    WhichDiskSelected
+    echo -e "\n\e[1;35mSelected disk: ${DISK}\e[0m\n"
+    read -p "Is this correct? [Y/N]: " choice
+
     case ${choice} in
-    [Y]*)
+    "Y")
         return 0
         ;;
-    [N]*)
+    "N")
         SelectDiskPrompt
         ;;
     *)
         echo -e "\nInvalid option!\nValid options: Y, N"
-        WhichDiskSelected
+        SelectDiskPrompt
         ;;
     esac
 }
@@ -61,15 +59,14 @@ RemovePartitions() {
 WipeEntireDisk() {
     read -p $'\n\nWith \'Secure\' the estimated wait time is minutes up to hours, depending on both the disk\'s type and size.\n\nSelect either Secure or Normal: ' choice
     case ${choice} in
-    ["Secure"]*)
+    "Secure")
         RemovePartitions
         cryptsetup open --type plain -d /dev/urandom "${DISK}" cleanit
         ddrescue --force /dev/zero /dev/mapper/cleanit
         cryptsetup close cleanit
         ;;
-    ["Normal"]*)
+    "Normal")
         RemovePartitions
-        return 0
         ;;
     *)
         echo -e "\nInvalid option!\nValid options: Secure, Normal"
