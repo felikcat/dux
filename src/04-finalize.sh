@@ -28,6 +28,6 @@ grub-mkconfig -o /boot/grub/grub.cfg
 Cleanup() {
 	# It was dangerous to allow superuser with no password, fix that up.
     rm /etc/sudoers.d/custom_settings
-	sed -i '/^#%wheel ALL=(ALL:ALL) ALL/s/^#//' /etc/sudoers
+	sed -i '/^# %wheel ALL=(ALL:ALL) ALL/s/^# //' /etc/sudoers
 }
 trap Cleanup EXIT

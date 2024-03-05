@@ -8,11 +8,11 @@ source "${SRC_DIR}/Configs/settings.sh"
 
 ConfigDolphin() {
     local CONF="/home/${YOUR_USER}/.config/dolphinrc"
-    kwriteconfig5 --file "${CONF}" --group "General" --key "ShowFullPath" "true"
-    kwriteconfig5 --file "${CONF}" --group "General" --key "ShowSpaceInfo" "false"
+    kwriteconfig6 --file "${CONF}" --group "General" --key "ShowFullPath" "true"
+    kwriteconfig6 --file "${CONF}" --group "General" --key "ShowSpaceInfo" "false"
 
     # Allow loading of larger images that are remotely located, such as on an SMB server.
-    kwriteconfig5 --file "/home/${YOUR_USER}/.config/kdeglobals" --group "PreviewSettings" --key "MaximumRemoteSize" "10485760"
+    kwriteconfig6 --file "/home/${YOUR_USER}/.config/kdeglobals" --group "PreviewSettings" --key "MaximumRemoteSize" "10485760"
 }
 
 SetupUserServices() {
@@ -36,17 +36,17 @@ ConfigFirewalls_Part2(){
 
     local CONF="/home/${YOUR_USER}/.config/opensnitch/settings.conf"
     # Preferences -> Pop-ups -> Duration: forever
-    kwriteconfig5 --file "${CONF}" --group "global" --key "default_duration" "7"
+    kwriteconfig6 --file "${CONF}" --group "global" --key "default_duration" "7"
 }
 
 ConfigKDE() {
    \cp "${cp_flags}" "${SRC_DIR}/Files/home/.config/environment.d/kde.conf" "/home/${YOUR_USER}/.config/environment.d/"
     
     local CONF="/home/${YOUR_USER}/.config/kwinrc"
-    kwriteconfig5 --file "${CONF}" --group "TabBox" --key "LayoutName" "thumbnail_grid"
+    kwriteconfig6 --file "${CONF}" --group "TabBox" --key "LayoutName" "thumbnail_grid"
 
     local CONF="/home/${YOUR_USER}/.config/breezerc"
-    kwriteconfig5 --file "${CONF}" --group "Common" --key "ShadowSize" "ShadowNone"
+    kwriteconfig6 --file "${CONF}" --group "Common" --key "ShadowSize" "ShadowNone"
 }
 
 ConfigDolphin

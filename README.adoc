@@ -49,8 +49,9 @@ endif::[]
 . link:https://archive.is/QwLMB[Disable UEFI Secure Boot]
 ** If convincing is needed, link:https://github.com/pbatard/rufus/wiki/FAQ#Why_do_I_need_to_disable_Secure_Boot_to_use_UEFINTFS[read this].
 
-. *2GB* of RAM; 4GB recommended.
-. If you have *16GB* of RAM, *32GB* of storage is required; *32GB* RAM would require *48GB* of storage.
+. *3GB* of RAM.
+
+. *16GB* of storage + the amount of swap size used (configurable).
 
 
 == 2. [OPTIONAL] Verify ISO authenticity

@@ -66,8 +66,8 @@ EOF
 	mv -f "/home/${YOUR_USER}/dux" "/home/${YOUR_USER}/dux_backup_${DATE}" >&/dev/null || :
 	\cp "${cp_flags}" -R "${SRC_DIR}" "/home/${YOUR_USER}/dux"
 
-	# Ensure these directories exist.
 	mkdir "${mkdir_flags}" {/etc/{modules-load.d,NetworkManager/conf.d,modprobe.d,tmpfiles.d,pacman.d/hooks,X11,fonts,systemd/coredump.conf.d,snapper/configs,conf.d},/boot,/home/"${YOUR_USER}"/.config/{fontconfig/conf.d,systemd/user},/usr/share/libalpm/scripts}
+	mkdir "${mkdir_flags}" "/home/${YOUR_USER}/dux_backups"
 
 	# Prevents DKMS module installation failures.
 	mkdir "${mkdir_flags}" /usr/lib/modules
@@ -93,6 +93,9 @@ sed -i "s/.DefaultEnvironment.*/DefaultEnvironment=\"GNUMAKEFLAGS=-j${NPROC} -l$
 
 # Enable the 32-bit software repository.
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+
+# TODO: !TEMPORARY! -> Remove after KDE 6 is stable!
+sed -i "/\[extra-testing\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 Hardware() {
 	if [[ ${hardware_wifi_and_bluetooth} -eq 1 ]]; then

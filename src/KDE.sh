@@ -12,7 +12,7 @@ ConfigSDDM() {
     
     # Automatic login is not done here, as unlocking the keyring multiple times is more annoying.
     local CONF="/etc/sddm.conf.d/kde_settings.conf"
-    kwriteconfig5 --file "${CONF}" --group "Theme" --key "Current" "breeze"
+    kwriteconfig6 --file "${CONF}" --group "Theme" --key "Current" "breeze"
 }
 
 ConfigNetworkmanager() {
@@ -78,9 +78,9 @@ ConfigFlatpak_Part1() {
 # gnome-logs: To better your ability to tell what's going on with your Linux PC.
 PKGS+=(sddm
 libdecor qt5-wayland qt6-wayland
-plasma plasma-wayland-session spectacle opensnitch ufw konsole
+plasma spectacle opensnitch ufw konsole
 xdg-desktop-portal-gnome libgnome-keyring libnotify libappindicator-gtk3
-dolphin kconfig5 kde-cli-tools kdegraphics-thumbnailers kimageformats5 qt5-imageformats ffmpegthumbs taglib openexr libjxl android-udev packagekit-qt5 packagekit-qt6 meld
+dolphin kconfig kde-cli-tools kdegraphics-thumbnailers kimageformats5 qt5-imageformats ffmpegthumbs taglib openexr libjxl android-udev packagekit-qt5 packagekit-qt6 meld
 ark unrar
 noto-fonts-emoji noto-fonts-cjk
 gnome-logs
