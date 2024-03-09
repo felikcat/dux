@@ -16,7 +16,7 @@ NvidiaGPUSetup() {
 	# libva-nvidia-driver:
 	# - VDPAU -> VA-API translation layer, mainly for GPU acceleration in 'mpv' and 'Firefox'.
 	PKGS+=(xorg-server-devel nvidia-prime
-	nvidia-dkms egl-wayland nvidia-utils opencl-nvidia libxnvctrl nvidia-settings
+	nvidia egl-wayland nvidia-utils opencl-nvidia libxnvctrl nvidia-settings
   		lib32-nvidia-utils lib32-opencl-nvidia libva-nvidia-driver)
 
 	_move2bkup "/etc/modprobe.d/nvidia.conf" &&

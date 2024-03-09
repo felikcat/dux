@@ -40,8 +40,6 @@ ConfigFirewalls_Part2(){
 }
 
 ConfigKDE() {
-   \cp "${cp_flags}" "${SRC_DIR}/Files/home/.config/environment.d/kde.conf" "/home/${YOUR_USER}/.config/environment.d/"
-    
     local CONF="/home/${YOUR_USER}/.config/kwinrc"
     kwriteconfig6 --file "${CONF}" --group "TabBox" --key "LayoutName" "thumbnail_grid"
 
