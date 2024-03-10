@@ -149,7 +149,7 @@ case $(systemd-detect-virt) in
 	;;
 "vmware")
 	PKGS+=(open-vm-tools gtkmm3)
-	# Our vmware-user.service is created then enabled in 05-booted.sh
+	# Our vmware-user.service is created then enabled in KDE_user.sh
 	SERVICES+=(vmtoolsd.service vmware-vmblock-fuse.service)
 	;;
 "oracle")

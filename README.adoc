@@ -9,6 +9,8 @@ ifdef::env-github[]
 endif::[]
 :imagesdir: imgs/
 
+This installer is being rewritten into a C++ & Bash hybrid to correct some fundemental flaws.
+
 == About
 .This Arch Linux installer's primary goals.
 [%collapsible]
