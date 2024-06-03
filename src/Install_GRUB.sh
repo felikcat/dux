@@ -14,11 +14,11 @@ APPARMOR="lsm=landlock,lockdown,yama,integrity,apparmor,bpf"
 # acpi_osi=Linux: tell the motherboard's BIOS to load their ACPI tables for Linux.
 COMMON_PARAMS="loglevel=3 quiet add_efi_memmap acpi_osi=Linux skew_tick=1 mce=ignore_ce nowatchdog ${MICROCODE:-}"
 
-# --removable: would support more devices, but ruins dual-booting.
+# --removable: supports more devices such as MSI motherboards, but makes dual-booting a little harder.
 if [[ $(</sys/firmware/efi/fw_platform_size) -eq 64 ]]; then
-    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB --removable
 elif [[ $(</sys/firmware/efi/fw_platform_size) -eq 32 ]]; then
-    grub-install --target=i386-efi --efi-directory=/boot --bootloader-id=GRUB
+    grub-install --target=i386-efi --efi-directory=/boot --bootloader-id=GRUB --removable
 fi
 
 ConfigGRUB() {
