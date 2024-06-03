@@ -129,7 +129,7 @@ irqbalance power-profiles-daemon thermald dbus-broker gamemode lib32-gamemode ip
 audit apparmor python-notify2 python-psutil bubblewrap-suid
 chrony dnsmasq openresolv libnewt pigz pbzip2 strace usbutils linux-firmware gnome-keyring avahi nss-mdns
 man-db man-pages pacman-contrib mkinitcpio bat
-wget trash-cli reflector rebuild-detector vim)
+wget trash-cli reflector rebuild-detector vim zsh-completions)
 
 case $(systemd-detect-virt) in
 "none")
