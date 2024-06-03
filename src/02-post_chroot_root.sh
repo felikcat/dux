@@ -94,9 +94,6 @@ sed -i "s/.DefaultEnvironment.*/DefaultEnvironment=\"GNUMAKEFLAGS=-j${NPROC} -l$
 # Enable the 32-bit software repository.
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
-# TODO: !TEMPORARY! -> Remove after KDE 6 is stable!
-sed -i "/\[extra-testing\]/,/Include/"'s/^#//' /etc/pacman.conf
-
 Hardware() {
 	if [[ ${hardware_wifi_and_bluetooth} -eq 1 ]]; then
 		PKGS+=(iwd bluez bluez-utils)
