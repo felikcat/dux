@@ -54,24 +54,25 @@ endif::[]
 . *16GB* of storage + the amount of swap size used (configurable).
 
 
-== 2. [OPTIONAL] Verify ISO authenticity
-
+== 2. [OPTIONAL] Verify ISO authenticity -- for your security
+[%collapsible]
+====
 .Download the latest link:https://archlinux.org/download/[Arch Linux ISO]; if you have no torrent client, use link:https://www.qbittorrent.org/download.php[qBittorrent].
 - Keep that tab open.
 
-=== macOS
+.*macOS*
 . Install Homebrew from https://brew.sh/
 . `brew install gnupg`
 . Follow the Linux instructions below.
 
-=== *Windows*
+.*Windows*
 . Install https://gpg4win.org/thanks-for-download.html[GnuPG] using its latest simple installer: +
 image:GPG/firefox_4EiWmbJfJo.png[480,360]
 . Open a Terminal or PowerShell in the directory of `gpg.exe`: +
 image:GPG/explorer_sIHtC1HEcI.png[480,360]
 . Follow the Linux instructions below.
 
-=== Linux
+.*Linux*
 . NOTE: The full key (not short or long) is used to fully protect against collision attacks. +
 `gpg --auto-key-locate clear,wkd -v --locate-external-key pierre@archlinux.org`
 
@@ -126,7 +127,7 @@ Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? O
 `gpg --verify /path/to/archkbd:[TAB].sig`
 
 - image:GPG/WindowsTerminal_RNqnz5MWaf.png[480,360]
-
+====
 
 == 3. Format a USB with the Arch Linux ISO
 WARNING: This will destroy all previous data on the targeted device!
