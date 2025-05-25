@@ -9,6 +9,8 @@ ifdef::env-github[]
 endif::[]
 :imagesdir: imgs/
 
+NOTE: Being rewritten in Rust at: https://github.com/felikcat/oops-all-rust
+
 == About
 .This Arch Linux installer's primary goals.
 [%collapsible]
